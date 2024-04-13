@@ -1,0 +1,49 @@
+/* Product Description Styling */
+
+.productdesc_container{
+    padding: 40px;
+    background-color: #EEEDED;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .product-description{
+    display: grid;
+    grid-template-rows: repeat(2,50%);
+  }
+  
+  .product-description > h2{
+    font-size: 64px;
+    font-weight: 200;
+    margin-top: 40px;
+  }
+  
+  .productdesc_container_content{
+    width: 100%;
+    height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(2,50%);
+  }
+  
+  .product_image{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product_image > img{
+    width: 100%;
+  }
+  
+  .product-description-text{
+    font-size: 24px;
+    font-weight: 300;
+  }
+  
+  .product-description-text > h4{
+    margin-top: 28px;
+    font-weight: 400;
+  }
+  

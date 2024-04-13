@@ -1,0 +1,33 @@
+/* Join Us Section */
+
+
+.joinus-container{
+    height: 20vh;
+    background-color: #EEEDED;
+  }
+  
+  .joinus-container-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .joinus-btn{
+    width: 800px;
+    height: 40px;
+    background-color: #2C2C4C;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s;
+  }
+  
+  .joinus-btn:hover{
+    transform: scale(1.2);
+  }
+  

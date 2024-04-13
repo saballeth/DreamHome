@@ -1,0 +1,45 @@
+.mayfind-container{
+    height: 80vh;
+    background-color: #EEEDED;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .mayfindcard-container{
+    background-color: #2C2C4C;
+    width: 400px;
+    height: 400px;
+    border-radius: 20px;
+    padding: 20px;
+    transition: transform .2s;
+  }
+  
+  
+  .mayfindcard-container:hover{
+    transform: scale(1.2);
+  }
+  
+  .mayfind-container-content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  
+  }
+  
+  .mayfindcard-img>img{
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
+    width: 100%;
+  
+  }
+  
+  .mayfindcard-desc{
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  
