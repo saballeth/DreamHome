@@ -1,0 +1,36 @@
+{
+    "id": 1,
+    "titulo": "Hermosa Casa en Venta",
+    "descripcion": "Espaciosa casa de 4 dormitorios con piscina y jardín en un barrio tranquilo. Ideal para una familia.",
+    "barrio": "Barrio Residencial Tranquilo",
+    "precio": "$350,000",
+    "caracteristicas": [
+      {
+        "nombre": "Área",
+        "valor": "300 m²"
+      },
+      {
+        "nombre": "Dormitorios",
+        "valor": 4
+      },
+      {
+        "nombre": "Baños",
+        "valor": 3
+      },
+      {
+        "nombre": "Garaje",
+        "valor": 2
+      }
+    ],
+    "adicionales": [
+      "Piscina",
+      "Jardín",
+      "Administración $150/mes"
+    ],
+    "fotos": [
+      "./src/assets/HousesTest/casa1.jpg",
+      "./src/assets/HousesTest/casa2.jpg",
+      "./src/assets/HousesTest/casa3.jpg"
+    ]
+  }
+  
