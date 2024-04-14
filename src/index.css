@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700&display=swap');
 
+:root {
+  --darkOrange: #e77344 ;
+  --lightOrange: #eb9267 ;
+  --blue: #0c3c6a ;
+  --secondaryOrange: #a0534a;
+  --lightGray: #b9c6d5;
+  --white: #fff;
+}
+
 .wrapper{
   max-width: 1170px;
   margin-left: auto;
