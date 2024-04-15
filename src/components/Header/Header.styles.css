@@ -4,11 +4,12 @@ h1{
   }
   
   header{
-    background-color: #F0F0F0;
+    background-color: #f0f0f000;
     position: sticky;
+  
     z-index: 999;
     top: -10px;
-    box-shadow: 0 -6px 10px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 -6px 10px 5px rgba(0, 0, 0, 0);
   }
   
   .header_container{
@@ -27,14 +28,23 @@ h1{
     display: flex;
   }
   
-  nav > ul > li{
-    padding: 20px;
-    font-size: 1.5rem;
-    border-radius: 10px;
+  nav > ul > li > a{
+    display:inline-block;
+	color:#2C2C4C;
+	text-decoration:none;
+	padding:10px 20px;
+
+	line-height:normal;
+	font-weight:bold;
+	-webkit-transition:all 500ms ease;
+	-o-transition:all 500ms ease;
+	transition:all 500ms ease;
+
   }
   
-  nav > ul>li:hover{
-    color: #E15D2C;
-    transition: 0.3ms ease-in-out;
+  nav > ul>li > a:hover{
+    background:#f56f3a;
+    border-radius:50px;
+    font-display: 30px;
   }
   

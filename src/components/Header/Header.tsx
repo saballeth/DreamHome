@@ -30,8 +30,8 @@ const Header: React.FC<loggedType> = ({logged}:loggedType)=>{
               </Dropdown>
             ) : (
               <>
-                <li>Login</li>
-                <li>Acerca de</li>
+                <li><a href="/Login">Login</a></li>
+                <li><a href="/">Acerca de</a></li>
               </>
             )}
           </ul>
