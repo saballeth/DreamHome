@@ -11,6 +11,7 @@
   z-index: 1;
 }
 
+
 .Header-logo {
   display: flex;
   justify-content: space-between;
@@ -23,6 +24,11 @@
   width: 40px;
 }
 
+.black-text {
+  color: var(--black);
+  font-weight: 500;
+}
+
 .Header-navbar {
   display: flex;
   justify-content: center;
@@ -33,12 +39,14 @@
 .header-selected {
   color: var(--darkOrange);
   border-bottom: 2px solid var(--darkOrange);
+  font-weight: bold;
 }
 
 .Header-navbar__item:hover {
   color: var(--darkOrange);
   border-bottom: 2px solid var(--darkOrange);
   cursor: pointer;
+  font-weight: bold;
 }
 
 .Header-navbar__join {
