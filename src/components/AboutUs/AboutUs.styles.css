@@ -1,6 +1,7 @@
-
-/* About us section */
-
+.wrapper{
+  display: flex;
+  justify-content: center;
+}
 
 .about-container{
     height: 100vh;
@@ -30,27 +31,11 @@
     background-position: center;
     filter: brightness(.5);
   }
-
-
-
-  /*.about-container::after{
-    position: absolute;
-    top: 100vh;
-    bottom: 200vh;
-    left: 0;
-    right: 0;              -->     escala azul 
-    height: 100vh;
-    content: "";
-    z-index: -1;
-    background-color: #0C3C6A;
-    opacity: 39%;
-  }*/
   
   .about-container__info{
     padding: 0% 14%;
+    width: 75%;
     text-align: center;
   }
-  
-  
   
   

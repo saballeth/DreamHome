@@ -23,19 +23,19 @@ routes.push({
 
 routes.push({
   label: "About us",
-  route: "/",
+  route: "/aboutUs",
   selected: false,
 });
 
 routes.push({
   label: "Service",
-  route: "/",
+  route: "/service",
   selected: false,
 });
 
 routes.push({
   label: "Contact",
-  route: "/",
+  route: "/contact",
   selected: false,
 });
 
@@ -51,8 +51,8 @@ const Header: React.FC<loggedType> = ({ logged }: loggedType) => {
   return (
     <header className="Header">
       <div className="Header-logo">
-        <img src={logo} alt="DreamHome" className="Header-logo__log" />
-        <p className="Header-logo__text">DreamHome</p>
+      <a href="/"><img src={logo} alt="DreamHome" className="Header-logo__log" /></a>
+        <p className="Header-logo__text" onClick={() => navigate("/")}>DreamHome</p>
       </div>
 
       <ul className="Header-navbar">
@@ -69,7 +69,7 @@ const Header: React.FC<loggedType> = ({ logged }: loggedType) => {
             {label}
           </li>
         ))}
-        <li className="Header-navbar__join">Join is</li>
+        <li className="Header-navbar__join" onClick={() => navigate("/login")}>Join is</li>
       </ul>
     </header>
   );

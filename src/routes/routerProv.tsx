@@ -1,25 +1,29 @@
-import AboutUs from '@/components/AboutUs/AboutUs';
 import { Home } from '@/pages/Home/Index';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import  Login  from '@/pages/Login';
+import AboutUs from '@/pages/About/About';
 
-function RouterProv() {
-
+function RouterProv(){
+    
     const routes = createBrowserRouter([
-        {
-            path: "/",
-            Component: Home,
+        {   path:"/",
+            Component:Home,
             // errorElement: <ErrorPage/>
         },
+        {path:"/Login",
+        Component:Login,
+
+        },
         {
-            path: "/aboutus",
+            path: "/aboutUs",
             Component: AboutUs,
             // errorElement: <ErrorPage/>
         },
-
+      
     ]);
-
-    return (
-        <RouterProvider router={routes}></RouterProvider>
+    
+    return(
+       <RouterProvider router={routes}></RouterProvider>
     )
 }
 

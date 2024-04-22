@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Hero.styles.css";
@@ -16,7 +16,9 @@ const Hero: React.FC = () => {
         <p className="Hero-container__text">Welcome to</p>
         <h1 className="Hero-container__title">DREAMHOUSE</h1>
         <p className="Hero-container__text">Real State Website</p>
-        <button className="Hero-container__button">Join Us</button>
+        <a href="/login" className="Hero-container__button">
+            Join Us
+          </a>
       </div>
     </div>
   );
