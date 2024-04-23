@@ -9,11 +9,14 @@ const Inicio: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const apiService = new ApiService('https://api.example.com');
+  const apiService = new ApiService('http://127.0.0.1:8000/');
 
   const handleVerification = async () => {
     try {
-      const userData = await apiService.get(`/user?username=${username}&password=${password}`);
+      const userData = await apiService.post('/api/login/',{
+        username: username,
+        password: password
+      });
       console.log('User data:', userData); // algo con los datos aquí
       // Si el usuario está verificado con éxito, se navega a la ruta Home
       navigate("/principal");

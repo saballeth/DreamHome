@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image:url("../../assets/whosectionimg2.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
@@ -18,17 +19,13 @@
 
   .about-container::before {
     position: absolute;
-    top: 100vh;
+    /* top: 100vh;
     bottom: 200vh;
     left: 0;
     right: 0;
     height: 100vh;
-    content: "";
+    content: ""; */
     z-index: -2;
-    background-image:url("../../assets/whosectionimg2.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
     filter: brightness(.5);
   }
   
@@ -36,6 +33,10 @@
     padding: 0% 14%;
     width: 75%;
     text-align: center;
+  }
+
+  .about-container h2{
+    padding-bottom: 15px;
   }
   
   

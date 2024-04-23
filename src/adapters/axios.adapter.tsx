@@ -9,7 +9,7 @@ const MyComponent: React.FC = () => {
     // Función para realizar la solicitud GET
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://api.example.com/data');
+        const response = await axios.get('http://127.0.0.1:8000/');
         setGetData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -22,7 +22,7 @@ const MyComponent: React.FC = () => {
   // Función para realizar la solicitud POST
   const postDataFunction = async () => {
     try {
-      const response = await axios.post('https://api.example.com/post', {
+      const response = await axios.post('http://127.0.0.1:8000/', {
         // Datos que deseas enviar en el cuerpo de la solicitud POST
         key: 'value',
       });
