@@ -1,10 +1,11 @@
 import * as React from "react";
 import logo from "../../assets/logogid.png";
-import "./Header.styles.css";
 import { useNavigate } from "react-router-dom";
+import "./Header.styles.css";
 
 type loggedType = {
-  logged: boolean;
+  logged?: boolean;
+  colorNameLogo?: boolean;
 };
 
 type RoutesType = {
@@ -35,11 +36,11 @@ routes.push({
 
 routes.push({
   label: "Contact",
-  route: "/",
+  route: "/contact-us",
   selected: false,
 });
 
-const Header: React.FC<loggedType> = ({ logged }: loggedType) => {
+const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedType) => {
   const navigate = useNavigate();
 
   const itemSelected = (label: string) => {
@@ -50,9 +51,12 @@ const Header: React.FC<loggedType> = ({ logged }: loggedType) => {
 
   return (
     <header className="Header">
-      <div className="Header-logo">
+      <div 
+        className="Header-logo"
+        onClick={() => navigate('/')}
+      >
         <img src={logo} alt="DreamHome" className="Header-logo__log" />
-        <p className="Header-logo__text">DreamHome</p>
+        <p className={`${colorNameLogo ? 'Header-logo__text black-text' : 'Header-logo__text'}`}>DreamHome</p>
       </div>
 
       <ul className="Header-navbar">
