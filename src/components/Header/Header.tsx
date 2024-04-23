@@ -58,6 +58,7 @@ const Header: React.FC<loggedType> = ({ logged }: loggedType) => {
       <ul className="Header-navbar">
         {routes.map(({ label, route, selected }) => (
           <li
+          key={label}
             className={`${
               selected ? "header-selected" : ""
             } Header-navbar__item`}

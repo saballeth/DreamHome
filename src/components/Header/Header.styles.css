@@ -73,10 +73,7 @@
   z-index: 1;
 }
 
-.Header-navbar {
-  flex-direction: column; /* Cambiar a dirección vertical en dispositivos pequeños */
-  align-items: center; /* Centrar elementos en dispositivos pequeños */
+.Header-navbar__join {
+display: none;
 }
-
-
 }
