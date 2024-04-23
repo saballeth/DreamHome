@@ -7,7 +7,7 @@
   transform: translate(-50%, -50%);
   max-width: 380px; /* Cambiado a max-width para que se adapte en dispositivos pequeños */
   width: 100%; /* Se ajusta al ancho del contenedor padre */
-  padding: 10px; /* Ajusta según sea necesario */
+  padding: 10px; 
   display: flex; /* Usamos flexbox para centrar vertical y horizontalmente */
   flex-direction: column; /* Alinea el contenido verticalmente */
   align-items: center; /* Centra horizontalmente */
