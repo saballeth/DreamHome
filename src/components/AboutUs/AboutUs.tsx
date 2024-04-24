@@ -8,7 +8,7 @@ const AboutUs: React.FC = () => {
 
     useEffect(() => {
         AOS.init({ duration: 1000 });
-    }, [])
+    }, []) 
 
     return (
         <div className='about-container'>
