@@ -6,6 +6,7 @@ import "./Header.styles.css";
 type loggedType = {
   logged?: boolean;
   colorNameLogo?: boolean;
+  colorNameNav?: boolean;
 };
 
 type RoutesType = {
@@ -40,7 +41,7 @@ routes.push({
   selected: false,
 });
 
-const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedType) => {
+const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false ,colorNameNav = false}: loggedType) => {
   const navigate = useNavigate();
 
   const itemSelected = (label: string) => {
@@ -65,7 +66,7 @@ const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedT
           key={label}
             className={`${
               selected ? "header-selected" : ""
-            } Header-navbar__item`}
+            } Header-navbar__item ${colorNameNav ? 'Header-navbar__item_color' : ""}`}
             onClick={() => {
               navigate(route);
               itemSelected(label);
