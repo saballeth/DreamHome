@@ -36,9 +36,10 @@
   gap: 20px;
 }
 
-.Header-navbar__text {
+.Header-navbar__item_color {
   color: var(--black);
 }
+
 .header-selected {
   color: var(--darkOrange);
   border-bottom: 2px solid var(--darkOrange);

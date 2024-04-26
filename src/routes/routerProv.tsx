@@ -1,4 +1,3 @@
-// import AboutUs from "@/components/AboutUs/AboutUs";
 import { ContactUs } from "@/pages/ContactUs/ContactUs";
 import { CreateAccount } from "@/pages/CreateAccount/CreateAccount";
 import { Home } from "@/pages/Home/Index";
