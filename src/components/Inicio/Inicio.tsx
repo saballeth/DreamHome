@@ -9,7 +9,7 @@ const Inicio: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const apiService = new ApiService('http://127.0.0.1:8000/');
+  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
 
   const handleVerification = async () => {
     try {
