@@ -38,12 +38,12 @@ const Inicio: React.FC = () => {
           </div>
           <div className="grid-el login-content">
             <div className="login-content-form">
-              <label htmlFor="email">Username</label>
+              <label htmlFor="email">Nombre de usuario</label>
               <div className="input-with-icon">
               <input type="email" name="email" id="email-login" value={username} onChange={(e) => setUsername(e.target.value)} style={{ paddingRight: "35px", width: "calc(100% - 19px)" }} />
                 <FontAwesomeIcon icon={faCircleUser} className="input-icon" style={{ position: "absolute", top: "50%", right: "20px" }} />
               </div>
-              <label htmlFor="passw">Password</label>
+              <label htmlFor="passw">Contraseña</label>
               <div className="input-with-icon">
                 <input type="password" name="passw" value={password} onChange={(e) => setPassword(e.target.value)} id="passw-login" style={{ paddingRight: "35px", width: "calc(100% - 19px)" }} />
                 <FontAwesomeIcon icon={faKey} className="input-icon" style={{ position: "absolute", top: "50%", right: "20px" }} />
@@ -51,7 +51,7 @@ const Inicio: React.FC = () => {
               <input type="submit" value="Log In" onClick={handleVerification} id="submit-login" style={{ marginTop: "2px", padding: "5px", width: "120px" }} />
             </div>
             <p style={{ textAlign: "center", marginBottom: "25px" }}>
-            New over here? <Link to={'/create-account'}>Create an account!</Link>
+            Nuevo por aqui? <Link to={'/create-account'}>Crear una cuenta!</Link>
             </p>
            </div>
            

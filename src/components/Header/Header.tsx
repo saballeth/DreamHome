@@ -6,6 +6,7 @@ import "./Header.styles.css";
 type loggedType = {
   logged?: boolean;
   colorNameLogo?: boolean;
+  colorNameItem?: boolean;
 };
 
 type RoutesType = {
@@ -17,30 +18,30 @@ type RoutesType = {
 const routes: RoutesType[] = [];
 
 routes.push({
-  label: "Home",
+  label: "Inicio",
   route: "/",
   selected: true,
 });
 
 routes.push({
-  label: "About us",
+  label: "Sobre nosotros",
   route: "/aboutUs",
   selected: false,
 });
 
 routes.push({
-  label: "Service",
+  label: "Servicios",
   route: "/service",
   selected: false,
 });
 
 routes.push({
-  label: "Contact",
+  label: "Contacto",
   route: "/contact-us",
   selected: false,
 });
 
-const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedType) => {
+const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false, colorNameItem = false }: loggedType) => {
   const navigate = useNavigate();
 
   const itemSelected = (label: string) => {
@@ -65,7 +66,7 @@ const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedT
           key={label}
             className={`${
               selected ? "header-selected" : ""
-            } Header-navbar__item`}
+            } Header-navbar__item ${colorNameItem ? 'Header-navbar__text' : ''}`}
             onClick={() => {
               navigate(route);
               itemSelected(label);
@@ -74,7 +75,7 @@ const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedT
             {label}
           </li>
         ))}
-        <li className="Header-navbar__join" onClick={() => navigate("/login")}>Join is</li>
+        <li className="Header-navbar__join" onClick={() => navigate("/login")}>Ingresar</li>
       </ul>
     </header>
   );

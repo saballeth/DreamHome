@@ -4,7 +4,7 @@ const Service: React.FC = () =>{
   
     return (
         <>
-            <Header logged={false}/>
+            <Header colorNameItem={true} colorNameLogo={true}/>
             <ServicesPage/>
         </>
     )
