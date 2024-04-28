@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ApiService from "@/services/apiCalls.service";
+import ApiService from "@/apiCalls.service/apiCalls.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faKey, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import './LoginStyle.css';
@@ -9,7 +9,7 @@ const Inicio: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
+  const apiService = new ApiService('http://127.0.0.1:8000/api/');
 
   const handleVerification = async () => {
     try {

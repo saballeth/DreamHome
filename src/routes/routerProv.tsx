@@ -1,9 +1,9 @@
-import { ContactUs } from "@/pages/ContactUs/ContactUs";
-import { CreateAccount } from "@/pages/CreateAccount/CreateAccount";
+import  ContactUs from "@/pages/ContactUs/ContactUs";
+import  CreateAccount from "@/components/CreateAccount/CreateAccount";
 import { Home } from "@/pages/Home/Index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from '@/pages/About/About';
-import  Login  from '@/pages/Login';
+import  Login  from '@/pages/Login/Login';
 import Service from '@/pages/Service/Service';
 
 function RouterProv() {
