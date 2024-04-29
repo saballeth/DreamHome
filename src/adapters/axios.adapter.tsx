@@ -22,7 +22,7 @@ const MyComponent: React.FC = () => {
   // Función para realizar la solicitud POST
   const postDataFunction = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/', {
+      const response = await axios.post('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/', {
         // Datos que deseas enviar en el cuerpo de la solicitud POST
         key: 'value',
       });

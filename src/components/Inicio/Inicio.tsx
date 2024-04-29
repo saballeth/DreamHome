@@ -9,7 +9,7 @@ const Inicio: React.FC = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const apiService = new ApiService('http://127.0.0.1:8000/api/');
+  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
 
   const handleVerification = async () => {
     try {
@@ -48,7 +48,7 @@ const Inicio: React.FC = () => {
                 <input type="password" name="passw" value={password} onChange={(e) => setPassword(e.target.value)} id="passw-login" style={{ paddingRight: "35px", width: "calc(100% - 19px)" }} />
                 <FontAwesomeIcon icon={faKey} className="input-icon" style={{ position: "absolute", top: "50%", right: "20px" }} />
               </div>
-              <input type="submit" value="Log In" onClick={handleVerification} id="submit-login" style={{ marginTop: "2px", padding: "5px", width: "120px" }} />
+              <input type="submit" value="Ingresar" onClick={handleVerification} id="submit-login" style={{ marginTop: "2px", padding: "5px", width: "120px" }} />
             </div>
             <p style={{ textAlign: "center", marginBottom: "25px" }}>
             Nuevo por aqui? <Link to={'/create-account'}>Crear una cuenta!</Link>
