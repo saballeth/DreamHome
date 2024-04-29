@@ -8,9 +8,9 @@ const CreateAccount: React.FC = () =>  {
 
       <div className="CreateAccount-container">
         <div className="CreateAccount-container__title">
-          <h1>Welcome</h1>
+          <h1>Bienvenido</h1>
           <p>
-            Let's Create an <strong>Account</strong>
+            Vamos a crear una <strong>Cuenta</strong>
           </p>
         </div>
         <form className="CreateAccount-container__form">
@@ -58,7 +58,7 @@ const CreateAccount: React.FC = () =>  {
           </div>
 
           <button className="CreateAccount-container__form-buttom">
-            Sign Up
+            Registrarse
           </button>
         </form>
       </div>
