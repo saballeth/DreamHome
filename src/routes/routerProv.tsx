@@ -1,5 +1,5 @@
 import  ContactUs from "@/pages/ContactUs/ContactUs";
-import  Create from "@/pages/CreateAccount/CreateAccount";
+import  CreateAccount from "@/components/CreateAccount/CreateAccount";
 import { Home } from "@/pages/Home/Index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutUs from '@/pages/About/About';
@@ -12,14 +12,16 @@ function RouterProv() {
     {
       path: "/",
       Component: Home,
+      // errorElement: <ErrorPage/>
     },
     {
       path: "/aboutus",
       Component: AboutUs,
+      // errorElement: <ErrorPage/>
     },
     {
       path: "/create-account",
-      Component: Create,
+      Component: CreateAccount,
     },
     {
       path: "/contact-us",
