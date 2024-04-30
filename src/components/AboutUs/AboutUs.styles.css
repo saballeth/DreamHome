@@ -1,0 +1,42 @@
+.wrapper{
+  display: flex;
+  justify-content: center;
+}
+
+.about-container{
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image:url("../../assets/whosectionimg2.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    background-position: center;
+    z-index: 1;
+  }
+
+  .about-container::before {
+    position: absolute;
+    /* top: 100vh;
+    bottom: 200vh;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    content: ""; */
+    z-index: -2;
+    filter: brightness(.5);
+  }
+  
+  .about-container__info{
+    padding: 0% 14%;
+    width: 75%;
+    text-align: center;
+  }
+
+  .about-container h2{
+    padding-bottom: 2px;
+  }
+  
+  

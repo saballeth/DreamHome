@@ -1,0 +1,17 @@
+[
+  {
+    "producto": "Casa",
+    "desc": "Descubre la comodidad y el encanto de las casas en nuestro sitio. Encuentra tu hogar perfecto entre una variedad de opciones únicas.",
+    "imagen": "./src/assets/casaPreview.jpg"
+  },
+  {
+    "producto": "Apartamento",
+    "desc": "Explora la elegancia y la versatilidad de los apartamentos en nuestro sitio. Encuentra el lugar ideal que se adapte a tu estilo de vida.",
+    "imagen": "./src/assets/apartmenPreview.jpg"
+  },
+  {
+    "producto": "Oficina",
+    "desc": "Impulsa tu negocio con nuestras oficinas disponibles. Encuentra el espacio perfecto para tu empresa y aumenta tu productividad.",
+    "imagen": "./src/assets/oficinaPreview.jpg"
+  }
+]
