@@ -1,7 +1,47 @@
+import React, { useState } from 'react';
+import {useNavigate } from 'react-router-dom';
 import Header from "@/components/Header/Header";
 import "./CreateAccount.styles.css";
+import ApiService from "@/apiCalls.service/apiCalls.service";
 
+const navigate = useNavigate();
 const CreateAccount: React.FC = () =>  {
+  const [formData, setFormData] = useState({
+    email: "",
+    name: "",
+    lastName: "",
+    age: "",
+    username: "",
+    password: "",
+    repeatPassword: ""
+  });
+
+  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+// pa lo del backend
+const handleSubmit = async () => {
+  try {
+    const response = await apiService.post('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/',{ 
+      email: formData.email,
+      name: formData.name,
+      lastName: formData.lastName,
+      age: formData.age,
+      username: formData.username,
+      password: formData.password
+  });
+    console.log('Registro exitoso:', response);
+    navigate("/principal");
+  } catch (error) {
+    console.error('Error en el registro:', error);
+  }
+};
+// fin pa lo del backend
   return (
     <div className="CreateAccount">
       <Header />
@@ -10,54 +50,84 @@ const CreateAccount: React.FC = () =>  {
         <div className="CreateAccount-container__title">
           <h1>Bienvenido</h1>
           <p>
-            Vamos a crear una <strong>Cuenta</strong>
+            Cree su propia <strong>Cuenta</strong>
           </p>
         </div>
-        <form className="CreateAccount-container__form">
+        <form className="CreateAccount-container__form" onSubmit={handleSubmit}>
           <input
             type="email"
-            placeholder="Email"
+            name="email"
+            placeholder="Correo electrónico"
             className="CreateAccount-container__form-input"
+            value={formData.email}
+            onChange={handleChange}
+            required
           />
 
           <div className="CreateAccount-container__form-columns">
             <input
               type="text"
-              placeholder="Name"
+              name="name"
+              placeholder="Nombre"
               className="CreateAccount-container__form-input"
+              value={formData.name}
+              onChange={handleChange}
+              required
             />
             <input
               type="text"
-              placeholder="Last Name"
+              name="lastName"
+              placeholder="Segundo nombre"
               className="CreateAccount-container__form-input"
+              value={formData.lastName}
+              onChange={handleChange}
+              required
             />
           </div>
 
           <input
             type="number"
-            placeholder="Age"
+            name="age"
+            placeholder="Edad"
             className="CreateAccount-container__form-input"
+            value={formData.age}
+            onChange={handleChange}
+            min={"8"}
+            max={"130"}
+            required
           />
           <input
             type="text"
-            placeholder="Username"
+            name="username"
+            placeholder="Nombre de usuario"
             className="CreateAccount-container__form-input"
+            value={formData.username}
+            onChange={handleChange}
+            required
           />
 
           <div className="CreateAccount-container__form-columns">
             <input
               type="password"
-              placeholder="Password"
+              name="password"
+              placeholder="Contraseña"
               className="CreateAccount-container__form-input"
+              value={formData.password}
+              onChange={handleChange}
+              required
             />
             <input
               type="password"
-              placeholder="Repeat Password"
+              name="repeatPassword"
+              placeholder="Repetir contraseña"
               className="CreateAccount-container__form-input"
+              value={formData.repeatPassword}
+              onChange={handleChange}
+              required
             />
           </div>
 
-          <button className="CreateAccount-container__form-buttom">
+          <button type="submit" className="CreateAccount-container__form-buttom">
             Registrarse
           </button>
         </form>
@@ -65,4 +135,5 @@ const CreateAccount: React.FC = () =>  {
     </div>
   );
 }
-export default CreateAccount
+
+export default CreateAccount;

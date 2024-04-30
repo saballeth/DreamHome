@@ -7,8 +7,10 @@ import './LoginStyle.css';
 const Inicio: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  //pa lo del backend
   const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
 
   const handleVerification = async () => {
@@ -17,15 +19,20 @@ const Inicio: React.FC = () => {
         username: username,
         password: password
       });
-      console.log('User data:', userData); // algo con los datos aquí
-      // Si el usuario está verificado con éxito, se navega a la ruta Home
+      console.log('User data:', userData);
       navigate("/principal");
     
     } catch (error) {
       console.error('Error verifying user:', error);
+      setError("Usuario o Contraseña incorrectos");
+      
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+    
     }
   };
-
+//fin de pa lo del backend
   return (
     <>
       <div className="login_hero">
@@ -49,6 +56,7 @@ const Inicio: React.FC = () => {
                 <FontAwesomeIcon icon={faKey} className="input-icon" style={{ position: "absolute", top: "50%", right: "20px" }} />
               </div>
               <input type="submit" value="Ingresar" onClick={handleVerification} id="submit-login" style={{ marginTop: "2px", padding: "5px", width: "120px" }} />
+                {error && <p style={{ color: 'red', marginTop: '5px' }}>{error}</p>}
             </div>
             <p style={{ textAlign: "center", marginBottom: "25px" }}>
             Nuevo por aqui? <Link to={'/create-account'}>Crear una cuenta!</Link>

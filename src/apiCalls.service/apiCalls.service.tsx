@@ -16,7 +16,7 @@ class ApiService {
       return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            this.handleError(error as AxiosError); // Solo pasa AxiosError a handleError
+            this.handleError(error as AxiosError);
           }
           throw new Error('Error executing GET request');
     }
@@ -29,19 +29,19 @@ class ApiService {
       return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            this.handleError(error as AxiosError); // Solo pasa AxiosError a handleError
+            this.handleError(error as AxiosError); 
           }
           throw new Error('Error executing POST request');
     }
   }
 
-  // Método para manejar errores de Axios
+  // Pa manejar los errores wey
   private handleError(error: AxiosError) {
     if (error.response) {
-      // El servidor respondió con un código de estado fuera del rango 2xx
+      // Respuesta del servidor fallida
       console.error('Request failed with response:', error.response.data);
     } else if (error.request) {
-      // La solicitud fue hecha pero no se recibió una respuesta
+      // La solicitud fue hecha pero algo anda mal
       console.error('No response received:', error.request);
     } else {
       // Hubo un error antes de enviar la solicitud
