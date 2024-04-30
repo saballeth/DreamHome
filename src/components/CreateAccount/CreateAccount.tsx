@@ -30,9 +30,9 @@ const handleSubmit = async () => {
   try {
     const response = await apiService.post('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/api/register/',{ 
       email: formData.email,
-      name: formData.name,
-      lastName: formData.lastName,
-      age: formData.age,
+      nombre: formData.name,
+      apellido: formData.lastName,
+      edad: formData.age,
       username: formData.username,
       password: formData.password
   });
@@ -54,7 +54,7 @@ const handleSubmit = async () => {
             Cree su propia <strong>Cuenta</strong>
           </p>
         </div>
-        <form className="CreateAccount-container__form" onSubmit={handleSubmit}>
+        <div className="CreateAccount-container__form" onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
@@ -68,7 +68,7 @@ const handleSubmit = async () => {
           <div className="CreateAccount-container__form-columns">
             <input
               type="text"
-              name="name"
+              name="nombre"
               placeholder="Nombre"
               className="CreateAccount-container__form-input"
               value={formData.name}
@@ -77,7 +77,7 @@ const handleSubmit = async () => {
             />
             <input
               type="text"
-              name="lastName"
+              name="apellido"
               placeholder="Apellido"
               className="CreateAccount-container__form-input"
               value={formData.lastName}
@@ -88,7 +88,7 @@ const handleSubmit = async () => {
 
           <input
             type="number"
-            name="age"
+            name="edad"
             placeholder="Edad"
             className="CreateAccount-container__form-input"
             value={formData.age}
@@ -107,7 +107,7 @@ const handleSubmit = async () => {
             required
           />
 
-          <div className="CreateAccount-container__form-columns">
+          <div className="CrhandleSubmiteateAccount-container__form-columns">
             <input
               type="password"
               name="password"
@@ -128,10 +128,10 @@ const handleSubmit = async () => {
             />
           </div>
 
-          <button type="submit" className="CreateAccount-container__form-buttom">
+          <button type="submit" onClick={handleSubmit} className="CreateAccount-container__form-buttom">
             Registrarse
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
