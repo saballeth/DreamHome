@@ -12,7 +12,7 @@ const ServicesPage: React.FC = () => {
     <div className="Service_container">
       <div className="Service_text-container">
         <h1 className="Service_body-main-text ">
-          Deja <br /> <span className="Service_bold-text"> Todo</span> <br /> en Nuestras manos
+           <br /> <span className="Service_bold-text">Deja Todo</span> <br /> en Nuestras manos
         </h1>
         <p className="Service_sub-text">
           Según su preferencia, recomendamos las mejores propiedades de sitios como metrocuadrado y booking

@@ -6,7 +6,7 @@ const MyComponent: React.FC = () => {
   const [postData, setPostData] = useState<any>(null);
 
   useEffect(() => {
-    // Función para realizar la solicitud GET
+    // Función para la solicitud GET
     const fetchData = async () => {
       try {
         const response = await axios.get('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
@@ -19,7 +19,6 @@ const MyComponent: React.FC = () => {
     fetchData();
   }, []);
 
-  // Función para realizar la solicitud POST
   const postDataFunction = async () => {
     try {
       const response = await axios.post('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/', {
@@ -45,10 +44,8 @@ const MyComponent: React.FC = () => {
         <p>Loading GET data...</p>
       )}
 
-      {/* Botón para realizar la solicitud POST */}
       <button onClick={postDataFunction}>Send POST Request</button>
 
-      {/* Mostrar los datos obtenidos de la solicitud POST */}
       {postData && (
         <div>
           <h2>POST Data:</h2>
