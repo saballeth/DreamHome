@@ -18,11 +18,11 @@ const Inicio: React.FC = () => {
         password: password
       });
       console.log('User data:', userData); // algo con los datos aquí
-      // Si el usuario está verificado con éxito, se navega a la ruta Home
       navigate("/principal");
     
     } catch (error) {
       console.error('Error verifying user:', error);
+      error
     }
   };
 

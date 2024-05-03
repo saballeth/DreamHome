@@ -5,7 +5,10 @@ class ApiService {
 
   constructor(baseURL: string) {
     this.axiosInstance = axios.create({
-      baseURL,
+      baseURL,headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     });
   }
 
@@ -28,23 +31,19 @@ class ApiService {
       const response: AxiosResponse<T> = await this.axiosInstance.post(url, data);
       return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            this.handleError(error as AxiosError); // Solo pasa AxiosError a handleError
-          }
-          throw new Error('Error executing POST request');
+      if (axios.isAxiosError(error)) {
+        this.handleError(error);
+      }
+      throw error; 
     }
   }
 
-  // Método para manejar errores de Axios
   private handleError(error: AxiosError) {
     if (error.response) {
-      // El servidor respondió con un código de estado fuera del rango 2xx
       console.error('Request failed with response:', error.response.data);
     } else if (error.request) {
-      // La solicitud fue hecha pero no se recibió una respuesta
       console.error('No response received:', error.request);
     } else {
-      // Hubo un error antes de enviar la solicitud
       console.error('Request failed:', error.message);
     }
   }

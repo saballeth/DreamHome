@@ -6,7 +6,7 @@ import './AboutUs.styles.css'
 
 const AboutUs: React.FC = () => {
 
-    useEffect(() => {
+    useEffect(() => { 
         AOS.init({ duration: 1000 }); 
     }, []) 
 
