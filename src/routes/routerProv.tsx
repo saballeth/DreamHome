@@ -6,6 +6,7 @@ import AboutUs from '@/pages/About/About';
 import  Login  from '@/pages/Login/Login';
 import Service from '@/pages/Service/Service';
 import HomePrincipal from "@/pages/Principal/Principal";
+import Intereses from "@/pages/Intereses/Intereses";
 
 function RouterProv() {
   const routes = createBrowserRouter([
@@ -38,6 +39,10 @@ function RouterProv() {
     {
       path: "/principal",
       Component: HomePrincipal
+    },
+    {
+      path: "/intereses",
+      Component: Intereses
     }
   ]);
 
