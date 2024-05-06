@@ -1,80 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import InterestCard from '../InteresesCard/InteresesCard';
+import Interests from '../../data/Interests.json';
 import './Intereses.css';
-import {
-  Box,
-  HStack,
-  Stack,
-  useCheckbox,
-  useCheckboxGroup,
-  UseCheckboxProps,
-} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-type CheckboxCardProps = {
-  children: React.ReactNode;
-} & UseCheckboxProps;
 
-const CheckboxCard = ({ children, ...props }: CheckboxCardProps) => {
-  const { getInputProps, getCheckboxProps } = useCheckbox(props);
+interface Interest {
+  nombre: string;
+}
 
-  const input = getInputProps();
-  const checkbox = getCheckboxProps();
+function Interest() {
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
-  return (
-    <Box as="label">
-      <input {...input} />
-      <Box
-        {...checkbox}
-        cursor="pointer"
-        borderWidth="1px"
-        borderRadius="md"
-        boxShadow="md"
-        _checked={{
-          bg: 'teal.600',
-          color: 'white',
-          borderColor: 'teal.600',
-        }}
-        _focus={{
-          boxShadow: 'outline',
-        }}
-        px={5}
-        py={3}
-      >
-        {children}
-      </Box>
-    </Box>
-  );
-};
+  const handleInterest = (interestName: string) => {
+    setSelectedInterests((prevInterests) => [...prevInterests, interestName]);
+  };
 
-const CustomCheckboxButtons = () => {
-  const options = ['react', 'vue', 'svelte'];
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const { value, getCheckboxProps } = useCheckboxGroup({
-    defaultValue: ['react', 'vue'],
-    onChange: console.log,
-  });
-  console.log(value);
+  const handleVerification = async () => {
+    try {
+
+      navigate("/principal");
+
+    } catch (error) {
+      console.error('Error:', error);
+
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+
+    }
+  };
 
   return (
-    <>
-      <div className="intereses_container">
-        <div className="intereses_panel">
-            {options.map((value) => {
-              const props = getCheckboxProps({ value });
-              return (
-                <CheckboxCard key={value} {...props}>
-                  {value}
-                </CheckboxCard>
-              );
-            })}
+    <div className="container">
+      <div className='interest-container'>
+        <div className="interest-panel">
+          {Interests.intereses.map((interest: Interest, index: number) => (
+            <InterestCard key={index} name={interest.nombre} handleInterest={handleInterest} />
+          ))}
+        </div>
+        <div className="button-guardar">
+          <input type="submit" value="Guardar" onClick={handleVerification} id="save-interest" />
         </div>
       </div>
-    </>
+    </div>
   );
-};
+}
 
-
-export const InteresesPage = () => (
-  <Stack>
-    <CustomCheckboxButtons />
-  </Stack>
-);
+export default Interest;
