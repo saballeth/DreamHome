@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
 import InterestCard from '../InteresesCard/InteresesCard';
 import Interests from '../../data/Interests.json';
 import './Intereses.css';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 
-interface Interest {
+interface Intereses {
   nombre: string;
 }
-
-function Interest() {
+const Interesespage: React.FC = () =>{
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
 
   const handleInterest = (interestName: string) => {
@@ -38,7 +37,7 @@ function Interest() {
     <div className="container">
       <div className='interest-container'>
         <div className="interest-panel">
-          {Interests.intereses.map((interest: Interest, index: number) => (
+          {Interests.intereses.map((interest: Intereses, index: number) => (
             <InterestCard key={index} name={interest.nombre} handleInterest={handleInterest} />
           ))}
         </div>
@@ -49,9 +48,4 @@ function Interest() {
     </div>
   );
 }
-
-export const InteresesPage = () => (
-  <Stack>
-    <CustomCheckboxButtons />
-  </Stack>
-);
+export default Interesespage
