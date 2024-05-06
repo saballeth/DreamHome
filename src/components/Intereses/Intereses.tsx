@@ -50,4 +50,8 @@ function Interest() {
   );
 }
 
-export default Interest;
+export const InteresesPage = () => (
+  <Stack>
+    <CustomCheckboxButtons />
+  </Stack>
+);

@@ -22,3 +22,4 @@ function InterestCard({ name, handleInterest }: InterestCardProps) {
 }
 
 export default InterestCard;
+
