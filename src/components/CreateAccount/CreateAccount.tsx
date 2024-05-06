@@ -37,7 +37,7 @@ const handleSubmit = async () => {
       password: formData.password
   });
     console.log('Registro exitoso:', response);
-    navigate("/principal");
+    navigate("/intereses");
   } catch (error) {
     console.error('Error en el registro:', error);
   }

@@ -1,25 +1,21 @@
-import { Children, useEffect } from "react";
-import "./Filtrado.css"
-import Aos from "aos";
-const Hero: React.FC = () => {
-    useEffect(() => {
-      Aos.init({ duration: 1000 });
-    }, []);
-  
-    return (
-     <header>
-        <div className="contenedor">
-        <div>
-            <nav>
-                <a href="">Bonito dia ¿verdad?</a>
-            </nav>
-            
-        </div>    
-        </div>
-        
-     </header> 
-    );
-  };
-  
-  export default Hero;
-  
+import * as React from "react";
+import "./Filtrado.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSliders } from '@fortawesome/free-solid-svg-icons';
+
+const filtrado: React.FC = () => {
+  return (
+    <div className="recommended-residences">
+    <div className="titles">
+      <h2>Mejor elección</h2>
+      <h1>Residencias Recomendadas</h1>
+    </div>
+    <button className="filters">
+      <FontAwesomeIcon icon={faSliders} size="1x" />
+      <span>Filtros</span>
+    </button>
+  </div>
+  );
+};
+
+export default filtrado;

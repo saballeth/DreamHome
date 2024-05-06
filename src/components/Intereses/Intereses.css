@@ -1,24 +1,50 @@
-
-.intereses_container {
-  font-family: "Poppins", sans-serif;
+.container {
   display: flex;
-  align-items: center;
+  width: 100%;
+  overflow-y: auto;
   justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: var(--white);
+  height: max-content;
+  padding: 10px;
+  position: absolute;
+  height: 100%;
+  align-items: center;
+  background-color: rgb(166, 168, 170);
 }
 
-.intereses_panel {
-  display: grid;
-  background-color: grey;
-  border-radius: 20px;  
-  width: 40%;
-  height: 50%;
-  padding: 25px;
-  grid-template-columns: repeat(auto-fill, minmax(auto-fill, 1fr));
-  grid-auto-rows: minmax(auto, min-content);
-  grid-gap: 20px;
-  justify-items: center;
-  align-content: center;
+.header {
+  position: relative;
+}
+
+.interest-container{
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  height: auto;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0px 0px 9px -3px rgba(0,0,0,0.75);
+}
+
+
+.interest-panel{
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.button-guardar {
+  display:flex;
+  justify-content: center;
+}
+
+.button-guardar input{
+  background-color: var(--darkOrange);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
 }

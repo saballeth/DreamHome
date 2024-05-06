@@ -1,13 +1,43 @@
-.contenedor{
-    max-width: 120rem;
-    margin: 0 auto;
-    width: 95%;
+.recommended-residences {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  padding-left: 94px;
+}
+.recommended-residences h2 {
+  font-weight: bold;
+  font-size: 24px;
+  color: #E77344;
+  margin-bottom: 10px;
+}
+.recommended-residences .titles {
+  margin-right: 520px; 
 }
 
-.heading{
-    font-size: 4rem;
-    text-align: center;
-    font-weight: 900;
-    color: var(--primary);
-    margin: 5rem 0;
+.recommended-residences h1 {
+ color: #0C3C6A;
+}
+.recommended-residences .filters {
+  margin-right: 100px;
+  display: flex;
+  align-items: center; 
+}
+
+.filters span {
+  font-size: 18px;
+  color: #666; 
+  margin-left: 5px;
+}
+.filters{
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgb(202, 200, 200);
+  border: 1px solid #ffffff ;
+  color: rgb(80, 80, 80);
+  padding: 6px 22px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 5px;
 }

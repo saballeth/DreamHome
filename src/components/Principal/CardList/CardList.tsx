@@ -42,7 +42,7 @@ function CardList() {
     {
       id: 7,
       imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Tu madre',
+      place: 'Tu prima',
       cost: '$20',
     },
     {

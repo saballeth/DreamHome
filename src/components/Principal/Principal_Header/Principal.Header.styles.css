@@ -1,0 +1,45 @@
+.Principal.container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: -webkit-fill-available;
+}
+
+.nav {
+  background-color: none;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-item {
+  margin-right: 20px;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #ccc;
+}

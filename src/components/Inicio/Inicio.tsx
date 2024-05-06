@@ -54,9 +54,8 @@ const Inicio: React.FC = () => {
               <div className="input-with-icon">
                 <input type="password" name="passw" value={password} onChange={(e) => setPassword(e.target.value)} id="passw-login" style={{ paddingRight: "35px", width: "calc(100% - 19px)" }} />
                 <FontAwesomeIcon icon={faKey} className="input-icon" style={{ position: "absolute", top: "50%", right: "20px" }} />
-              </div>
+              </div> 
               <input type="submit" value="Ingresar" onClick={handleVerification} id="submit-login" style={{ marginTop: "2px", padding: "5px", width: "120px" }} />
-                {error && <p style={{ color: 'red', marginTop: '5px' }}>{error}</p>}
             </div>
             <p style={{ textAlign: "center", marginBottom: "25px" }}>
             Nuevo por aqui? <Link to={'/create-account'}>Crear una cuenta!</Link>
