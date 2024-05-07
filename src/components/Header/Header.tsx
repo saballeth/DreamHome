@@ -6,10 +6,7 @@ import "./Header.styles.css";
 type loggedType = {
   logged?: boolean;
   colorNameLogo?: boolean;
-<<<<<<< HEAD
-=======
   colorNameNav?: boolean;
->>>>>>> Arquitectura-CLEAN
 };
 
 type RoutesType = {
@@ -39,20 +36,12 @@ routes.push({
 });
 
 routes.push({
-<<<<<<< HEAD
-  label: "Contact",
-=======
   label: "Contacto",
->>>>>>> Arquitectura-CLEAN
   route: "/contact-us",
   selected: false,
 });
 
-<<<<<<< HEAD
-const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false }: loggedType) => {
-=======
 const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false ,colorNameNav = false}: loggedType) => {
->>>>>>> Arquitectura-CLEAN
   const navigate = useNavigate();
 
   const itemSelected = (label: string) => {
