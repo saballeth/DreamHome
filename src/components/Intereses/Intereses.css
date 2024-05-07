@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  width: 100%;
+  overflow-y: auto;
+  justify-content: center;
+  height: max-content;
+  padding: 10px;
+  position: absolute;
+  height: 100%;
+  align-items: center;
+}
+
+.header {
+  position: relative;
+}
+
+.interest-container{
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  height: auto;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0px 0px 9px -3px rgba(0,0,0,0.75);
+}
+
+
+.interest-panel{
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.button-guardar {
+  display:flex;
+  justify-content: center;
+}
+
+.button-guardar input{
+  background-color: var(--darkOrange);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}

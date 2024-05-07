@@ -1,0 +1,20 @@
+.Principal-container {
+  position: relative;
+  background-image: url("/src/assets/vecteezy_real-estate-agent-holding-house-key-to-his-client-after_8572449 1.png");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 18%;
+
+}
+
+.nav-list {
+  display: flex; 
+  list-style-type: none; 
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-right: 10px;
+}

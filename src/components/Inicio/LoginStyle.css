@@ -1,0 +1,134 @@
+.panel_login {
+  background-color: #ffffff;
+  border-radius: 42px;
+  position: absolute;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 380px; /* Cambiado a max-width para que se adapte en dispositivos pequeños */
+  width: 100%; /* Se ajusta al ancho del contenedor padre */
+  padding: 10px; 
+  display: flex; /* Usamos flexbox para centrar vertical y horizontalmente */
+  flex-direction: column; /* Alinea el contenido verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  justify-content: center; /* Centra verticalmente */
+}
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input[type="email"] {
+  padding-right: 30px; /* Ajusta el padding para dar espacio al icono */
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px; /* Ajusta la posición del icono dentro del input */
+  color: #f03a3a; /* Cambia el color del icono según sea necesario */
+  pointer-events: none; /* Evita que el icono sea seleccionable o interactivo */
+}
+
+
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 60vw;
+  height: 90vh;
+  background-color: #F1F0E8;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  border-radius: 20px;
+}
+
+#submit-login {
+  cursor: pointer;
+  background-color:#E77344;
+  color: white;
+  font-size: 1.3rem;
+  border: none;
+  position: relative;
+  margin: auto;
+}
+
+#submit-login::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10px; /* Ajusta la posición del icono según sea necesario */
+  transform: translateY(-50%);
+  width: 17px; /* Ajusta el tamaño del icono según sea necesario */
+  height: auto;
+}
+.login-content-form {
+  font-family: "Poppins", sans-serif;
+  padding: 26px 45px 26px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-size: 1.3rem;
+  text-align: center;
+}
+.login-content-form label {
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-content-form >  #email-login, #passw-login, #email-login, #submit-login {
+  padding: 12px;
+  border-radius: 20px;
+  border-color: rgb(176 176 189);
+}
+
+.login-content-logo {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-content-logo > h1 {
+  color: #2C2C4C;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input[type="password"] {
+  padding-left: 20px;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 20px;
+  width: 17px;
+  height: auto;
+}
+
+.login_hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  padding: 20px;
+}
+
+.login_hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url('../../assets/heroBackground.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(.5);
+
+}
