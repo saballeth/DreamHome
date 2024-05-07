@@ -2,12 +2,15 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
 class ApiService {
   private axiosInstance: AxiosInstance;
+  private baseUrlHost = "https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/"
 
-  constructor(baseURL: string) {
+  constructor(token?: string) {
+
     this.axiosInstance = axios.create({
-      baseURL,headers: {
+      baseURL: this.baseUrlHost,headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Bearer':token
       }
     });
   }
