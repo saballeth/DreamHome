@@ -1,5 +1,6 @@
 import CardList from "@/components/Principal/CardList/CardList"
-import Principal_Header from "@/components/Principal/Principal_Header/Principal.Header"
+import PrincipalHeader from "@/components/Principal/Principal_Header/PrincipalHeader"
+import Hero from "@/components/Principal/Hero/Hero"
 import Filtrado from "@/components/Principal/Filtrado/Filtrado"
 import Footer from "@/components/Footer/Footer"
 
@@ -8,7 +9,8 @@ const HomePrincipal: React.FC = () =>{
   
     return (
         <>
-            <Principal_Header/>
+            <PrincipalHeader/>
+            <Hero/>
             <Filtrado/>
             <CardList/>
             <Footer/>
