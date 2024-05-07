@@ -1,6 +1,6 @@
 import './Card_index.css'
 
-function Card({ data }) {
+function Card({data}) {
   return (
     <div className="card">
       <img src={data.imageSrc} alt={data.place} />

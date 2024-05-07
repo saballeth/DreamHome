@@ -1,45 +1,22 @@
-.Principal.container {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.logo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: -webkit-fill-available;
-}
-
-.nav {
-  background-color: none;
-  padding: 1rem;
+.Principal-container {
+  position: relative; 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  padding: 200px;
+  background-image: url("../../../assets/vecteezy_real-estate-agent-holding-house-key-to-his-client-after_8572449 1.png"); 
+  background-size: cover; 
+  background-position: center; 
+  color: white; 
 }
 
 .nav-list {
-  list-style: none;
+  display: flex; 
+  list-style-type: none; 
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: space-between;
 }
 
 .nav-item {
-  margin-right: 20px;
-}
-
-.nav-link {
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.nav-link:hover {
-  color: #ccc;
+  margin-right: 10px;
 }
