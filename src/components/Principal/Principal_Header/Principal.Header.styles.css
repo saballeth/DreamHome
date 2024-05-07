@@ -1,13 +1,11 @@
 .Principal-container {
-  position: relative; 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 200px;
-  background-image: url("../../../assets/vecteezy_real-estate-agent-holding-house-key-to-his-client-after_8572449 1.png"); 
-  background-size: cover; 
-  background-position: center; 
-  color: white; 
+  position: relative;
+  background-image: url("/src/assets/vecteezy_real-estate-agent-holding-house-key-to-his-client-after_8572449 1.png");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 18%;
+
 }
 
 .nav-list {
