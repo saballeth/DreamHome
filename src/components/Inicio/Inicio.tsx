@@ -4,6 +4,7 @@ import ApiService from "@/apiCalls.service/apiCalls.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faKey, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import './LoginStyle.css';
+
 const Inicio: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,20 +20,20 @@ const Inicio: React.FC = () => {
         username: username,
         password: password
       });
+
       console.log('User data:', userData);
       navigate("/principal");
-    
+
+      localStorage.setItem('token', userData.access);
+      localStorage.setItem('refresh', userData.refresh);
+
     } catch (error) {
       console.error('Error verifying user:', error);
       setError("Usuario o Contraseña incorrectos");
-      
-      setTimeout(() => {
-        setError('');
-      }, 3000);
-    
     }
   };
-//fin de pa lo del backend
+  //fin de pa lo del backend
+
   return (
     <>
       <div className="login_hero">
