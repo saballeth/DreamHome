@@ -11,7 +11,7 @@ const Inicio: React.FC = () => {
   const navigate = useNavigate();
  
   //pa lo del backend
-  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/');
+  const apiService = new ApiService();
 
   const handleVerification = async () => {
     try {

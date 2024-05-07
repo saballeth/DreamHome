@@ -2,6 +2,7 @@ import "./CardList_index.css";
 import Card from "../Card/Card";
 
 function CardList() {
+
   const cardData = [
     {
       id: 1,
@@ -59,11 +60,13 @@ function CardList() {
     },
   ];
 
+  
+
   return (
     <div className="card-list wrapper">
-    {cardData.map((card) => (
-      <Card key={card.id} data={card} />
-    ))}
+      {cardData.map((card) => (
+        <Card key={card.id} data={card} />
+      ))}
     </div>
   );
 }
