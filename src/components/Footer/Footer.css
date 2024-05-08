@@ -5,6 +5,8 @@
   background-color: var(--black);
   width: 100%; 
   padding: 20px 0;
+  position: fixed;
+  bottom: 0;
 }
 
 .footer__container-logo{
