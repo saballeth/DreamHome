@@ -30,7 +30,6 @@ class ApiService {
 
   // Método para realizar una solicitud POST
   async post(url: string, data: any) {
-    console.log(data);
     try {
       const response: AxiosResponse = await this.axiosInstance.post(url, data);
       return response.data;
