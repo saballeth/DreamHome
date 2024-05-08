@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextProps {
     isAuthenticated: boolean;
     token: string,
+    refresh: string,
     user: any,
     loginUser: (data:any) => void;
     logoutUser: () => void;
@@ -50,7 +51,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, token, user, loginUser, logoutUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, token,refresh, user, loginUser, logoutUser }}>
             {children}
         </AuthContext.Provider>
     );
