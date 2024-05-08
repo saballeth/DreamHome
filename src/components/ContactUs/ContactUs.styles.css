@@ -99,7 +99,46 @@
   background-color: var(--lightOrange);
 }
 
+@media (max-width: 1000px) {
+  .ContactUs-container__text {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
 
+@media (max-width: 750px) {
+  .ContactUs-container {
+    display: grid;
+    grid-template-columns: 60% 40%;
+  }
+}
+
+@media (max-width: 650px) {
+  .ContactUs-container {
+    display: grid;
+    grid-template-columns: 100%;
+    place-content: center;
+  }
+  
+  .ContactUs-container__text-text h1{
+    font-size: 35px;
+    color: var(--black);
+    text-align: center;
+  }
+  
+  .ContactUs-container__text-text p{
+    width: 90%;
+    font-size: 20px;
+    color: var(--black);
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .ContactUs-container__image {
+    display: none;
+  }
+}
 
 
 

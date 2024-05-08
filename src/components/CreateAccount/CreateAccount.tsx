@@ -107,7 +107,7 @@ const handleSubmit = async () => {
             required
           />
 
-          <div className="CrhandleSubmiteateAccount-container__form-columns">
+          <div className="CreateAccount-container__form-columns">
             <input
               type="password"
               name="password"
