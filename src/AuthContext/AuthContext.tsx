@@ -26,8 +26,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 username: data.username,
                 password: data.password
             });
-            console.log(response)
-            if (response.data) {
+            if (response) {
                 // setUser(response.data.user);
                 setToken(response.token);
                 setRefresh(response.refresh)
@@ -36,7 +35,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("refresh", response.refresh);
                 navigate("/principal");
             }
-            throw new Error(response.message);
         } catch (err) {
             console.error(err);
         }
