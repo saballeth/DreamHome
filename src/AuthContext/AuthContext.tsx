@@ -28,10 +28,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             });
             if (response) {
                 // setUser(response.data.user);
-                setToken(response.token);
+                setToken(response.access);
                 setRefresh(response.refresh)
                 setIsAuthenticated(true)
-                localStorage.setItem("token", response.token);
+                localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 navigate("/principal");
             }

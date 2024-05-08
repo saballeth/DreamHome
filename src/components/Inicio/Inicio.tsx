@@ -27,23 +27,6 @@ const Inicio: React.FC = () => {
     }else{
       alert("Ingrese un usuario y/o contraseña");
     }
-
-    // try {
-      
-    //   const userData = await apiService.post('/api/login/',{
-    //     username: username,
-    //     password: password
-    //   });
-      
-    //   console.log('User data:', userData);
-    //   navigate("/principal");
-    //   localStorage.setItem('token', userData.access);
-    //   localStorage.setItem('refresh', userData.refresh);
-      
-    // } catch (error) {
-    //   console.error('Error verifying user:', error);
-    //   setError("Usuario o Contraseña incorrectos");
-    // }
   };
 
   return (
