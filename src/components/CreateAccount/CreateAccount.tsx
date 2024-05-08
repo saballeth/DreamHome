@@ -17,7 +17,7 @@ const CreateAccount: React.FC = () =>  {
     repeatPassword: ""
   });
 
-  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/api/register/');
+  const apiService = new ApiService();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -28,7 +28,7 @@ const CreateAccount: React.FC = () =>  {
 // pa lo del backend
 const handleSubmit = async () => {
   try {
-    const response = await apiService.post('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/api/register/',{ 
+    const response = await apiService.post('/api/register/',{ 
       email: formData.email,
       nombre: formData.name,
       apellido: formData.lastName,
