@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faKey, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import './LoginStyle.css';
@@ -8,7 +8,6 @@ import { useAuth } from '@/AuthContext/AuthContext';
 const Inicio: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
   const auth = useAuth();
 
   useEffect(() => {
@@ -25,22 +24,6 @@ const Inicio: React.FC = () => {
       alert("Ingrese un usuario y/o contraseña");
     }
 
-    // try {
-      
-    //   const userData = await apiService.post('/api/login/',{
-    //     username: username,
-    //     password: password
-    //   });
-      
-    //   console.log('User data:', userData);
-    //   navigate("/principal");
-    //   localStorage.setItem('token', userData.access);
-    //   localStorage.setItem('refresh', userData.refresh);
-      
-    // } catch (error) {
-    //   console.error('Error verifying user:', error);
-    //   setError("Usuario o Contraseña incorrectos");
-    // }
   };
 
   return (

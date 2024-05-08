@@ -5,12 +5,11 @@ class ApiService {
   private baseUrlHost = "https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/"
 
   constructor(token?: string) {
-
     this.axiosInstance = axios.create({
       baseURL: this.baseUrlHost,headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Bearer':token
+        'Authorization': token ? `Bearer ${token}` : '',
       }
     });
   }
