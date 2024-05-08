@@ -5,6 +5,7 @@ import AboutUs from '@/pages/About/About';
 import CreateAccount from '@/components/CreateAccount/CreateAccount';
 import ContactUs from '@/pages/ContactUs/ContactUs';
 import Login from '@/pages/Login/Login';
+import Caracteristica from '@/pages/Caracteristicas/caracteristicas.inmuebles';
 import Service from '@/pages/Service/Service';
 import HomePrincipal from '@/pages/Principal/Principal';
 
@@ -14,6 +15,7 @@ function RouterProv() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/Caracteristica" element={<Caracteristica />} />
             <Route path="/service" element={<Service />} />
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/create-account" element={<CreateAccount/>} />

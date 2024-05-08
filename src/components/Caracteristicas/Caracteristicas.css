@@ -1,0 +1,13 @@
+.Caracteristicas-container{
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+    background-position: center;
+    z-index: 1;
+
+}
