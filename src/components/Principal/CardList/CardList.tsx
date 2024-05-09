@@ -32,9 +32,6 @@ function CardList() {
     };    
     fetchData();
   }, []);
-
-
-  const cardData = apiService.get('/api/inmuebles/');  
   
   return (
     <div className="card-list wrapper">
