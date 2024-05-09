@@ -14,7 +14,7 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
@@ -47,6 +47,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setRefresh("");
         setIsAuthenticated(false)
         localStorage.removeItem("token");
+        localStorage.removeItem("refresh");
         navigate("/login");
     };
 
@@ -64,5 +65,5 @@ export const useAuth = (): AuthContextProps => {
     if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
-    return context;
+    return context; 
 };
