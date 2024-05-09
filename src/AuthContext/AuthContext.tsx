@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextProps {
     isAuthenticated: boolean;
     token: string,
+    refresh: string,
     user: any,
     loginUser: (data:any) => void;
     logoutUser: () => void;
@@ -13,7 +14,7 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
@@ -28,10 +29,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             });
             if (response) {
                 // setUser(response.data.user);
-                setToken(response.token);
+                setToken(response.access);
                 setRefresh(response.refresh)
                 setIsAuthenticated(true)
-                localStorage.setItem("token", response.token);
+                localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 navigate("/principal");
             }
@@ -46,11 +47,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setRefresh("");
         setIsAuthenticated(false)
         localStorage.removeItem("token");
+        localStorage.removeItem("refresh");
         navigate("/login");
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, token, user, loginUser, logoutUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, token,refresh, user, loginUser, logoutUser }}>
             {children}
         </AuthContext.Provider>
     );
@@ -63,5 +65,5 @@ export const useAuth = (): AuthContextProps => {
     if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
-    return context;
+    return context; 
 };
