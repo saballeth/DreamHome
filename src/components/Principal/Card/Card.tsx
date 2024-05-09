@@ -1,5 +1,6 @@
 import Caracteristicas from '@/components/Caracteristicas/Caracteristicas';
 import './Card_index.css'
+import { useNavigate } from 'react-router-dom';
 
 interface CardProps {
   data: {
@@ -11,10 +12,10 @@ interface CardProps {
 
 function Card({ data }: CardProps) {
   const {id, precio, nombre } = data;
+  const navigate = useNavigate();
 
   const handle = () =>{
-    console.log("Datos: ", data)
-    return <Caracteristicas data={data}/>
+    navigate(`/caracteristica/${id}`)
   }
 
   return (

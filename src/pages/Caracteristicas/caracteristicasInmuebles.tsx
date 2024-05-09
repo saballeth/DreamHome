@@ -2,14 +2,14 @@ import Header from "@/components/Principal/Principal_Header/PrincipalHeader"
 import Caracteristicas from '@/components/Caracteristicas/Caracteristicas'
 import Footer from '@/components/Footer/Footer'
 
-const Login: React.FC = () =>{
+const Caracteristica: React.FC = () =>{
   
     return (
         <>
             <Header colorNameLogo={true} colorUbi={true}/>
-            <Caracteristicas data={undefined}/>
+            <Caracteristicas/>
             <Footer/>
         </>
     )
 }
-export default Login
+export default Caracteristica

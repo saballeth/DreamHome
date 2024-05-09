@@ -8,6 +8,7 @@ import Login from '@/pages/Login/Login';
 import Caracteristica from '@/pages/Caracteristicas/caracteristicasInmuebles';
 import Service from '@/pages/Service/Service';
 import HomePrincipal from '@/pages/Principal/Principal';
+import Caracteristicas from '@/pages/Caracteristicas/caracteristicasInmuebles';
 
 function RouterProv() {
 
@@ -21,6 +22,7 @@ function RouterProv() {
             <Route path="/create-account" element={<CreateAccount/>} />
             <Route element={<PrivateRoute />}>
               <Route path="/principal" element={<HomePrincipal />} />
+              <Route path="/caracteristica/:id" element={<Caracteristicas/>} />
             </Route>
           </Routes>
 }

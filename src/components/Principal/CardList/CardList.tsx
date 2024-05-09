@@ -2,10 +2,11 @@ import "./CardList_index.css";
 import Card from "../Card/Card";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/AuthContext/AuthContext";
 
 function CardList() {
-  const token = localStorage.getItem('token') || '';  
-  const apiService = new ApiService(token)
+  const auth = useAuth();
+  const apiService = new ApiService(auth.token)
 
   interface Inmueble{
     id:number;
@@ -28,9 +29,7 @@ function CardList() {
       } catch (error) {
         console.error('Error fetching data:', error); 
       }
-    };
-    console.log(listData.at(0)?.id)
-    
+    };    
     fetchData();
   }, []);
 
