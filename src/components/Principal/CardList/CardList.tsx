@@ -26,15 +26,13 @@ function CardList() {
           precio: item.precio
         }));
         setListData(inmueblesData);
+        console.log(inmueblesData);
       } catch (error) {
         console.error('Error fetching data:', error); 
       }
     };    
     fetchData();
   }, []);
-
-
-  const cardData = apiService.get('/api/inmuebles/');  
   
   return (
     <div className="card-list wrapper">
