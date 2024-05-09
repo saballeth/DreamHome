@@ -41,7 +41,7 @@ routes.push({
   selected: false,
 });
 
-const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false ,colorNameNav = false}: loggedType) => {
+const Header: React.FC<loggedType> = ({colorNameLogo = false ,colorNameNav = false}: loggedType) => {
   const navigate = useNavigate();
 
   const itemSelected = (label: string) => {

@@ -17,18 +17,19 @@ const CreateAccount: React.FC = () =>  {
     repeatPassword: ""
   });
 
-  const apiService = new ApiService();
+  const apiService = new ApiService('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/api/register/');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
-      [name]: value
+      [name]: value,
+      
     }));
   };
 // pa lo del backend
 const handleSubmit = async () => {
   try {
-    const response = await apiService.post('/api/register/',{ 
+    const response = await apiService.post('https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/api/register/',{ 
       email: formData.email,
       nombre: formData.name,
       apellido: formData.lastName,
@@ -65,10 +66,10 @@ const handleSubmit = async () => {
             required
           />
 
-          <div className="CreateAccount-container__form-columns">
+          <div className="CreateAccount-container__form-columns" onSubmit={handleSubmit}>
             <input
               type="text"
-              name="nombre"
+              name="name"
               placeholder="Nombre"
               className="CreateAccount-container__form-input"
               value={formData.name}
@@ -77,7 +78,7 @@ const handleSubmit = async () => {
             />
             <input
               type="text"
-              name="apellido"
+              name="lastName"
               placeholder="Apellido"
               className="CreateAccount-container__form-input"
               value={formData.lastName}
@@ -88,12 +89,12 @@ const handleSubmit = async () => {
 
           <input
             type="number"
-            name="edad"
+            name="age"
             placeholder="Edad"
             className="CreateAccount-container__form-input"
             value={formData.age}
             onChange={handleChange}
-            min={"8"}
+            min={"9"}
             max={"130"}
             required
           />
@@ -107,7 +108,7 @@ const handleSubmit = async () => {
             required
           />
 
-          <div className="CrhandleSubmiteateAccount-container__form-columns">
+          <div className="CreateAccount-container__form-columns">
             <input
               type="password"
               name="password"
