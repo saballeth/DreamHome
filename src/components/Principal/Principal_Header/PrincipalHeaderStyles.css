@@ -24,6 +24,10 @@
   color: var(--white);
 }
 
+.text_blue{
+  color: #0C3C6A;
+}
+
 .header__elements {
   display: flex;
   flex-direction: row; 
@@ -72,4 +76,13 @@
 
 .user{
   font-weight: bold;
+}
+
+.container_ubi_fondo{
+  background-color: var(--white);
+  box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
+}
+
+.logo_fondo{
+  background-color: #F3F5F9;
 }

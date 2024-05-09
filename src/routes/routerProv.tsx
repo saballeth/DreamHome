@@ -5,7 +5,7 @@ import AboutUs from '@/pages/About/About';
 import CreateAccount from '@/components/CreateAccount/CreateAccount';
 import ContactUs from '@/pages/ContactUs/ContactUs';
 import Login from '@/pages/Login/Login';
-import Caracteristica from '@/pages/Caracteristicas/caracteristicas.inmuebles';
+import Caracteristica from '@/pages/Caracteristicas/caracteristicasInmuebles';
 import Service from '@/pages/Service/Service';
 import HomePrincipal from '@/pages/Principal/Principal';
 
