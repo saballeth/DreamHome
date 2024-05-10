@@ -2,18 +2,21 @@ import "./CardList_index.css";
 import Card from "../Card/Card";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/AuthContext/AuthContext";
 
-function CardList() {
-  const token = localStorage.getItem('token') || '';  
-  const apiService = new ApiService(token)
+const CardList: React.FC = () => {
+  const auth = useAuth();
+  const apiService = new ApiService(auth.token);
 
-  interface Inmueble{
-    id:number;
+  interface Inmueble {
+    id: number;
     nombre: string;
     precio: number;
   }
 
-  const [listData, setListData] = useState<Inmueble[]>([])
+  const [listData, setListData] = useState<Inmueble[]>([]);
+  const [pageSize, setPageSize] = useState(10); 
+  const [currentPage, setCurrentPage] = useState(1); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,14 +29,27 @@ function CardList() {
         }));
         setListData(inmueblesData);
       } catch (error) {
-        console.error('Error fetching data:', error); 
+        console.error('Error fetching data:', error);
       }
     };
-    console.log(listData.at(0)?.id)
-    
     fetchData();
   }, []);
 
+  const handleRefreshCards = async () => {
+    try {
+      const response = await apiService.get("/api/inmuebles/");
+      const inmueblesData: Inmueble[] = response.map((item: any) => ({
+        id: item.id,
+        nombre: item.nombre,
+        precio: item.precio
+      }));
+      setListData(inmueblesData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  
 
   return (
     <div className="card-list wrapper">

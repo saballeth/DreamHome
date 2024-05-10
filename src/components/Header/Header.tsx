@@ -17,7 +17,7 @@ type RoutesType = {
 
 const routes: RoutesType[] = [];
 
-routes.push({
+routes.push({  
   label: "Inicio",
   route: "/",
   selected: true,

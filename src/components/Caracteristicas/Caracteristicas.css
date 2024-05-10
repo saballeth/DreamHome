@@ -50,6 +50,9 @@
     width: 40%;
     align-items: start;
     flex-direction: column;
+    width: 40%;
+    align-items: start;
+    flex-direction: column;
     justify-content: center;
     padding-left: 10%;
     gap: 10px;

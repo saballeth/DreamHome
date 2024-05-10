@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextProps {
     isAuthenticated: boolean;
     token: string,
+    refresh: string,
     user: any,
     loginUser: (data:any) => void;
     logoutUser: () => void;
@@ -13,10 +14,10 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || "");
-    const [refresh, setRefresh] = useState(localStorage.getItem("refresh"));
+    const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
     const navigate = useNavigate();
     const apiService = new ApiService();
 
@@ -56,11 +57,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             setRefresh("");
             setIsAuthenticated(false);
             localStorage.removeItem("token");
+            localStorage.removeItem("refresh");
             navigate("/login");
         }
     };
     return (
-        <AuthContext.Provider value={{ isAuthenticated, token, user, loginUser, logoutUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, token,refresh, user, loginUser, logoutUser }}>
             {children}
         </AuthContext.Provider>
     );

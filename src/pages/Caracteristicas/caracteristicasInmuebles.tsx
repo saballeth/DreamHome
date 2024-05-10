@@ -7,7 +7,7 @@ const caracteristicas: React.FC = () =>{
     return (
         <>
             <Header />
-            <Caracteristicas data={undefined}/>
+            <Caracteristicas/>
             <Footer/>
         </>
     )

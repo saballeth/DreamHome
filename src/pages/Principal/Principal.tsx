@@ -4,7 +4,6 @@ import Hero from "@/components/Principal/Hero/Hero"
 import Filtrado from "@/components/Principal/Filtrado/Filtrado"
 import Footer from "@/components/Footer/Footer"
 
-
 const HomePrincipal: React.FC = () =>{
   
     return (

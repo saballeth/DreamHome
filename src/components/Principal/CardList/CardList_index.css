@@ -7,8 +7,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(399px, 1fr));
     justify-items: center;
-    padding: 0px;
-    gap: 17px 0px;
     margin: 0;
     gap: 40px;
 }
@@ -23,3 +21,10 @@
     max-width: 100%; 
     width: 100%; 
 }
+
+.card-list.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  

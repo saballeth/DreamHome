@@ -23,6 +23,7 @@
 .footer__container-logo > a{
   color: var(--white);
   font-size: larger;
+  text-decoration: none;
 }
 
 .footer__container-items{
@@ -33,6 +34,7 @@
 .item{
   color: var(--white);
   font-size: large;
+  text-decoration: none;
 }
 
 .item > a{
