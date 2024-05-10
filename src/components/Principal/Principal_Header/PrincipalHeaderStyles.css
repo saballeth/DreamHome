@@ -13,6 +13,8 @@
   flex-direction: row;
   align-items: center;
   padding-left: .9%;
+  cursor: pointer;
+
 }
 
 .header__imagen img{

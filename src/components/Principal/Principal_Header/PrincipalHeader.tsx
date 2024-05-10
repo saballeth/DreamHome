@@ -15,7 +15,7 @@ type loggedType = {
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
   const auth = useAuth()
   const navigate = useNavigate()
-  const user = JSON.parse(auth.user);
+  const user = JSON.parse(auth?.user);
 
   
   function capitalizeFirstLetter(string: string) {
