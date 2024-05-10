@@ -1,12 +1,18 @@
-import './Caracteristicas.css';
 import CarouselItems from '../Carousel/Carousel'
 import ApiService from '@/apiCalls.service/apiCalls.service';
-import { useAuth } from '@/AuthContext/AuthContext';
+import { useAuth } from '@/Context/AuthContext';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner';
+import './Caracteristicas.css';
+
 
 function Caracteristicas() {
   const { id } = useParams();
+  const [inmuebleData, setData] = useState<Inmueble | null>(null)
+  const auth = useAuth();
+  const apiService = new ApiService(auth.token);
+  const caracteristicasPorTipo: { [tipo: string]: any[] } = {};
 
   const divStyle = {
     padding: 0,
@@ -15,7 +21,7 @@ function Caracteristicas() {
 
   interface Inmueble {
     id: number | null;
-    nombre: string |any | null;
+    nombre: string | any | null;
     precio: number | null;
     sector: any | null;
     ciudad: any | null;
@@ -33,11 +39,6 @@ function Caracteristicas() {
     estado: any | null;
     direccion: any | null;
   }
-
-  const [inmuebleData, setData] = useState<Inmueble | null>(null)
-
-  const auth = useAuth();
-  const apiService = new ApiService(auth.token);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +65,6 @@ function Caracteristicas() {
           direccion: response.direccion,
         };
         setData(data);
-        // console.log(data)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -73,12 +73,8 @@ function Caracteristicas() {
 
   }, [id]);
 
-  if (!inmuebleData) {
-    return <div style={{ height: 100, }}>Loading...</div>;
-  }
-
-  const restrictedKeys = ['id', 'ciudad', 'caracteristicas', 'sector', 'descripcion', 'nombre','precionM2'];
-  const keyTranslations = {
+  const restrictedKeys = ['id', 'ciudad', 'caracteristicas', 'sector', 'descripcion', 'nombre', 'precionM2'];
+  const keyTranslations: any = {
     estrato: 'Estrato',
     cantidadDeHabitaciones: 'Habitaciones',
     cantidadDeBaños: 'Baños',
@@ -98,14 +94,37 @@ function Caracteristicas() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  function formatNumber(key: any,value: any) {
-    if (key == "precio" || key == "valorArriendo"  || key == "precioAdministracion"){
-      value = "$"+value.toLocaleString();
+  function formatText(text: string) {
+    const words = text.split("-").map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    return words.join(' ');
+  }
+
+  function formatNumber(key: any, value: any) {
+    if (key == "precio" || key == "valorArriendo" || key == "precioAdministracion") {
+      value = "$" + value.toLocaleString();
       return value
-    }else{
+    } else {
       return value
     }
   }
+
+  if (!inmuebleData) {
+    return (
+      <div className="spinner__container_caracteristica">
+        <Spinner />
+      </div>
+    )
+  }
+
+  inmuebleData?.caracteristicas.forEach((caracteristica: any) => {
+    if (!caracteristicasPorTipo[formatText(caracteristica.tipoDeCaracteristica.nombre)]) {
+      caracteristicasPorTipo[formatText(caracteristica.tipoDeCaracteristica.nombre)] = [];
+    }
+    caracteristicasPorTipo[formatText(caracteristica.tipoDeCaracteristica.nombre)].push(formatText(caracteristica.nombre));
+  });
+
 
   return (
     <div className="caracteristicas__container">
@@ -116,7 +135,6 @@ function Caracteristicas() {
       <div className="container__imagenes">
         <CarouselItems />
       </div>
-
       <div className="caracteristicas__infoImagen-titulo">
         {capitalizeFirstLetter(inmuebleData?.nombre)}
       </div>
@@ -125,32 +143,37 @@ function Caracteristicas() {
           <h3 className="descripcion__titulo">Descripcion</h3>
           <p className='descripcion__parrafo'>{capitalizeFirstLetter(inmuebleData?.descripcion)}</p>
         </div>
-        <div className="container__elementos">
-          {/* {applicants.map(function (data) {
-            return (
-              <div>
-                {data.work}
-              </div>
-            )
-          })} */}
-        </div>
       </div>
       <div className="container__datos">
         <h3 className="datos__titulo">Datos principales del inmueble</h3>
         <div className="datos__info">
           {inmuebleData && Object.entries(inmuebleData).filter(([key, value]) =>
-            !restrictedKeys.includes(key) && 
-            value !== null &&            
-            value !== '' 
+            !restrictedKeys.includes(key) &&
+            value !== null &&
+            value !== ''
           ).map(([key, value]) => {
             return (
               <div key={key}>
                 <h4 className='titulo-caracteristica'>{keyTranslations[key] || key}</h4>
-                <h4 className='dato-caracteristica'>{formatNumber(key,value)}</h4>
+                <h4 className='dato-caracteristica'>{formatNumber(key, value)}</h4>
               </div>
             );
           })}
         </div>
+      </div>
+      <div className="container__elementos">
+        {Object.entries(caracteristicasPorTipo).map(([tipo, caracteristicas]) => (
+          <div className='elementos__tipo' key={tipo}>
+            <h3>{tipo}</h3>
+            <div className="elementos__caracteristicas">
+              {caracteristicas.map((caracteristica: any) => (
+                <div key={caracteristica} className='dato-caracteristica'>
+                  {caracteristica}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

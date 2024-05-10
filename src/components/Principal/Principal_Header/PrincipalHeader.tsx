@@ -3,7 +3,7 @@ import Ubicacion from '@/components/Principal/Ubicacion/Ubicacion_select'
 import { MdFavoriteBorder } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { PiMapPinLight } from "react-icons/pi";
-import { useAuth } from "@/AuthContext/AuthContext";
+import { useAuth } from "@/Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 type loggedType = {

@@ -1,4 +1,5 @@
-import { useAuth } from '@/AuthContext/AuthContext';
+import { useAuth } from '@/Context/AuthContext';
+import { useSelect } from '@/Context/Context';
 import ApiService from '@/apiCalls.service/apiCalls.service';
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
@@ -11,6 +12,11 @@ const Ubicacion: React.FC = () => {
     const [isRtl, setIsRtl] = useState(false);
     const auth = useAuth()
     const apiService = new ApiService(auth.token);
+    const {selectUbi, setSelectUbi} = useSelect()
+
+    const handleChange = (selectOption: any) => {
+        setSelectUbi(selectOption)
+    }
 
     function formatText(text:string){
         const words = text.split("-").map(word => {
@@ -23,14 +29,14 @@ const Ubicacion: React.FC = () => {
         nombre: string | any | null;
     }
 
-    const [ciudadesData, setData] = useState<Ciudad[]>([])
+    const [ciudadesData, setData] = useState<Ciudad[] | undefined | any>([])
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await apiService.get(`/api/ciudades/`);
                 const ciudades: Ciudad[] = response.map((item: any) => ({
-                    value: formatText(item.nombre),
+                    value: item.nombre,
                     label: formatText(item.nombre),
                 }));
                 setData(ciudades);
@@ -74,6 +80,8 @@ const Ubicacion: React.FC = () => {
             <Select
                 className="basic-single"
                 classNamePrefix="select"
+                value={selectUbi}
+                onChange={handleChange}
                 isDisabled={isDisabled}
                 isLoading={isLoading}
                 isClearable={isClearable}

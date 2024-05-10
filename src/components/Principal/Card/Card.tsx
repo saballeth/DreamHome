@@ -1,4 +1,3 @@
-import Caracteristicas from '@/components/Caracteristicas/Caracteristicas';
 import './Card_index.css'
 import { useNavigate } from 'react-router-dom';
 
