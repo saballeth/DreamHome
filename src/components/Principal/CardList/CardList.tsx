@@ -3,6 +3,7 @@ import Card from "../Card/Card";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/AuthContext/AuthContext";
+import Spinner from "react-bootstrap/esm/Spinner";
 
 function CardList() {
   const auth = useAuth();
@@ -26,7 +27,7 @@ function CardList() {
           precio: item.precio
         }));
         setListData(inmueblesData);
-        console.log(inmueblesData);
+        // console.log(inmueblesData);
       } catch (error) {
         console.error('Error fetching data:', error); 
       }
@@ -34,6 +35,10 @@ function CardList() {
     fetchData();
   }, []);
   
+  if (!listData) {
+    return <Spinner/> 
+  }
+
   return (
     <div className="card-list wrapper">
       {listData.map((card) => (

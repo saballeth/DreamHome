@@ -15,7 +15,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(localStorage.getItem("user") || null);
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
     const navigate = useNavigate();
@@ -28,10 +28,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 password: data.password
             });
             if (response) {
-                // setUser(response.data.user);
+                setUser(response.user);
                 setToken(response.access);
                 setRefresh(response.refresh)
                 setIsAuthenticated(true)
+                localStorage.setItem("user",JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 navigate("/principal");
@@ -47,6 +48,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setRefresh("");
         setIsAuthenticated(false)
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         localStorage.removeItem("refresh");
         navigate("/login");
     };
