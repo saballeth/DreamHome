@@ -3,6 +3,8 @@ import Ubicacion from '@/components/Principal/Ubicacion/Ubicacion_select'
 import { MdFavoriteBorder } from "react-icons/md";
 import { LuUser } from "react-icons/lu";
 import { PiMapPinLight } from "react-icons/pi";
+import { useAuth } from "@/Context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 type loggedType = {
   colorNameLogo?: boolean;
@@ -11,9 +13,21 @@ type loggedType = {
 
 
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
+  const auth = useAuth()
+  const navigate = useNavigate()
+  const user = JSON.parse(auth?.user);
+
+  
+  function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  const navigatePrincipal = async () => {
+    navigate('/principal')
+  }
   return (
     <div className="header__container">
-      <div className="header__imagen">
+      <div className="header__imagen" onClick={navigatePrincipal}>
         <img src="/src/assets/logogid.png" alt="" />
         <div className={`header__imagen-text ${colorNameLogo ? 'text_blue' : ""}`}>DreamHome</div>
       </div>
@@ -29,7 +43,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
           <LuUser className="cuenta"/>
           <div className="bienvenida">
             <div>Hola,</div>
-            <div className="user">Mi cuenta</div>
+            <div className="user">{auth?.isAuthenticated ? (capitalizeFirstLetter(user?.nombre)) : ("Mi cuenta")}</div>
           </div>
         </div>
       </div>

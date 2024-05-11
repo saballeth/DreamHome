@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { CiCircleChevRight } from "react-icons/ci";
 import ApiService from '@/apiCalls.service/apiCalls.service';
-import { useAuth } from '@/AuthContext/AuthContext';
+import { useAuth } from '@/Context/AuthContext';
 
 interface Inmueble {
   id: number;
@@ -20,7 +20,7 @@ interface PaginationState {
 const Filtrado: React.FC = () => {
   const [pagination, setPagination] = React.useState<PaginationState>({
     currentPage: 1,
-    inmueblesPerPage: 10,
+    inmueblesPerPage: 6,
   });
   const [listData, setListData] = React.useState<Inmueble[]>([]);
   const auth = useAuth();

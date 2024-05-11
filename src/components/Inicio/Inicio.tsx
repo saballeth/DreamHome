@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faKey, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import './LoginStyle.css';
-import { useAuth } from '@/AuthContext/AuthContext';
+import { useAuth } from '@/Context/AuthContext';
 
 const Inicio: React.FC = () => {
   const [username, setUsername] = useState<string>('');

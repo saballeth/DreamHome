@@ -3,16 +3,19 @@ import PrincipalHeader from "@/components/Principal/Principal_Header/PrincipalHe
 import Hero from "@/components/Principal/Hero/Hero"
 import Filtrado from "@/components/Principal/Filtrado/Filtrado"
 import Footer from "@/components/Footer/Footer"
+import Provider from "@/Context/Context"
 
 const HomePrincipal: React.FC = () =>{
   
     return (
         <>
-            <PrincipalHeader/>
-            <Hero/>
-            <Filtrado/>
-            <CardList/>
-            <Footer/>
+            <Provider>
+                <PrincipalHeader/>
+                <Hero/>
+                <Filtrado/>
+                <CardList/>
+                <Footer/>
+            </Provider>
         </>
     )
 }
