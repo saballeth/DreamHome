@@ -53,7 +53,6 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 }
 export default Provider
 
-// export const useSelect = () => useContext(Context)
 export const useSelect = (): ContextProps => {
     const context = useContext(Context);
     if (!context) {

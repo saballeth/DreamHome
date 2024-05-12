@@ -6,7 +6,7 @@ import Footer from "@/components/Footer/Footer"
 import Provider from "@/Context/Context"
 
 const HomePrincipal: React.FC = () =>{
-  
+
     return (
         <>
             <Provider>
