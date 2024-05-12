@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSliders } from '@fortawesome/free-solid-svg-icons';
 
 
-
 const filtrado: React.FC = () => {
   return (
     <div className="recommended-residences">

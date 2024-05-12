@@ -25,12 +25,12 @@
 }
 
 
-.spinner__container{
+.spinner__container__cardList{
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 40vh;
+    height: 52vh;
 }
 
 .card__not-found{

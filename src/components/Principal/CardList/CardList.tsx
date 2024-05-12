@@ -32,7 +32,6 @@ function CardList() {
           ciudad: item.ciudad
         }));
         setListData(inmueblesData);
-        // console.log(inmueblesData);
       } catch (error) {
         console.error('Error fetching data:', error); 
       }
@@ -40,13 +39,7 @@ function CardList() {
     fetchData();
   }, []);
   
-
-  
-  // console.log(listData.at(0)?.ciudad);
-  // console.log(selectUbi?.value);
-
   useEffect(() => {
-    // console.log(selectUbi);
     const hasCards = listData.some((card) => 
       card.ciudad.nombre === selectUbi?.value
     )
@@ -56,7 +49,7 @@ function CardList() {
 
   if (!listData.length) {
     return (
-      <div className="spinner__container">
+      <div className="spinner__container__cardList">
         <Spinner/> 
       </div>
     )
@@ -65,16 +58,11 @@ function CardList() {
 
   return (
     <div className="card-list wrapper">
-      {/* {listData.map((card) => (
-        context?.selectUbi === card.ciudad.nombre ? (
-          <Card key={card.id} data={card} />
-        ) : null
-      ))} */}
       {selectUbi === null && listData.map((card) => (
-        <Card key={card.id} data={card} />
+        <Card key={card.id} data={card} favorite={false}/>
       ))}
       {selectUbi !== null && listData.map((card) => (
-        selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card}/>
+        selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false}/>
       ))}
       {!isCardCity && (
         <div className="card__not-found">

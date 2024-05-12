@@ -3,6 +3,8 @@ import Interests from '../../data/Interests.json';
 import './Intereses.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import ApiService from '@/apiCalls.service/apiCalls.service';
+import { useAuth } from '@/Context/AuthContext';
 
 
 interface Intereses {
@@ -10,31 +12,47 @@ interface Intereses {
 }
 const Interesespage: React.FC = () =>{
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-
-  const handleInterest = (interestName: string) => {
-    setSelectedInterests((prevInterests) => [...prevInterests, interestName]);
-  };
-
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const auth = useAuth();
+  const apiService = new ApiService(auth.token);
 
-  const handleVerification = async () => {
-    try {
-
-      navigate("/principal");
-
-    } catch (error) {
-      console.error('Error:', error);
-
-      setTimeout(() => {
-        setError('');
-      }, 3000);
-
+  const handleInterest = (interestName: string) => {
+    const isInterestSelected = selectedInterests.includes(interestName);
+    if (isInterestSelected) {
+      setSelectedInterests(prevInterests =>
+        prevInterests.filter(interest => interest !== interestName)
+      );
+    } else {
+      setSelectedInterests(prevInterests => [...prevInterests, interestName]);
     }
   };
 
+  const handleVerification = async () => {
+    try {
+      for (const interest of selectedInterests) {
+        const response = await apiService.post('/api/interesesPorUsuario/', {
+          interes: interest,
+          usuario: auth.user.username,
+        }); 
+        if (response){
+          console.log(`Se agregó el interés "${interest}" al usuario.`);
+        }
+      }
+      navigate("/principal");
+    } catch (error) {
+      console.error('Error:', error);
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+    }
+  };
+
+  console.log(selectedInterests)
+
   return (
-    <div className="container">
+    <div className="container__principal">
+      <div className="intereses__titulo">Bienvenido a DreamHome, Ingresa tus preferencias hacia los inmuebles.</div>
       <div className='interest-container'>
         <div className="interest-panel">
           {Interests.intereses.map((interest: Intereses, index: number) => (

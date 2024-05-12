@@ -50,7 +50,7 @@ const Inicio: React.FC = () => {
               </div> 
               <input type="submit" value="Ingresar" onClick={handleVerification} id="submit-login" style={{ marginTop: "2px", padding: "5px", width: "120px" }} />
             </div>
-            <p style={{ textAlign: "center", marginBottom: "25px" }}>
+            <p className='text__create' style={{ textAlign: "center", marginBottom: "25px" }}>
             Nuevo por aqui? <Link to={'/create-account'}>Crear una cuenta!</Link>
             </p>
            </div>

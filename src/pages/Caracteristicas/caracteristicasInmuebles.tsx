@@ -7,11 +7,9 @@ const Caracteristica: React.FC = () =>{
   
     return (
         <>
-            <Provider>
-                <Header colorNameLogo={true} colorUbi={true}/>
-                <Caracteristicas/>
-                <Footer/>
-            </Provider>
+            <Header colorNameLogo={true} colorUbi={true}/>
+            <Caracteristicas/>
+            <Footer/>
         </>
     )
 }

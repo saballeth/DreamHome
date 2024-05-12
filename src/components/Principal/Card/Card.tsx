@@ -4,6 +4,8 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { MdFavorite } from "react-icons/md";
 import { useEffect, useState } from 'react';
 import { useSelect } from '@/Context/Context';
+import { CiSquareMinus } from "react-icons/ci";
+import { FaSquareMinus } from "react-icons/fa6";
 
 interface CardProps {
   data: {
@@ -11,9 +13,10 @@ interface CardProps {
     precio: number;
     nombre: string;
   };
+  favorite:boolean;
 }
 
-function Card({ data }: CardProps) {
+function Card({ data, favorite }: CardProps) {
   const {id, precio, nombre } = data;
   const navigate = useNavigate();
   const [isFavorite, setFavorite] = useState(false);
@@ -25,25 +28,34 @@ function Card({ data }: CardProps) {
 
   useEffect(()=>{
     const itemIndex = selectedFavorites.findIndex(item => item.id === id);
-    // console.log(context.selectedFavorites[itemIndex])
     setFavorite(selectedFavorites[itemIndex]?.selected)
   },[id,selectedFavorites])
 
   const handleSelect = () => {
-    toggleFavorite(id)
+    toggleFavorite(data)
   };
 
-  // console.log(selectedFavorites)
+  console.log(selectedFavorites)
 
   return (
     <div className="card">
-      <div className="card__favorite" onClick={handleSelect}>
-        {isFavorite ? (
-          <MdFavorite className='favorite__select'/>
-        ):(
-          <MdFavoriteBorder className="favorite"/>
-        )}
-      </div>
+      { favorite ? (
+        <div className="card__delete" onClick={handleSelect}>
+          {isFavorite ? (
+            <CiSquareMinus className='menos__select'/>
+          ):(
+            <FaSquareMinus className='menos__select__false'/>
+          )}
+        </div>  
+      ):(
+        <div className="card__favorite" onClick={handleSelect}>
+          {isFavorite ? (
+            <MdFavorite className='favorite__select'/>
+          ):(
+            <MdFavoriteBorder className="favorite"/>
+          )}
+        </div>
+      )}
       <div className="card__container" onClick={handle}>
         <img className="card__imagen" src="https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg"/>
         <div className="card-details">

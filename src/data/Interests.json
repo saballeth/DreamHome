@@ -1,34 +1,34 @@
 {
     "intereses": [
       {
-        "nombre": "Piscina 🏊‍♂️"
+        "nombre": "Piscina"
       },
       {
-        "nombre": "Gimnasio 💪"
+        "nombre": "Gimnasio"
       },
       {
-        "nombre": "Cocina Integral 🍳"
+        "nombre": "Cocina Integral"
       },
       {
-        "nombre": "Vista al Mar 🌊"
+        "nombre": "Vista al Mar"
       },
       {
-        "nombre": "Terraza 🌆"
+        "nombre": "Terraza"
       },
       {
-        "nombre": "Jardín 🌳"
+        "nombre": "Jardín"
       },
       {
-        "nombre": "Estacionamiento 🚗"
+        "nombre": "Estacionamiento"
       },
       {
-        "nombre": "Seguridad 24/7 🛡️"
+        "nombre": "Seguridad 24/7"
       },
       {
-        "nombre": "Cerca de Transporte Público 🚇"
+        "nombre": "Cerca de Transporte Público"
       },
       {
-        "nombre": "Mascotas Permitidas 🐶"
+        "nombre": "Mascotas Permitidas"
       }
     ]
   }

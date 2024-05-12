@@ -8,6 +8,7 @@ interface AuthContextProps {
     refresh: string,
     user: any,
     loginUser: (data:any) => void;
+    registerUser: (data:any) => void;
     logoutUser: () => void;
 }
 
@@ -35,7 +36,38 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("user",JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
-                navigate("/principal");
+                if (response.user?.intereses?.length > 0){
+                    console.log(response.user);
+                    navigate("/principal");
+                }else{
+                    navigate("/intereses");
+                }
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const registerUser = async (data: any) => {
+        try {
+            const response = await apiService.post('/api/register/',{ 
+                email: data.email,
+                nombre: data.name,
+                apellido: data.lastName,
+                edad: data.age,
+                username: data.username,
+                password: data.password
+            });
+            if (response){
+                setUser(response.user);
+                setToken(response.access);
+                setRefresh(response.refresh)
+                setIsAuthenticated(true)
+                localStorage.setItem("user",JSON.stringify(response.user))
+                localStorage.setItem("token", response.access);
+                localStorage.setItem("refresh", response.refresh);
+                alert('Registro Exitoso :) ');
+                navigate("/intereses");
             }
         } catch (err) {
             console.error(err);
@@ -54,7 +86,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, token,refresh, user, loginUser, logoutUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, token,refresh, user, loginUser,registerUser, logoutUser }}>
             {children}
         </AuthContext.Provider>
     );

@@ -15,16 +15,26 @@ type loggedType = {
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
   const auth = useAuth()
   const navigate = useNavigate()
-  const user = JSON.parse(auth?.user);
+  let user;
 
+  if (typeof auth?.user === 'string') {
+    user = JSON.parse(auth?.user);
+  } else {
+    user = auth?.user;
+  }
   
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   const navigatePrincipal = async () => {
-    navigate('/principal')
+    navigate('/principal');
   }
+
+  const handleFavorite = async () => {
+    navigate('/favoritos');
+  }
+
   return (
     <div className="header__container">
       <div className="header__imagen" onClick={navigatePrincipal}>
@@ -39,7 +49,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
           <Ubicacion/>
         </div>
         <div className="header__elements-cuenta">
-          <MdFavoriteBorder className="favorite"/>
+          <MdFavoriteBorder className="favorite" onClick={handleFavorite}/>
           <LuUser className="cuenta"/>
           <div className="bienvenida">
             <div>Hola,</div>

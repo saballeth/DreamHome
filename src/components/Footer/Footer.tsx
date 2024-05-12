@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Footer.css';
+import AboutUs from '@/components/AboutUs/AboutUs';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -15,13 +16,12 @@ const Footer = () => {
         <a href="/principal">DreamHome</a>
       </div>
       <div className="footer__container-items">
-        <a className="item" href="/aboutus">About Us</a>
-        <a className="item" href="/service">Service</a>
-        <a className="item" href="/">Information</a>
+        <a className="item" href="/aboutusC">Sobre Nosotros</a>
+        <a className="item" href="/serviceC">Servicios</a>
       </div>
       <div className="footer__container-button">
         <h3 className='footer__text'>Let's do it! -</h3>
-        <button onClick={handleContact} className="button__footer">Contact Us</button>
+        <button onClick={handleContact} className="button__footer">Contactanos</button>
       </div>
     </footer>
   );

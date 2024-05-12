@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
-import {useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header/Header";
 import "./CreateAccount.styles.css";
 import ApiService from "@/apiCalls.service/apiCalls.service";
+import AlertExito from '@/components/Alert/AlertExito';
+import { useAuth } from '@/Context/AuthContext';
 
-
-const CreateAccount: React.FC = () =>  {
+const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    name: "",
+    lastName: "",
+    age: "",
+    username: "",
+    password: "",
+    repeatPassword: ""
+  });
+
+  const isValidEmail = (email: string) => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -18,31 +35,69 @@ const CreateAccount: React.FC = () =>  {
   });
 
   const apiService = new ApiService();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    let error = "";
+
+    switch (name) {
+      case "username":
+        error = value.includes(" ") ? "El nombre de usuario no puede contener espacios" : "";
+        break;
+      case "name":
+        error = value.includes(" ") ? "El nombre no puede contener espacios" : "";
+        break;
+      case "age":
+        const ageValue = parseInt(value);
+        error = isNaN(ageValue) || ageValue < 8 || ageValue > 130 ? "La edad debe estar entre 8 y 130" : "";
+        break;
+      case "password":
+        error = value.length < 5 ? "La contraseña debe tener al menos 5 caracteres" : "";
+        break;
+      case "repeatPassword":
+        error = formData.password !== value ? "Las contraseñas no coinciden" : "";
+        break;
+      case "email":
+        error = isValidEmail(value) ? "" : "El correo electrónico no es válido";
+        break;
+      default:
+        break;
+    }
+
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      [name]: error
+    }));
+
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
-// pa lo del backend
-const handleSubmit = async () => {
-  try {
-    const response = await apiService.post('/api/register/',{ 
-      email: formData.email,
-      nombre: formData.name,
-      apellido: formData.lastName,
-      edad: formData.age,
-      username: formData.username,
-      password: formData.password
-  });
-    console.log('Registro exitoso:', response);
-    navigate("/intereses");
-  } catch (error) {
-    console.error('Error en el registro:', error);
-  }
-};
-// fin pa lo del backend
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+
+    if (Object.values(errors).some(error => error !== "")) {
+      return;
+    }
+    try {
+      auth.registerUser(formData);
+      // const response = await apiService.post('/api/register/',{ 
+      //   email: formData.email,
+      //   nombre: formData.name,
+      //   apellido: formData.lastName,
+      //   edad: formData.age,
+      //   username: formData.username,
+      //   password: formData.password
+      // });
+      // alert('Registro Exitoso :) ');
+      // navigate("/intereses");
+    } catch (error) {
+      alert('Error en el registro');
+    }
+  };
   return (
     <div className="CreateAccount">
       <Header />
@@ -50,11 +105,9 @@ const handleSubmit = async () => {
       <div className="CreateAccount-container">
         <div className="CreateAccount-container__title">
           <h1>Bienvenido</h1>
-          <p>
-            Cree su propia <strong>Cuenta</strong>
-          </p>
+          <p>Cree su propia <strong>Cuenta</strong></p>
         </div>
-        <div className="CreateAccount-container__form" onSubmit={handleSubmit}>
+        <form className="CreateAccount-container__form" onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
@@ -64,11 +117,11 @@ const handleSubmit = async () => {
             onChange={handleChange}
             required
           />
-
+          {errors.email && <p className="error-message">{errors.email}</p>}
           <div className="CreateAccount-container__form-columns">
             <input
               type="text"
-              name="nombre"
+              name="name"
               placeholder="Nombre"
               className="CreateAccount-container__form-input"
               value={formData.name}
@@ -77,7 +130,7 @@ const handleSubmit = async () => {
             />
             <input
               type="text"
-              name="apellido"
+              name="lastName"
               placeholder="Apellido"
               className="CreateAccount-container__form-input"
               value={formData.lastName}
@@ -85,10 +138,10 @@ const handleSubmit = async () => {
               required
             />
           </div>
-
+          {errors.name && <p className="error-message">{errors.name}</p>}
           <input
             type="number"
-            name="edad"
+            name="age"
             placeholder="Edad"
             className="CreateAccount-container__form-input"
             value={formData.age}
@@ -97,6 +150,7 @@ const handleSubmit = async () => {
             max={"130"}
             required
           />
+          {errors.age && <p className="error-message">{errors.age}</p>}
           <input
             type="text"
             name="username"
@@ -106,8 +160,8 @@ const handleSubmit = async () => {
             onChange={handleChange}
             required
           />
-
-          <div className="CrhandleSubmiteateAccount-container__form-columns">
+          {errors.username && <p className="error-message">{errors.username}</p>}
+          <div className="CreateAccount-container__form-columns">
             <input
               type="password"
               name="password"
@@ -127,14 +181,18 @@ const handleSubmit = async () => {
               required
             />
           </div>
-
-          <button type="submit" onClick={handleSubmit} className="CreateAccount-container__form-buttom">
+          {errors.repeatPassword && <p className="error-message">{errors.repeatPassword}</p>}
+          {errors.password && <p className="error-message">{errors.password}</p>}
+          <button  type="submit" className="CreateAccount-container__form-buttom">
             Registrarse
           </button>
-        </div>
+          {formSubmitted && Object.values(errors).some(error => error !== "") && (
+            <p className="warning-message">Por favor, complete todos los campos correctamente antes de enviar el formulario.</p>
+          )}
+        </form>
       </div>
     </div>
   );
-}
+};
 
 export default CreateAccount;

@@ -90,3 +90,38 @@
 .CreateAccount-container__form-buttom:hover {
   background-color: var(--lightOrange);
 }
+
+@media (max-width: 800px) {  
+  .CreateAccount-container {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 500px) {  
+  .CreateAccount {
+    height: auto;
+    padding: 40px 0;
+  }
+
+  .CreateAccount-container {
+    width: 90%;
+  }
+
+  .CreateAccount-container__title h1{
+    font-size: 35px;
+  }
+  
+  .CreateAccount-container__title p{
+    font-size: 20px;
+  }
+
+  .CreateAccount-container__form-columns {
+    display: inline-block;
+  }
+
+  .CreateAccount-container__form-columns input:first-child {
+    margin-bottom: 20px;
+  }
+
+}

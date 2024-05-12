@@ -3,10 +3,18 @@ import React, {createContext, useState, useContext, useEffect} from "react";
 type SelectedItem = {
     id: number;
     selected: boolean;
-  };
+    nombre: string;
+    precio: number;
+};
+
+interface DataProps{
+    id: number;
+    precio: number;
+    nombre: string;
+};
 
 interface ContextProps {
-    toggleFavorite(id: number): void;
+    toggleFavorite(data: any): void;
     selectUbi: null | any;
     setSelectUbi: any;
     selectedFavorites: SelectedItem[];
@@ -27,9 +35,9 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }   
     }, []);
 
-    const toggleFavorite = (id: number) => {
+    const toggleFavorite = (data: DataProps) => {
         setSelectedFavorites(prevSelectedItems => {
-            const itemIndex = prevSelectedItems.findIndex(item => item.id === id);
+            const itemIndex = prevSelectedItems.findIndex(item => item.id === data.id);
             if (itemIndex !== -1) {
                 // Si el elemento ya está en la lista, se deselecciona
                 const updatedFavorites = [...prevSelectedItems];
@@ -38,7 +46,7 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 return updatedFavorites;
             } else {
                 // Si el elemento no está en la lista, se selecciona
-                const updatedFavorites = [...prevSelectedItems, { id, selected: true }];
+                const updatedFavorites = [...prevSelectedItems, { id:data.id, selected: true, nombre:data.nombre, precio:data.precio }];
                 localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
                 return updatedFavorites;
             }
