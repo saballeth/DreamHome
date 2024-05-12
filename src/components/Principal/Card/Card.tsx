@@ -34,9 +34,7 @@ function Card({ data, favorite }: CardProps) {
   const handleSelect = () => {
     toggleFavorite(data)
   };
-
-  console.log(selectedFavorites)
-
+  
   return (
     <div className="card">
       { favorite ? (

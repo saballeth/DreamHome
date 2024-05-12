@@ -1,0 +1,67 @@
+#root{
+    /* opacity: 0.3; */
+}
+
+.filtros__container{
+    position: absolute;
+    background-color: var(--white);
+    top: 0;
+    left: 0;
+    z-index: 1;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 60%;
+    height: 60%;
+    border-radius: 20px;
+}
+
+.filtros__content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.content__alojamiento{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.alojamiento-card{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 60%;
+    padding: 20px 0;
+}
+
+.card-alojamiento{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    border: 1px solid;
+    border-radius: 20px;
+    width: 50%;
+    padding-top: 10px;
+    padding-left: 10px;
+    gap: 20px;
+}
+
+.card__icon{
+    font-size: x-large;
+}
+
+.card__texto{
+    font-size: large;
+}
+
+.content__precio{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
