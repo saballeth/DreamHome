@@ -12,8 +12,10 @@
     bottom: 0;
     margin: auto;
     width: 60%;
-    height: 60%;
+    height: 80%;
     border-radius: 20px;
+    padding: 40px 20px;
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
 }
 
 .filtros__content{
@@ -22,6 +24,8 @@
     align-items: center;
     width: 100%;
     height: 100%;
+    gap: 10px;
+    overflow-y: auto;
 }
 
 .content__alojamiento{
@@ -49,7 +53,7 @@
     width: 50%;
     padding-top: 10px;
     padding-left: 10px;
-    gap: 20px;
+    gap: 30px;
 }
 
 .card__icon{
@@ -65,3 +69,25 @@
     flex-direction: column;
     align-items: center;
 }
+
+.content__habitaciones, .content__banos, .content__parqueadero{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.content__items{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.habitaciones, .banos, .parqueaderos{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+
+.caracteristicas{
+    }

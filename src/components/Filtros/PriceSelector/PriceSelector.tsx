@@ -87,16 +87,16 @@ export default function CustomizedSlider({ max, min, onChange, selectedRangePric
     
     return (
         <Box sx={{ width: 320 }}>
-            <Box sx={{ m: 3 }} />
-            <Typography gutterBottom>   </Typography>
+            <Box sx={{ m: 3 }} />   
+            <Typography gutterBottom>$ {priceRange.minValue.toLocaleString()} - $ {priceRange.maxValue.toLocaleString()}+</Typography>
             <AirbnbSlider
                 slots={{ thumb: AirbnbThumbComponent }}
                 getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
                 value={[priceRange.minValue, priceRange.maxValue]}
                 onChangeCommitted={handleValuesChangeFinish}
                 onChange={handleChangePrice}
-                min={39000}
-                max={2600000}
+                min={min}
+                max={max}
             />
         </Box>
     );
