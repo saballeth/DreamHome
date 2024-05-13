@@ -26,7 +26,7 @@
   top: 50%;
   transform: translateY(-50%);
   right: 10px; /* Ajusta la posición del icono dentro del input */
-  color: #f03a3a; /* Cambia el color del icono según sea necesario */
+  color: var(--darkOrange); /* Cambia el color del icono según sea necesario */
   pointer-events: none; /* Evita que el icono sea seleccionable o interactivo */
 }
 
@@ -46,7 +46,7 @@
 
 #submit-login {
   cursor: pointer;
-  background-color:#E77344;
+  background-color:var(--darkOrange);
   color: white;
   font-size: 1.3rem;
   border: none;
@@ -130,5 +130,8 @@
   background-size: cover;
   background-position: center;
   filter: brightness(.5);
+}
 
+.text__create > a{
+  text-decoration: none;
 }

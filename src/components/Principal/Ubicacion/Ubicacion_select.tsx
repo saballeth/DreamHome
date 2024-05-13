@@ -30,7 +30,7 @@ const Ubicacion: React.FC = () => {
     }
 
     const [ciudadesData, setData] = useState<Ciudad[] | undefined | any>([])
-
+    
     useEffect(() => {
         const fetchData = async () => {
             try {

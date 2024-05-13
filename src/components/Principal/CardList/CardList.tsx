@@ -51,7 +51,7 @@ const CardList: React.FC = () => {
 
   if (!listData.length) {
     return (
-      <div className="spinner__container">
+      <div className="spinner__container__cardList">
         <Spinner/> 
       </div>
     )
@@ -78,10 +78,10 @@ const CardList: React.FC = () => {
   return (
     <div className="card-list wrapper">
       {selectUbi === null && listData.map((card) => (
-        <Card key={card.id} data={card} />
+        <Card key={card.id} data={card} favorite={false}/>
       ))}
       {selectUbi !== null && listData.map((card) => (
-        selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card}/>
+        selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false}/>
       ))}
       {!isCardCity && (
         <div className="card__not-found">

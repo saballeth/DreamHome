@@ -1,10 +1,10 @@
 .hero__container {
   display: flex;
   width: 100%;
-  height: 45vh;
+  height: 30vh;
   background-image: url("/src/assets/vecteezy_real-estate-agent-holding-house-key-to-his-client-after_8572449 1.png");
   background-size: cover;
-  background-position: center;
+  background-position: top;
   margin-bottom: 20px;
   justify-content: center;
   align-items: center;
@@ -12,7 +12,7 @@
 
 .hero__form{
   width: 30%;
-  height: 10%;
+  height: 15%;
   display: flex;
 }
 
