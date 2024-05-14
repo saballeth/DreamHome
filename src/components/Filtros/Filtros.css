@@ -14,8 +14,30 @@
     width: 60%;
     height: 80%;
     border-radius: 20px;
-    padding: 40px 20px;
+    padding: 0 0 30px 0;
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
+}
+
+.filtros-top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid var(--black);
+    padding: 10px;
+    height: 10%;
+}
+
+.top-icon{
+    font-size: x-large;
+}
+
+.filtros-titulo{
+    width: 100%;
+    text-align: center;
+    font-size: large;
+    margin: 0;
+    padding: 0;
 }
 
 .filtros__content{
@@ -23,9 +45,11 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
-    gap: 10px;
-    overflow-y: auto;
+    height: 82%;
+    gap: 20px;
+    overflow-y: auto;   
+    padding-top: 15px;
+    padding-bottom: 20px;
 }
 
 .content__alojamiento{
@@ -48,12 +72,18 @@
     flex-direction: column;
     align-items: start;
     justify-content: start;
-    border: 1px solid;
+    border: 1px solid rgba(206, 204, 204, 0.867);
     border-radius: 20px;
     width: 50%;
     padding-top: 10px;
     padding-left: 10px;
-    gap: 30px;
+    gap: 40px;
+    cursor: pointer;
+}
+
+.card-alojamiento:hover{
+    border: 1px solid var(--black);
+
 }
 
 .card__icon{
@@ -88,6 +118,61 @@
     gap: 15px;
 }
 
-
 .caracteristicas{
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.caracteristicas__titulo{
+    text-align: center;
+}
+
+.interiores, .exterior, .sector, .zona-comun{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.caracteristicas__subtitulo{
+    font-size: larger;
+    font-weight: 420;
+}
+
+.guardado__content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 13%;
+    align-items: center;
+    padding: 0 20px;
+    border-top: 1px solid var(--black);
+}
+
+.guardado__delete{
+    font-size: larger;
+    cursor: pointer;
+}
+
+.mostrar{
+    border: 1px solid var(--black);
+    border-radius: 10px;
+    padding: 8px 15px;
+    color: var(--white);
+    background: #222;
+    cursor: pointer;
+}
+
+.mostrar:hover{
+    background: var(--black);
+}
+
+.selectedA{
+    border: 1px solid var(--black);
+}
+
+.selectedB{
+    border: 1px solid var(--black);
+}

@@ -10,7 +10,11 @@ const filtrado = () => {
   const handleFiltros = () =>{
     setShowFiltros(!showFiltros);
   }
-
+ 
+  const handleCerrar = (value: any) => {
+    setShowFiltros(!value);
+  }
+ 
   return (
     <div className="recommended-residences">
       <div className="titles">
@@ -23,7 +27,7 @@ const filtrado = () => {
           <span>Filtros</span>
         </button>
       </div>
-      {showFiltros && <Filtros/>}
+      {showFiltros && <Filtros cerrar={handleCerrar}/>}
     </div>
   );
 };

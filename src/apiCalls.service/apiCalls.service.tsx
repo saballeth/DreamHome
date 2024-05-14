@@ -14,7 +14,6 @@ class ApiService {
     });
   }
 
-  // Método para realizar una solicitud GET
   async get(url: string) {
     try {
       const response: AxiosResponse = await this.axiosInstance.get(url);
@@ -27,7 +26,6 @@ class ApiService {
     }
   }
 
-  // Método para realizar una solicitud POST
   async post(url: string, data: any) {
     try {
       const response: AxiosResponse = await this.axiosInstance.post(url, data);
