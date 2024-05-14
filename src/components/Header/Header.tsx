@@ -1,7 +1,8 @@
 import * as React from "react";
 import logo from "../../assets/logogid.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./Header.styles.css";
+import { useAuth } from "@/Context/AuthContext";
 
 type loggedType = {
   logged?: boolean;
@@ -12,70 +13,82 @@ type loggedType = {
 type RoutesType = {
   label: string;
   route: string;
-  selected: boolean;
 };
 
-const routes: RoutesType[] = [];
+const publicRoutes: RoutesType[] = [
+  {
+    label: "Inicio",
+    route: "/",
+  },
+  {
+    label: "Sobre nosotros",
+    route: "/aboutUs",
+  },
+  {
+    label: "Servicios",
+    route: "/service",
+  },
+  {
+    label: "Contacto",
+    route: "/contact-us",
+  },
+];
 
-routes.push({  
-  label: "Inicio",
-  route: "/",
-  selected: true,
-});
+const privateRoutes: RoutesType[] = [
+  {
+    label: "Sobre nosotros",
+    route: "/aboutUs",
+  },
+  {
+    label: "Servicios",
+    route: "/service",
+  },
+  {
+    label: "Contacto",
+    route: "/contact-us",
+  },
+];
 
-routes.push({
-  label: "Sobre nosotros",
-  route: "/aboutUs",
-  selected: false,
-});
-
-routes.push({
-  label: "Servicios",
-  route: "/service",
-  selected: false,
-});
-
-routes.push({
-  label: "Contacto",
-  route: "/contact-us",
-  selected: false,
-});
-
-const Header: React.FC<loggedType> = ({ logged, colorNameLogo = false ,colorNameNav = false}: loggedType) => {
+const Header: React.FC<loggedType> = ({ colorNameLogo = false, colorNameNav = false }: loggedType) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { isAuthenticated } = useAuth() as any;
+  const [selectedRoute, setSelectedRoute] = React.useState<string | null>(null);
+  const routesToDisplay = isAuthenticated ? privateRoutes : publicRoutes;
 
-  const itemSelected = (label: string) => {
-    routes.map((item) =>
-      item.label != label ? (item.selected = false) : (item.selected = true)
-    );
-  };
+  React.useEffect(() => {
+    const matchingRoute = routesToDisplay.find(route => route.route === location.pathname);
+    if (matchingRoute) {
+      setSelectedRoute(matchingRoute.label);
+    } else {
+      setSelectedRoute(null);
+    }
+  }, [location.pathname]);
 
   return (
     <header className="Header">
-      <div 
+      <div
         className="Header-logo"
         onClick={() => navigate('/')}
       >
         <img src={logo} alt="DreamHome" className="Header-logo__log" />
         <p className={`${colorNameLogo ? 'Header-logo__text black-text' : 'Header-logo__text'}`}>DreamHome</p>
       </div>
-
       <ul className="Header-navbar">
-        {routes.map(({ label, route, selected }) => (
+        {routesToDisplay.map(({ label, route }) => (
           <li
-          key={label}
+            key={label}
             className={`${
-              selected ? "header-selected" : ""
+              selectedRoute === label ? "header-selected" : ""
             } Header-navbar__item ${colorNameNav ? 'Header-navbar__item_color' : ""}`}
-            onClick={() => {
-              navigate(route);
-              itemSelected(label);
-            }}
+            onClick={() => navigate(route)}
           >
             {label}
           </li>
         ))}
-        <li className="Header-navbar__join" onClick={() => navigate("/login")}>Ingresar</li>
+       <li className="Header-navbar__join" onClick={() => navigate(isAuthenticated ? "/principal" : "/create-account")}>
+          {isAuthenticated ? "Principal" : "Ingresar" }
+        </li>
       </ul>
     </header>
   );

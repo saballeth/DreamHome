@@ -1,8 +1,9 @@
 import Header from "@/components/Principal/Principal_Header/PrincipalHeader"
 import Caracteristicas from '@/components/Caracteristicas/Caracteristicas'
 import Footer from '@/components/Footer/Footer'
+import Provider from "@/Context/Context"
 
-const Caracteristica: React.FC = () =>{
+const caracteristicas: React.FC = () =>{
   
     return (
         <>
@@ -12,4 +13,4 @@ const Caracteristica: React.FC = () =>{
         </>
     )
 }
-export default Caracteristica
+export default caracteristicas

@@ -18,4 +18,9 @@
     border: solid black;
     background-color: var(--lightOrange);
   }
+
+  .interest-card > p{
+    padding: 0;
+    margin: 0;
+  }
   
