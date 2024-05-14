@@ -41,8 +41,7 @@ const Filtrado: React.FC = () => {
 
   const indexOfLastInmueble = pagination.currentPage * pagination.inmueblesPerPage;
   const indexOfFirstInmueble = indexOfLastInmueble - pagination.inmueblesPerPage;
-  // const currentInmuebles = listData.slice(indexOfFirstInmueble, indexOfLastInmueble);
-
+  //const currentInmuebles = listData.slice(indexOfFirstInmueble, indexOfLastInmueble);
   
   const handleFiltros = () =>{
     setShowFiltros(!showFiltros);

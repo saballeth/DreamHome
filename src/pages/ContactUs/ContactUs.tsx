@@ -9,7 +9,7 @@ const ContactUs: React.FC = () =>{
         <>
           <Header colorNameLogo={true} />
           <Contact/> 
-          <Footer/>   
+          <Footer styleC={true}/>   
         </>
     )
 }

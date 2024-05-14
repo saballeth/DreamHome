@@ -9,7 +9,7 @@ const About: React.FC = () =>{
                 <div className="content">
                     <Header logged={false}/>
                     <AboutUs/>
-                    <Footer/>
+                    <Footer styleC={true}/>
                 </div>    
 
         </>

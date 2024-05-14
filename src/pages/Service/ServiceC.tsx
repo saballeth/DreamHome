@@ -8,7 +8,7 @@ const ServiceC: React.FC = () =>{
         <>
             <HeaderPrincipal colorNameLogo={true} colorUbi={true}/>
             <ServicesPage/>
-            <Footer/>
+            <Footer styleC={true}/>
         </>
     )
 }

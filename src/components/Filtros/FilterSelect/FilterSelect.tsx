@@ -42,10 +42,18 @@ export default function FilterSelect({option,save}:{option:string,save:any}) {
         fetchData();
     }, []);
 
-    const interiores:Caracteristica[] = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-interior");
-    const exteriores:Caracteristica[] = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-exterior" || item.tipo_de_caracteristica === "caracteristicas-del-exteriores");
-    const sectores:Caracteristica[] = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-sector");
-    const zonas_comunes:Caracteristica[] = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-zonas-comunes");
+    const interiores = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-interior").map(item => ({
+        nombre: item.nombre
+    }));
+    const exteriores = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-exterior" || item.tipo_de_caracteristica === "caracteristicas-del-exteriores").map(item => ({
+        nombre: item.nombre
+    }));;
+    const sectores = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-sector").map(item => ({
+        nombre: item.nombre
+    }));;
+    const zonas_comunes = listData.filter(item => item.tipo_de_caracteristica === "caracteristicas-del-zonas-comunes").map(item => ({
+        nombre: item.nombre
+    }));;
 
     const obtenerOpciones = (option:any) => {
         switch (option) {

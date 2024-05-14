@@ -5,6 +5,9 @@ import { LuUser } from "react-icons/lu";
 import { PiMapPinLight } from "react-icons/pi";
 import { useAuth } from "@/Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import ButtonGroupUser from "./ButtonGroupUser/ButtonGroupUser";
+import { FaCaretRight } from "react-icons/fa";
 
 type loggedType = {
   colorNameLogo?: boolean;
@@ -15,7 +18,9 @@ type loggedType = {
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
   const auth = useAuth()
   const navigate = useNavigate()
+  const [showOptions, setShowOptions] = useState(false);
   let user;
+
 
   if (typeof auth?.user === 'string') {
     user = JSON.parse(auth?.user);
@@ -35,6 +40,10 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
     navigate('/favoritos');
   }
 
+  const handleShowOptions = () => {
+    setShowOptions(prev => !prev);
+  }
+
   return (
     <div className="header__container">
       <div className="header__imagen" onClick={navigatePrincipal}>
@@ -50,7 +59,13 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
         </div>
         <div className="header__elements-cuenta">
           <MdFavoriteBorder className="favorite" onClick={handleFavorite}/>
-          <LuUser className="cuenta"/>
+          <LuUser className="cuenta" onClick={handleShowOptions}/>
+          {showOptions == true && (
+            <div className="options__user">
+              <FaCaretRight />
+              <ButtonGroupUser/>
+            </div>
+          )}
           <div className="bienvenida">
             <div>Hola,</div>
             <div className="user">{auth?.isAuthenticated ? (capitalizeFirstLetter(user?.nombre)) : ("Mi cuenta")}</div>

@@ -32,6 +32,7 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedFavorites, setSelectedFavorites] = useState<SelectedItem[]>([]);
     const [filtros, setFiltros] = useState({alojamientoA:false,alojamientoB:false,minPrecio:100000,maxPrecio:520000000, habitaciones:'cualquiera',baños:'cualquiera',parqueaderos:'cualquiera',interiores:[],exteriores: [],sectores: [],zonas_comunes: []});
     const [isFiltroSave, setFiltroSave] = useState(false);
+    const [click,setClick] = useState(false);
 
     useEffect(() => {
         const favoritesString = localStorage.getItem('favorites');

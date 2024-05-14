@@ -9,7 +9,7 @@ const AboutC: React.FC = () =>{
                 <div className="content">
                     <HeaderPrincipal/>
                     <AboutUs/>
-                    <Footer/>
+                    <Footer styleC={true}/>
                 </div>    
 
         </>

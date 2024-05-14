@@ -1,6 +1,7 @@
   import { Route, Routes } from 'react-router-dom';
   import PrivateRoute from '@/PrivateRoute/PrivateRoute';
   import { Home } from '@/pages/Home/Index';
+  import HomeC from '@/pages/Home/HomeC';
   import About from '@/pages/About/About';
   import AboutC from '@/pages/About/AboutC';
   import CreateAccount from '@/components/CreateAccount/CreateAccount';
@@ -17,6 +18,7 @@
 function RouterProv() {
   return <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/home" element={<HomeC />} />
             <Route path="/inicio-sesion" element={<Login />} />
             <Route path="/sobre-nosotros" element={<About/>} />
             <Route path="/servicios" element={<Service />} />

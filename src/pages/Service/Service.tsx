@@ -7,7 +7,7 @@ const Service: React.FC = () =>{
         <>
             <Header colorNameLogo={true} colorNameNav={true}/>
             <ServicesPage/>
-            <Footer/>
+            <Footer styleC={true}/>
         </>
     )
 }

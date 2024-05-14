@@ -6,7 +6,7 @@ const MenuItem = ({texto,onClick}: {texto: string, onClick: any}) => {
 
     const handleSelect = () =>{
         setSelect(isSelect===true ? false:true);
-        onClick(texto);
+        onClick(texto.toLowerCase());
     }
     
     return (

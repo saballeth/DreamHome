@@ -11,11 +11,18 @@ import { useSelect } from '@/Context/Context';
 const Filtros = ({ cerrar }: { cerrar: any }) => {
     const [selectedRangePrice, setSelectedRangePrice] = useState({ minValue: 100000, maxValue: 520000000 });
     const [filtros, setLFiltros] = useState({ alojamientoA: false, alojamientoB: false, minPrecio: 100000, maxPrecio: 520000000, habitaciones: 'cualquiera', baños: 'cualquiera', parqueaderos: 'cualquiera', interiores: [], exteriores: [], sectores: [], zonas_comunes: [] });
+    const [isReady, setReady] = useState(false);
     const { setFiltros,setFiltroSave } = useSelect()
 
     const handleChangePrice = (priceRange: SetStateAction<{ minValue: number; maxValue: number; }>) => {
         setSelectedRangePrice(priceRange);
     };
+
+    useEffect(() => {
+        setFiltros({ alojamientoA: false, alojamientoB: false, minPrecio: 100000, maxPrecio: 520000000, habitaciones: 'cualquiera', baños: 'cualquiera', parqueaderos: 'cualquiera', interiores: [], exteriores: [], sectores: [], zonas_comunes: [] });
+        //console.log(filtros);
+        setFiltroSave(false);
+    },[])
 
     const handleHabitaciones = (texto: string) => {
         setLFiltros(prevItems => ({
@@ -38,7 +45,8 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
         }));
     }
 
-    const handleOptionsInteriores = (lista: []) => {
+    const handleOptionsInteriores = (lista:[]) => {
+        console.log(lista);
         setLFiltros(prevItems => ({
             ...prevItems,
             interiores: lista
@@ -85,12 +93,13 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
             sectores: prevItems.sectores,
             zonas_comunes: prevItems.zonas_comunes
         }));
+        setReady(true);
     }
 
     useEffect(()=>{
         setFiltros(filtros);
         setFiltroSave((prev: any) => !prev);
-    },[filtros])
+    },[isReady])
 
     const handleAlojamiento = (type: string) => {
         setLFiltros(prevItems => ({
@@ -103,6 +112,10 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
     const handleCerrar = () => {
         setFiltroSave(false);
         cerrar(true);
+    }
+
+    const handleQuitar = () => {
+        setLFiltros({ alojamientoA: false, alojamientoB: false, minPrecio: 100000, maxPrecio: 520000000, habitaciones: 'cualquiera', baños: 'cualquiera', parqueaderos: 'cualquiera', interiores: [], exteriores: [], sectores: [], zonas_comunes: [] });
     }
 
     return (
@@ -140,7 +153,7 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
                     <div className="content__habitaciones">
                         <h3 className="habitaciones-titulo">Habitaciones</h3>
                         <div className="habitaciones">
-                            <MenuItem texto={"Cualquiera"} onClick={handleHabitaciones} />
+                            <MenuItem key={"cualquiera-1"} texto={"Cualquiera"} onClick={handleHabitaciones} />
                             {lista.map((item, index) => (
                                 <MenuItem key={`key1-${index}`} onClick={handleHabitaciones} texto={item} />
                             ))}
@@ -149,7 +162,7 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
                     <div className="content__banos">
                         <h3 className="banos-titulo">Baños</h3>
                         <div className="banos">
-                            <MenuItem texto={"Cualquiera"} onClick={handleBanos} />
+                            <MenuItem key={"cualquiera-2"} texto={"Cualquiera"} onClick={handleBanos} />
                             {lista.map((item, index) => (
                                 <MenuItem key={`key2-${index}`} texto={item} onClick={handleBanos} />
                             ))}
@@ -158,7 +171,7 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
                     <div className="content__parqueadero">
                         <h3 className="parqueadero-titulo">Parqueaderos</h3>
                         <div className="parqueaderos">
-                            <MenuItem texto={"Cualquiera"} onClick={handleParqueaderos} />
+                            <MenuItem key={"cualquiera-3"} texto={"Cualquiera"} onClick={handleParqueaderos} />
                             {lista.map((item, index) => (
                                 <MenuItem key={`key3-${index}`} texto={item} onClick={handleParqueaderos} />
                             ))}
@@ -170,7 +183,7 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
                     <div className="interiores">
                         <h3 className='caracteristicas__subtitulo'>Interiores</h3>
                         <FilterSelect save={handleOptionsInteriores} option={"interior"} />
-                    </div>
+                    </div>  
                     <div className="exterior">
                         <h3 className='caracteristicas__subtitulo'>Exteriores</h3>
                         <FilterSelect save={handleOptionsExteriores} option={"exterior"} />
@@ -186,7 +199,7 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
                 </div>
             </div>
             <div className="guardado__content">
-                <div className="guardado__delete">Quitar Todos</div>
+                <div className="guardado__delete" onClick={handleQuitar}>Quitar Todos</div>
                 <div className="guardado__mostrar" onClick={handleSave}>
                     <div className="mostrar">Mostrar</div>
                 </div>

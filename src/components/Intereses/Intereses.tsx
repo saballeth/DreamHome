@@ -35,9 +35,6 @@ const Interesespage: React.FC = () =>{
           interes: interest,
           usuario: auth.user.username,
         }); 
-        if (response){
-          console.log(`Se agregó el interés "${interest}" al usuario.`);
-        }
       }
       navigate("/principal");
     } catch (error) {

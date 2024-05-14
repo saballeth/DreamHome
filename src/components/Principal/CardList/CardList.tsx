@@ -64,7 +64,7 @@ const CardList: React.FC = () => {
 
     const hasActiveFilters = (
       filtros.habitaciones !== 'cualquiera' ||
-      filtros.minPrecio === 100000 ||
+      filtros.minPrecio > 100000 ||
       filtros.maxPrecio < 520000000 ||
       filtros.baños !== 'cualquiera' ||
       filtros.parqueaderos !== 'cualquiera' ||
@@ -75,27 +75,26 @@ const CardList: React.FC = () => {
   );
 
   if (!hasActiveFilters) {
-      console.log("No hay filtros activos. Mostrando todos los elementos.");
+      //console.log("No hay filtros activos. Mostrando todos los elementos.");
       return listData;
   }
 
   // console.log(filtros)
   let listFiltrado: any[] = listData;
 
-  // console.log(listData)
   if (filtros.habitaciones !== 'cualquiera'){
-    // console.log("hola");
-    listFiltrado = listData.filter(item => item.habitaciones === filtros.habitaciones);
+    //console.log(filtros.habitaciones);
+    listFiltrado = listData.filter(item => item.habitaciones == filtros.habitaciones);
   }
-  // console.log(listFiltrado)
+  //console.log(listFiltrado)
 
   if (filtros.baños !== 'cualquiera'){
     // console.log("hola2");
-    listFiltrado = listFiltrado?.filter(item => item.baños === filtros.baños);
+    listFiltrado = listFiltrado?.filter(item => item.baños == filtros.baños);
   }
   if (filtros.parqueaderos !== 'cualquiera'){
     // console.log("hola3");
-    listFiltrado = listFiltrado?.filter(item => item.parqueaderos === filtros.parqueaderos);
+    listFiltrado = listFiltrado?.filter(item => item.parqueaderos == filtros.parqueaderos);
   }
   if (filtros.minPrecio > 100000){
     // console.log("hola4");
@@ -103,23 +102,32 @@ const CardList: React.FC = () => {
   }
   if(filtros.maxPrecio < 520000000){
     // console.log("hola5");
-    listFiltrado = listFiltrado?.filter(item => item.precio <= filtros.maxPrecio);
+    listFiltrado = listFiltrado?.filter(item => item.precio <= filtros.maxPrecio);    
   }
+
   if(filtros.exteriores.length !== 0){
-    // console.log("hola6");
-    listFiltrado = listFiltrado?.filter(item => filtros.exteriores.every((exteriorItem: any) => item.caracteristicas_exterior.includes(exteriorItem)))
+    listFiltrado = listFiltrado?.filter(item => filtros.exteriores.every((exterior: any) => {
+      return item.caracteristicas_exterior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === exterior.nombre);
+    }));
   }
+  //console.log(listFiltrado)
   if(filtros.interiores.length !== 0){
     // console.log("hola7");
-    listFiltrado = listFiltrado?.filter(item => filtros.interiores.every((interiorItem: any) => item.caracteristicas_interior.includes(interiorItem)))
+    listFiltrado = listFiltrado?.filter(item => filtros.interiores.every((interior: any) => {
+      return item.caracteristicas_interior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === interior.nombre);
+    }));
   }
   if(filtros.sectores.length !== 0){
     // console.log("hola8");
-    listFiltrado = listFiltrado?.filter(item => filtros.sectores.every((sectorItem: any) => item.caracteristicas_sector.includes(sectorItem)))
+    listFiltrado = listFiltrado?.filter(item => filtros.sectores.every((sectorItem: any) => {
+      return item.caracteristicas_sector.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === sectorItem.nombre);
+    }));
   }
   if(filtros.zonas_comunes.length !== 0){
     // console.log("hola9");
-    listFiltrado = listFiltrado?.filter(item => filtros.zonas_comunes.every((zonaItem: any) => item.caracteristicas_zona_comun.includes(zonaItem)))
+    listFiltrado = listFiltrado?.filter(item => filtros.zonas_comunes.every((zonaItem: any) => {
+      return item.caracteristicas_zona_comun.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === zonaItem.nombre);
+    }));
   }
 
   return listFiltrado;
@@ -153,9 +161,14 @@ const CardList: React.FC = () => {
       {selectUbi !== null && filteredData?.map((card) => (
         selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false} />
       ))}
-      {!isCardCity && (
+      {selectUbi !== null && !isCardCity && (
         <div className="card__not-found">
           <p>No hay Inmuebles con la ciudad Seleccionada</p>
+        </div>
+      )}  
+      {filteredData.length == 0 && (
+        <div className="card__not-found">
+          <p>No hay Inmuebles con los filtros seleccionados</p>
         </div>
       )}
     </div>

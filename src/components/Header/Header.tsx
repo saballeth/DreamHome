@@ -2,7 +2,6 @@ import * as React from "react";
 import logo from "../../assets/logogid.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Header.styles.css";
-import { useAuth } from "@/Context/AuthContext";
 
 type loggedType = {
   logged?: boolean;
@@ -36,6 +35,10 @@ const publicRoutes: RoutesType[] = [
 
 const privateRoutes: RoutesType[] = [
   {
+    label: "Inicio",
+    route: "/",
+  },
+  {
     label: "Sobre nosotros",
     route: "/sobre-nosotros",
   },
@@ -52,9 +55,8 @@ const privateRoutes: RoutesType[] = [
 const Header: React.FC<loggedType> = ({ colorNameLogo = false, colorNameNav = false }: loggedType) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useAuth() as any;
   const [selectedRoute, setSelectedRoute] = React.useState<string | null>(null);
-  const routesToDisplay = isAuthenticated ? privateRoutes : publicRoutes;
+  const routesToDisplay = publicRoutes;
 
   React.useEffect(() => {
     const matchingRoute = routesToDisplay.find(route => route.route === location.pathname);
@@ -64,6 +66,7 @@ const Header: React.FC<loggedType> = ({ colorNameLogo = false, colorNameNav = fa
       setSelectedRoute(null);
     }
   }, [location.pathname]);
+
 
   return (
     <header className="Header">
@@ -86,8 +89,8 @@ const Header: React.FC<loggedType> = ({ colorNameLogo = false, colorNameNav = fa
             {label}
           </li>
         ))}
-       <li className="Header-navbar__join" onClick={() => navigate(isAuthenticated ? "/principal" : "/create-account")}>
-          {isAuthenticated ? "Principal" : "Ingresar" }
+       <li className="Header-navbar__join" onClick={() => navigate("/inicio-sesion")}>
+          Ingresar
         </li>
       </ul>
     </header>
