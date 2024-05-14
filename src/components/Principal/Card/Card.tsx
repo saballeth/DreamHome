@@ -22,9 +22,9 @@ function Card({ data, favorite }: CardProps) {
   const [isFavorite, setFavorite] = useState(false);
   const {toggleFavorite,selectedFavorites} = useSelect();
 
-  const handle = () =>{
+  const handle = () => {
     navigate(`/caracteristica/${id}`)
-  }
+  };
 
   useEffect(()=>{
     const itemIndex = selectedFavorites.findIndex(item => item.id === id);
@@ -63,6 +63,6 @@ function Card({ data, favorite }: CardProps) {
       </div>
     </div>
   );
-}
+};
 
 export default Card;

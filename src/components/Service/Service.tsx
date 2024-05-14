@@ -19,9 +19,9 @@ const ServicesPage: React.FC = () => {
         </p>
 
         <div className="Service_button-container">
-          <a href="#" className="Service_orange-button">
+          <p className="Service_orange-button">
             <strong className='hundred'>+1000</strong>  <br /> casas
-          </a>
+          </p>
         </div>
       </div>
 

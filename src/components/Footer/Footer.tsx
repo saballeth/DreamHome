@@ -1,26 +1,25 @@
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import './Footer.css';
-import AboutUs from '@/components/AboutUs/AboutUs';
 
 const Footer = () => {
   const navigate = useNavigate();
 
   const handleContact = async () => {
-    navigate("/create-account");
+    navigate("/c_contactanos");
   };
 
   return (
     <footer className="footer__container">
       <div className='footer__container-logo'>
         <img src="/src/assets/logogid.png" alt="" />
-        <a href="/principal">DreamHome</a>
+        <p className='footer__texto-logo'>DreamHome</p>
       </div>
       <div className="footer__container-items">
-        <a className="item" href="/aboutusC">Sobre Nosotros</a>
-        <a className="item" href="/serviceC">Servicios</a>
+        <a className="item" href="/c_sobre-nosotros">Sobre Nosotros</a>
+        <a className="item" href="/c_servicios">Servicios</a>
       </div>
       <div className="footer__container-button">
-        <h3 className='footer__text'>Let's do it! -</h3>
+        <h3 className='footer__text'>Vamos hacerlo! -</h3>
         <button onClick={handleContact} className="button__footer">Contactanos</button>
       </div>
     </footer>

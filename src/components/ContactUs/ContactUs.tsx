@@ -1,11 +1,8 @@
-import Header from "@/components/Header/Header";
 import "./ContactUs.styles.css";
 
 const Contact: React.FC = () =>{
   return (
     <div className="ContactUs">
-      <Header colorNameLogo={true} />
-
       <div className="ContactUs-container">
         <div className="ContactUs-container__text">
           <div className="ContactUs-container__text-text">

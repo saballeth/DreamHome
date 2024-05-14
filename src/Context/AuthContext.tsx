@@ -55,6 +55,16 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            setToken(storedToken);
+            setIsAuthenticated(true);
+        }
+    }, []);
+
+    
+
     const loginUser = async (data: any) => {
         try {
             const response = await apiService.post('/api/login/', {

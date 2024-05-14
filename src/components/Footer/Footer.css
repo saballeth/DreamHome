@@ -18,10 +18,12 @@
   height: 45px;
 }
 
-.footer__container-logo > a{
+.footer__texto-logo{
   color: var(--white);
   font-size: larger;
   text-decoration: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer__container-items{
@@ -46,6 +48,8 @@
 }
 .footer__text{
   color: var(--white);
+  font-size: large;
+  margin: 0;
 }
 
 .button__footer {

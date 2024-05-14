@@ -52,7 +52,7 @@ const Interesespage: React.FC = () =>{
 
   return (
     <div className="container__principal">
-      <div className="intereses__titulo">Bienvenido a DreamHome, Ingresa tus preferencias hacia los inmuebles.</div>
+      <div className="intereses__titulo">Bienvenido a DreamHome, Ingresa tus preferencias.</div>
       <div className='interest-container'>
         <div className="interest-panel">
           {Interests.intereses.map((interest: Intereses, index: number) => (

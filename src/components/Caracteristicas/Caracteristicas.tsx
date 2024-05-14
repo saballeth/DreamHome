@@ -5,15 +5,17 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import './Caracteristicas.css';
+import Rating from './Rating/Rating';
+import CommentBox from './CommentBox/CommentBox';
 
 
 function Caracteristicas() {
-  const { id } = useParams();
+  const {id} = useParams();
   const [inmuebleData, setData] = useState<Inmueble | null>(null)
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
   const caracteristicasPorTipo: { [tipo: string]: any[] } = {};
-
+  const [isCalificacion,setCalificacion] = useState(false);
   const divStyle = {
     padding: 0,
     margin: 0
@@ -110,6 +112,10 @@ function Caracteristicas() {
     }
   }
 
+  const handleCalificacion = (value: boolean | ((prevState: boolean) => boolean)) => {
+    setCalificacion(value);
+  }
+
   if (!inmuebleData) {
     return (
       <div className="spinner__container_caracteristica">
@@ -174,6 +180,14 @@ function Caracteristicas() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="container__calificacion">
+        <Rating click={handleCalificacion}/>
+        {isCalificacion && (
+          <div className='container__comentarios'>
+            <CommentBox/>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import ServicesPage from "@/components/Service/Service"
 import HeaderPrincipal from '@/components/Principal/Principal_Header/PrincipalHeader'
+import Footer from "@/components/Footer/Footer";
 
 const ServiceC: React.FC = () =>{
   
@@ -7,6 +8,7 @@ const ServiceC: React.FC = () =>{
         <>
             <HeaderPrincipal colorNameLogo={true} colorUbi={true}/>
             <ServicesPage/>
+            <Footer/>
         </>
     )
 }

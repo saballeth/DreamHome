@@ -6,9 +6,9 @@ import { useAuth } from "@/Context/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
 import { useSelect } from "@/Context/Context";
 
-function CardList() {
+const CardList: React.FC = () => {
   const auth = useAuth();
-  const apiService = new ApiService(auth.token)
+  const apiService = new ApiService(auth.token);
   const { selectUbi, filtros, isFiltroSave } = useSelect();
 
   interface Inmueble {
@@ -26,7 +26,9 @@ function CardList() {
     caracteristicas_zona_comun: any,
   }
 
-  const [listData, setListData] = useState<Inmueble[]>([])
+  const [listData, setListData] = useState<Inmueble[]>([]);
+  const [pageSize, setPageSize] = useState(10); 
+  const [currentPage, setCurrentPage] = useState(1); 
   const [isCardCity, setCardCity] = useState(true);
 
   useEffect(() => {
@@ -77,61 +79,48 @@ function CardList() {
       return listData;
   }
 
-  console.log(filtros)
-  let listFiltrado: any[] = [];
+  // console.log(filtros)
+  let listFiltrado: any[] = listData;
 
+  // console.log(listData)
   if (filtros.habitaciones !== 'cualquiera'){
-    console.log("hola");
+    // console.log("hola");
     listFiltrado = listData.filter(item => item.habitaciones === filtros.habitaciones);
   }
+  // console.log(listFiltrado)
+
   if (filtros.baños !== 'cualquiera'){
-    console.log("hola2");
+    // console.log("hola2");
     listFiltrado = listFiltrado?.filter(item => item.baños === filtros.baños);
   }
   if (filtros.parqueaderos !== 'cualquiera'){
-    console.log("hola3");
+    // console.log("hola3");
     listFiltrado = listFiltrado?.filter(item => item.parqueaderos === filtros.parqueaderos);
   }
   if (filtros.minPrecio > 100000){
-    console.log("hola4");
+    // console.log("hola4");
     listFiltrado = listFiltrado?.filter(item => item.precio >= filtros.minPrecio);
   }
-
   if(filtros.maxPrecio < 520000000){
-    console.log("hola5");
+    // console.log("hola5");
     listFiltrado = listFiltrado?.filter(item => item.precio <= filtros.maxPrecio);
   }
   if(filtros.exteriores.length !== 0){
-    console.log("hola6");
+    // console.log("hola6");
     listFiltrado = listFiltrado?.filter(item => filtros.exteriores.every((exteriorItem: any) => item.caracteristicas_exterior.includes(exteriorItem)))
   }
   if(filtros.interiores.length !== 0){
-    console.log("hola7");
+    // console.log("hola7");
     listFiltrado = listFiltrado?.filter(item => filtros.interiores.every((interiorItem: any) => item.caracteristicas_interior.includes(interiorItem)))
   }
   if(filtros.sectores.length !== 0){
-    console.log("hola8");
+    // console.log("hola8");
     listFiltrado = listFiltrado?.filter(item => filtros.sectores.every((sectorItem: any) => item.caracteristicas_sector.includes(sectorItem)))
   }
   if(filtros.zonas_comunes.length !== 0){
-    console.log("hola9");
+    // console.log("hola9");
     listFiltrado = listFiltrado?.filter(item => filtros.zonas_comunes.every((zonaItem: any) => item.caracteristicas_zona_comun.includes(zonaItem)))
   }
-
-  // const filtered = listData.filter(item => {
-  //   const isFiltered = (
-  //     (filtros.habitaciones === 'cualquiera' || item.habitaciones === filtros.habitaciones) &&
-  //     (filtros.baños === 'cualquiera' || item.baños === filtros.baños) &&
-  //     (filtros.parqueaderos === 'cualquiera' || item.parqueaderos === filtros.parqueaderos) &&
-  //     (filtros.minPrecio === 100000 || item.precio >= filtros.minPrecio) &&
-  //     (filtros.maxPrecio < 520000000 || item.precio <= filtros.maxPrecio) &&
-  //     (filtros.exteriores.length === 0 || filtros.exteriores.every((exteriorItem: any) => item.caracteristicas_exterior.includes(exteriorItem))) &&
-  //     (filtros.interiores.length === 0 || filtros.interiores.every((interiorItem: any) => item.caracteristicas_interior.includes(interiorItem))) &&
-  //     (filtros.sectores.length === 0 || filtros.sectores.every((sectorItem: any) => item.caracteristicas_sector.includes(sectorItem))) &&
-  //     (filtros.zonas_comunes.length === 0 || filtros.zonas_comunes.every((zonaItem: any) => item.caracteristicas_zona_comun.includes(zonaItem)))
-  //   );
-    // return isFiltered;
-  // });    
 
   return listFiltrado;
 }, [listData, isFiltroSave]);
@@ -154,6 +143,7 @@ function CardList() {
       </div>
     )
   }
+
 
   return (
     <div className="card-list wrapper">

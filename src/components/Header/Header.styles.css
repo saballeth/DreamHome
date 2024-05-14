@@ -14,10 +14,13 @@
 
 .Header-logo {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-evenly;
+  align-items: flex-start;
   font-size: 25px;
   cursor: pointer;
+  
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .Header-logo__log {

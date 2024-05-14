@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header/Header";
 import "./CreateAccount.styles.css";
 import ApiService from "@/apiCalls.service/apiCalls.service";
-import AlertExito from '@/components/Alert/AlertExito';
-import { useAuth } from '@/Context/AuthContext';
 
 const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
-  const auth = useAuth();
+  const [usernameExists, setUsernameExists] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState({
     email: "",
@@ -19,9 +17,9 @@ const CreateAccount: React.FC = () => {
     password: "",
     repeatPassword: ""
   });
-
   const isValidEmail = (email: string) => {
-    return /\S+@\S+\.\S+/.test(email);
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
   };
 
   const [formData, setFormData] = useState({
@@ -35,15 +33,23 @@ const CreateAccount: React.FC = () => {
   });
 
   const apiService = new ApiService();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let error = "";
+    
 
     switch (name) {
       case "username":
         error = value.includes(" ") ? "El nombre de usuario no puede contener espacios" : "";
+        if (value.trim() !== "") {
+          apiService.get(`/api/usuarios/${value}`).then((response) => {
+            setUsernameExists(response.data.exists);
+            error = response.data.exists ? "Este nombre de usuario ya está en uso" : "";
+            setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+          });
+        }
         break;
+
       case "name":
         error = value.includes(" ") ? "El nombre no puede contener espacios" : "";
         break;
@@ -74,29 +80,33 @@ const CreateAccount: React.FC = () => {
       [name]: value
     }));
   };
-
+  
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormSubmitted(true);
+    
 
     if (Object.values(errors).some(error => error !== "")) {
       return;
     }
+      
     try {
-      auth.registerUser(formData);
-      // const response = await apiService.post('/api/register/',{ 
-      //   email: formData.email,
-      //   nombre: formData.name,
-      //   apellido: formData.lastName,
-      //   edad: formData.age,
-      //   username: formData.username,
-      //   password: formData.password
-      // });
-      // alert('Registro Exitoso :) ');
-      // navigate("/intereses");
+      const response = await apiService.post('/api/register/',{ 
+        email: formData.email,
+        nombre: formData.name,
+        apellido: formData.lastName,
+        edad: formData.age,
+        username: formData.username,
+        password: formData.password
+    });
+      console.log('Registro exitoso:', response);
+      navigate("/intereses");
     } catch (error) {
-      alert('Error en el registro');
+      console.error('Error en el registro:', error);
     }
+
+    
   };
   return (
     <div className="CreateAccount">
@@ -161,6 +171,7 @@ const CreateAccount: React.FC = () => {
             required
           />
           {errors.username && <p className="error-message">{errors.username}</p>}
+          {usernameExists && !errors.username && (<p className="error-message">Este nombre de usuario ya está en uso</p>)}
           <div className="CreateAccount-container__form-columns">
             <input
               type="password"
@@ -186,7 +197,7 @@ const CreateAccount: React.FC = () => {
           <button  type="submit" className="CreateAccount-container__form-buttom">
             Registrarse
           </button>
-          {formSubmitted && Object.values(errors).some(error => error !== "") && (
+          {formSubmitted && usernameExists && Object.values(errors).some(error => error !== "") && (
             <p className="warning-message">Por favor, complete todos los campos correctamente antes de enviar el formulario.</p>
           )}
         </form>
