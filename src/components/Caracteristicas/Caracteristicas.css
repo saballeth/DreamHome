@@ -6,8 +6,9 @@
     align-items: start;
     padding: 9% 50px 0 50px;
     flex-direction: column;
-    overflow-y: clip;
+    /* overflow-y: clip; */
     margin-bottom: 30%;
+    gap: 20px;
 }
 
 .info__titulo {
@@ -36,7 +37,6 @@
 .container__descripcion {
     display: flex;
     flex-direction: column;
-    width: 60%;
     margin-top: 20px
 }
 
@@ -63,11 +63,11 @@
 
 .titulo-caracteristica {
     color: #898585;
-    font-size: x-large;
+    font-size: larger;
 }
 
 .dato-caracteristica {
-    font-size: x-large;
+    font-size: large;
     font-style: italic;
     font-weight: 200;
     border: 1px solid;
@@ -115,4 +115,8 @@
     flex-wrap: wrap;
     gap: 40px;
     margin-top: 10px;
+}
+
+.container__calificacion{
+    margin-top: 50px;
 }

@@ -23,7 +23,7 @@ function Card({ data, favorite }: CardProps) {
   const {toggleFavorite,selectedFavorites} = useSelect();
 
   const handle = () => {
-    console.log("Datos: ", data);
+    navigate(`/caracteristica/${id}`)
   };
 
   useEffect(()=>{
@@ -34,9 +34,7 @@ function Card({ data, favorite }: CardProps) {
   const handleSelect = () => {
     toggleFavorite(data)
   };
-
-  console.log(selectedFavorites)
-
+  
   return (
     <div className="card">
       { favorite ? (

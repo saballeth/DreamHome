@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
   background-color: var(--white);
   margin: 0 6%;
 }
@@ -56,10 +56,6 @@
 .hundred {
   font-size: 30px;
   margin-left: -5px;
-}
-
-.Service_orange-button:hover {
-  background-color: #b35834;
 }
 
 .Service_img-container {

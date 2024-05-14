@@ -1,10 +1,9 @@
-import * as React from "react";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Hero.styles.css";
 
-const Hero: React.FC = () => {
+const Hero = ({logged=false}:any) => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
@@ -15,8 +14,8 @@ const Hero: React.FC = () => {
         <p className="Hero-container__text">Bienvenido a</p>
         <h1 className="Hero-container__title">DREAMHOME</h1>
         <p className="Hero-container__text">Sitio Web Inmobiliario</p>
-        <a href="/login" className="Hero-container__button">
-            Ingresar
+        <a href={logged ? "/principal":"/inicio-sesion"} className="Hero-container__button">
+            {logged ? "Principal":"Ingresar"}
           </a>
       </div>
     </div>

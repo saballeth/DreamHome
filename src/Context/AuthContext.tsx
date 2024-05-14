@@ -7,20 +7,53 @@ interface AuthContextProps {
     token: string,
     refresh: string,
     user: any,
-    loginUser: (data:any) => void;
-    registerUser: (data:any) => void;
+    loginUser: (data: any) => void;
+    registerUser: (data: any) => void;
     logoutUser: () => void;
+    refreshToken: () => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
-    const [user, setUser] = useState(localStorage.getItem("user") || null);
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem("user");    
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
     const navigate = useNavigate();
     const apiService = new ApiService();
+    let userData: any = {};
+
+    const refreshToken = async () => {
+        try {
+            if (typeof user === 'string') {
+                userData = JSON.parse(user);
+            } else {
+                userData = user;
+            }
+            const response = await apiService.post('/token/refresh', { refreshToken: userData?.refresh });
+            setToken(response.access);
+            setRefresh(response.refresh);
+            localStorage.setItem("token", response.access);
+            localStorage.setItem("refresh", response.refresh);
+            userData.access = response.access;
+            userData.refresh = response.refresh;
+            setUser(userData);
+        } catch (error) {
+            console.error(error);
+            setUser(null);
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            refreshToken();
+        }, 120 * 60 * 1000)
+        return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
@@ -43,13 +76,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 setToken(response.access);
                 setRefresh(response.refresh)
                 setIsAuthenticated(true)
-                localStorage.setItem("user",JSON.stringify(response.user))
+                localStorage.setItem("user", JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
-                if (response.user?.intereses?.length > 0){
-                    console.log(response.user);
+                if (response.user?.intereses?.length > 0) {
+                    // console.log(response.user);
                     navigate("/principal");
-                }else{
+                } else {
                     navigate("/intereses");
                 }
             }
@@ -60,7 +93,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
     const registerUser = async (data: any) => {
         try {
-            const response = await apiService.post('/api/register/',{ 
+            const response = await apiService.post('/api/register/', {
                 email: data.email,
                 nombre: data.name,
                 apellido: data.lastName,
@@ -68,12 +101,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 username: data.username,
                 password: data.password
             });
-            if (response){
+            if (response) {
                 setUser(response.user);
                 setToken(response.access);
                 setRefresh(response.refresh)
                 setIsAuthenticated(true)
-                localStorage.setItem("user",JSON.stringify(response.user))
+                localStorage.setItem("user", JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 alert('Registro Exitoso :) ');
@@ -95,18 +128,18 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         navigate("/login");
     };
     return (
-        <AuthContext.Provider value={{ isAuthenticated, token,refresh, user, loginUser,registerUser, logoutUser }}>
+        <AuthContext.Provider value={{ isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-export default AuthProvider;
+    export default AuthProvider;
 
-export const useAuth = (): AuthContextProps => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context; 
-};
+    export const useAuth = (): AuthContextProps => {
+        const context = useContext(AuthContext);
+        if (!context) {
+            throw new Error('useAuth must be used within an AuthProvider');
+        }
+        return context;
+    };

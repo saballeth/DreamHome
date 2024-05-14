@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header/Header";
 import "./CreateAccount.styles.css";
 import ApiService from "@/apiCalls.service/apiCalls.service";
+import { useAuth } from '@/Context/AuthContext';
 
 const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
   const [usernameExists, setUsernameExists] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState({
@@ -90,23 +92,7 @@ const CreateAccount: React.FC = () => {
     if (Object.values(errors).some(error => error !== "")) {
       return;
     }
-      
-    try {
-      const response = await apiService.post('/api/register/',{ 
-        email: formData.email,
-        nombre: formData.name,
-        apellido: formData.lastName,
-        edad: formData.age,
-        username: formData.username,
-        password: formData.password
-    });
-      console.log('Registro exitoso:', response);
-      navigate("/intereses");
-    } catch (error) {
-      console.error('Error en el registro:', error);
-    }
-
-    
+    auth.registerUser(formData);
   };
   return (
     <div className="CreateAccount">
