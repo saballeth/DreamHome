@@ -3,17 +3,33 @@ import Spinner from '../Spinner/Spinner';
 import './Favorites.css'
 import Card from '../Principal/Card/Card';
 import { TbMoodSad } from "react-icons/tb";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "@/Context/AuthContext";
+import ApiService from "@/apiCalls.service/apiCalls.service";
 
 const Favorites = () => {
-  const { selectedFavorites } = useSelect()
-  const [isLoading, setIsLoading] = useState(true);
+  const { selectedFavorites} = useSelect()
+  const [isLoading, setIsLoading] = useState(false);
+  const auth = useAuth();
+  const apiService = new ApiService(auth.token)
 
   useEffect(() => {
-    if (selectedFavorites.length > 0) {
-      setIsLoading(false);
-    }
+    const fetchData = async () => {
+      setIsLoading(true); // Establecer isLoading a true antes de cargar los datos
+      try {
+        // Esperar a que todas las llamadas se completen antes de establecer isLoading en false
+        await Promise.all(selectedFavorites.map(async (item) => {
+          await auth.saveInmueblePorUsuario(item);
+        }));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false); // Establecer isLoading a false después de cargar los datos
+      }
+    };
+    fetchData();
   }, [selectedFavorites]);
+
 
   if (isLoading) {
     return (
@@ -41,10 +57,6 @@ const Favorites = () => {
           <p className="zero-titulo">No hay Favoritos</p>
         </div>
       )}
-      {/* {cantidadCoincidentes === 0 && (
-          
-        )} */}
-
     </div>
   );
 }

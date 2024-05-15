@@ -13,6 +13,7 @@ const CardList: React.FC = () => {
 
   interface Inmueble {
     id: number;
+    url: string;
     nombre: string;
     precio: number;
     ciudad: any;
@@ -37,6 +38,7 @@ const CardList: React.FC = () => {
         const response = await apiService.get('/api/inmuebles/');
         const inmueblesData: Inmueble[] = response.map((item: any) => ({
           id: item.id,
+          url: item.url,
           nombre: item.nombre,
           precio: item.precio,
           ciudad: item.ciudad,
@@ -75,33 +77,23 @@ const CardList: React.FC = () => {
   );
 
   if (!hasActiveFilters) {
-      //console.log("No hay filtros activos. Mostrando todos los elementos.");
       return listData;
   }
 
-  // console.log(filtros)
   let listFiltrado: any[] = listData;
-
   if (filtros.habitaciones !== 'cualquiera'){
-    //console.log(filtros.habitaciones);
     listFiltrado = listData.filter(item => item.habitaciones == filtros.habitaciones);
   }
-  //console.log(listFiltrado)
-
   if (filtros.baños !== 'cualquiera'){
-    // console.log("hola2");
     listFiltrado = listFiltrado?.filter(item => item.baños == filtros.baños);
   }
   if (filtros.parqueaderos !== 'cualquiera'){
-    // console.log("hola3");
     listFiltrado = listFiltrado?.filter(item => item.parqueaderos == filtros.parqueaderos);
   }
   if (filtros.minPrecio > 100000){
-    // console.log("hola4");
     listFiltrado = listFiltrado?.filter(item => item.precio >= filtros.minPrecio);
   }
   if(filtros.maxPrecio < 520000000){
-    // console.log("hola5");
     listFiltrado = listFiltrado?.filter(item => item.precio <= filtros.maxPrecio);    
   }
 
@@ -110,30 +102,25 @@ const CardList: React.FC = () => {
       return item.caracteristicas_exterior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === exterior.nombre);
     }));
   }
-  //console.log(listFiltrado)
   if(filtros.interiores.length !== 0){
-    // console.log("hola7");
     listFiltrado = listFiltrado?.filter(item => filtros.interiores.every((interior: any) => {
       return item.caracteristicas_interior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === interior.nombre);
     }));
   }
   if(filtros.sectores.length !== 0){
-    // console.log("hola8");
     listFiltrado = listFiltrado?.filter(item => filtros.sectores.every((sectorItem: any) => {
       return item.caracteristicas_sector.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === sectorItem.nombre);
     }));
   }
   if(filtros.zonas_comunes.length !== 0){
-    // console.log("hola9");
     listFiltrado = listFiltrado?.filter(item => filtros.zonas_comunes.every((zonaItem: any) => {
       return item.caracteristicas_zona_comun.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === zonaItem.nombre);
     }));
   }
 
   return listFiltrado;
-}, [listData, isFiltroSave]);
+  }, [listData, isFiltroSave]);
 
-  // console.log(filteredData);
 
   useEffect(() => {
     const hasCards = filteredData?.some((card) =>
@@ -144,6 +131,7 @@ const CardList: React.FC = () => {
     }
   }, [selectUbi, filteredData]);
 
+
   if (!listData.length) {
     return (
       <div className="spinner__container__cardList">
@@ -151,7 +139,6 @@ const CardList: React.FC = () => {
       </div>
     )
   }
-
 
   return (
     <div className="card-list wrapper">

@@ -2,6 +2,7 @@ import React, {createContext, useState, useContext, useEffect} from "react";
 
 type SelectedItem = {
     id: number;
+    url: string;
     selected: boolean;
     nombre: string;
     precio: number;
@@ -10,6 +11,7 @@ type SelectedItem = {
 interface DataProps{
     id: number;
     precio: number;
+    url:string;
     nombre: string;
 };
 
@@ -32,7 +34,6 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedFavorites, setSelectedFavorites] = useState<SelectedItem[]>([]);
     const [filtros, setFiltros] = useState({alojamientoA:false,alojamientoB:false,minPrecio:100000,maxPrecio:520000000, habitaciones:'cualquiera',baños:'cualquiera',parqueaderos:'cualquiera',interiores:[],exteriores: [],sectores: [],zonas_comunes: []});
     const [isFiltroSave, setFiltroSave] = useState(false);
-    const [click,setClick] = useState(false);
 
     useEffect(() => {
         const favoritesString = localStorage.getItem('favorites');
@@ -53,7 +54,7 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                 return updatedFavorites;
             } else {
                 // Si el elemento no está en la lista, se selecciona
-                const updatedFavorites = [...prevSelectedItems, { id:data.id, selected: true, nombre:data.nombre, precio:data.precio }];
+                const updatedFavorites = [...prevSelectedItems, { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }];
                 localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
                 return updatedFavorites;
             }
@@ -61,7 +62,7 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     };
 
     return (
-        <Context.Provider value={{ selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites ,setSelectedFavorites}}>
+        <Context.Provider value={{selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites ,setSelectedFavorites}}>
             {children}
         </Context.Provider>
     );

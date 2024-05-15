@@ -59,13 +59,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
         </div>
         <div className="header__elements-cuenta">
           <MdFavoriteBorder className="favorite" onClick={handleFavorite}/>
-          <LuUser className="cuenta" onClick={handleShowOptions}/>
-          {showOptions == true && (
-            <div className="options__user">
-              <FaCaretRight />
-              <ButtonGroupUser/>
-            </div>
-          )}
+          <ButtonGroupUser/>
           <div className="bienvenida">
             <div>Hola,</div>
             <div className="user">{auth?.isAuthenticated ? (capitalizeFirstLetter(user?.nombre)) : ("Mi cuenta")}</div>

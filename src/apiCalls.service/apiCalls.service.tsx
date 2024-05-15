@@ -36,6 +36,19 @@ class ApiService {
           throw new Error('Error executing POST request');
     }
   }
+
+  async update(url: string, data: any) {
+    try {
+      const response: AxiosResponse = await this.axiosInstance.put(url, data);
+      return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+          this.handleError(error as AxiosError); 
+        }
+        return error;
+    }
+  }
+
   private handleError(error: AxiosError) {
     if (error.response) {
       console.error('Request failed with response:', error.response.data);

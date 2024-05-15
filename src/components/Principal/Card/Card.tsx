@@ -10,6 +10,7 @@ import { FaSquareMinus } from "react-icons/fa6";
 interface CardProps {
   data: {
     id: number;
+    url: string;
     precio: number;
     nombre: string;
   };
@@ -17,7 +18,7 @@ interface CardProps {
 }
 
 function Card({ data, favorite }: CardProps) {
-  const {id, precio, nombre } = data;
+  const {id, precio, nombre, url } = data;
   const navigate = useNavigate();
   const [isFavorite, setFavorite] = useState(false);
   const {toggleFavorite,selectedFavorites} = useSelect();

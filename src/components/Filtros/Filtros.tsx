@@ -46,7 +46,6 @@ const Filtros = ({ cerrar }: { cerrar: any }) => {
     }
 
     const handleOptionsInteriores = (lista:[]) => {
-        console.log(lista);
         setLFiltros(prevItems => ({
             ...prevItems,
             interiores: lista

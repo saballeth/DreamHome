@@ -29,7 +29,7 @@ const PrivateRoute = () => {
   }, [user, refreshToken, logoutUser]);
 
   if (!isAuthenticated){
-    return <Navigate to="/login" />
+    return <Navigate to="/inicio-sesion" />
   }
   return <Outlet />;
 };

@@ -11,6 +11,7 @@ interface AuthContextProps {
     registerUser: (data: any) => void;
     logoutUser: () => void;
     refreshToken: () => void;
+    saveInmueblePorUsuario: (data:any) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -24,7 +25,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
     const navigate = useNavigate();
+    const [inmueblePorUsuario, setInmueblePorUsuario] = useState<{ [key: string]: any }>(() => {
+        const storedData = localStorage.getItem("inmueblePorUsuario");
+        return storedData ? JSON.parse(storedData) : {};
+    });
     const apiService = new ApiService();
+    const apiServiceToken = new ApiService(token);
     let userData: any = {};
 
     const refreshToken = async () => {
@@ -62,8 +68,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             setIsAuthenticated(true);
         }
     }, []);
-
-    
 
     const loginUser = async (data: any) => {
         try {
@@ -117,6 +121,57 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }
     };
 
+    const saveInmueblePorUsuario = async (data: { id: string, url: any, selected: boolean }) => {
+        const { id, url, selected } = data;
+        try {
+            const inmueble = inmueblePorUsuario[id];
+            if (!inmueble) {
+                // Si el inmueble no existe en el estado, lo creamos
+                const response = await apiServiceToken.post('/api/inmueblesPorUsuario', {
+                    inmueble: url,
+                    usuario: user.username,
+                    califcacion: null,
+                    numeroDeClicks: null,
+                    favorito: selected
+                });
+                console.log(response)
+                const updatedInmueblePorUsuario = {
+                    ...inmueblePorUsuario,
+                    [id]: {
+                        inmueble: url,
+                        usuario: user.username,
+                        califcacion: null,
+                        numeroDeClicks: null,
+                        favorito: selected
+                    }
+                };
+                setInmueblePorUsuario(updatedInmueblePorUsuario);
+                localStorage.setItem("inmueblePorUsuario", JSON.stringify(updatedInmueblePorUsuario));
+            } else {
+                // Si el inmueble ya existe, actualizamos su estado de favorito
+                const response = await apiServiceToken.update(`/api/inmueblesPorUsuario/${inmueble.id}`, {
+                    inmueble: url,
+                    usuario: user.username,
+                    calificacion: null,
+                    numeroDeClicks: null,
+                    favorito: selected
+                });
+                const updatedInmueblePorUsuario = {
+                    ...inmueblePorUsuario,
+                    [id]: {
+                        ...inmueble,
+                        favorito: selected
+                    }
+                };
+                setInmueblePorUsuario(updatedInmueblePorUsuario);
+                localStorage.setItem("inmueblePorUsuario", JSON.stringify(updatedInmueblePorUsuario));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+
     const logoutUser = () => {
         setUser(null);
         setToken("");
@@ -125,10 +180,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("refresh");
-        navigate("/login");
+        localStorage.removeItem('favorites');
+        localStorage.removeItem('inmueblePorUsuario');
+        navigate("/inicio-sesion");
     };
     return (
-        <AuthContext.Provider value={{ isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
+        <AuthContext.Provider value={{saveInmueblePorUsuario, isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
             {children}
         </AuthContext.Provider>
     );

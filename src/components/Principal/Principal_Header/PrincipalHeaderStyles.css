@@ -36,7 +36,7 @@
 .header__elements {
   display: flex;
   flex-direction: row; 
-  padding-right: .9%;
+  padding-right: 35px;
   align-items: center;
   gap: 20px;
 }
@@ -78,6 +78,12 @@
 
 .favorite,.cuenta{
   font-size: x-large
+}
+
+.favorite{
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
 }
 
 .user{
