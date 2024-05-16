@@ -62,7 +62,8 @@
 
 .favorite__select{
   color: var(--lightOrange);
-  font-size: x-large;
+  width: 28px;
+  height: 28px;
 }
 
 .menos__select{

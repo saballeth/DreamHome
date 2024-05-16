@@ -25,6 +25,10 @@ export default function AccountMenu() {
     auth.logoutUser();
   };
 
+  const handlePerfil = () => {
+    
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -75,7 +79,7 @@ export default function AccountMenu() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handlePerfil}>
           <ListItemIcon>
             <Perfil fontSize="small" />
           </ListItemIcon>

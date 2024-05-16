@@ -17,7 +17,6 @@ const Favorites = () => {
     const fetchData = async () => {
       setIsLoading(true); // Establecer isLoading a true antes de cargar los datos
       try {
-        // Esperar a que todas las llamadas se completen antes de establecer isLoading en false
         await Promise.all(selectedFavorites.map(async (item) => {
           await auth.saveInmueblePorUsuario(item);
         }));
@@ -40,6 +39,7 @@ const Favorites = () => {
   }
 
   const favoriteCards: any = selectedFavorites.filter(card => card.selected === true);
+  console.log(favoriteCards)
   const cantidadCoincidentes = favoriteCards.length;
 
   return (
