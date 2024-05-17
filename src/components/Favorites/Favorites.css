@@ -1,13 +1,9 @@
-#root{
-    height: 100vh;
-}
-
 .spinner__container{
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: calc(100vh - 10%);
+    height: 100vh;
 }
 
 .favorite__container{
@@ -15,7 +11,7 @@
     padding: 0;
     margin-top: 120px;
     margin-bottom: 10%;
-    height: 90vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }

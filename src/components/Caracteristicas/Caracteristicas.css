@@ -4,7 +4,7 @@
     display: flex;
     justify-content: start;
     align-items: start;
-    padding: 9% 50px 0 50px;
+    padding: 100px 50px 0 50px;
     flex-direction: column;
     /* overflow-y: clip; */
     margin-bottom: 30%;
@@ -22,9 +22,21 @@
     font-style: italic;
 }
 
+.container_titulo_calificacion{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.container__calificacion{
+    padding-right: 40px;
+}
+
 .caracteristicas__infoImagen-titulo {
     font-size: xx-large;
-    margin-top: 20px;
 }
 
 .container {
@@ -117,6 +129,3 @@
     margin-top: 10px;
 }
 
-.container__calificacion{
-    margin-top: 50px;
-}

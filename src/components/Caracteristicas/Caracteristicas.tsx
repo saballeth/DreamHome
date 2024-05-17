@@ -1,7 +1,7 @@
 import CarouselItems from '../Carousel/Carousel'
 import ApiService from '@/apiCalls.service/apiCalls.service';
 import { useAuth } from '@/Context/AuthContext';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import './Caracteristicas.css';
@@ -10,12 +10,16 @@ import CommentBox from './CommentBox/CommentBox';
 
 
 function Caracteristicas() {
-  const {id} = useParams();
-  const [inmuebleData, setData] = useState<Inmueble | null>(null)
+  const { id } = useParams();
+  const [inmuebleData, setData] = useState<Inmueble | null>(null);
+  const [comentarios, setComentarios] = useState(null);
+  const [valorCalificacion, setValorCalificacion] = useState<number | null>();
+  const [isGuardarInformacion, setGuardarInformacion] = useState(false);
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
   const caracteristicasPorTipo: { [tipo: string]: any[] } = {};
-  const [isCalificacion,setCalificacion] = useState(false);
+  const [isCalificacion, setCalificacion] = useState(false);
+
   const divStyle = {
     padding: 0,
     margin: 0
@@ -23,6 +27,7 @@ function Caracteristicas() {
 
   interface Inmueble {
     id: number | null;
+    url: string | any | null;
     nombre: string | any | null;
     precio: number | null;
     sector: any | null;
@@ -48,6 +53,7 @@ function Caracteristicas() {
         const response = await apiService.get(`/api/inmuebles/${id}`);
         const data: Inmueble = {
           id: response.id,
+          url: response.url,
           nombre: response.nombre,
           precio: response.precio,
           sector: response.sector,
@@ -75,7 +81,33 @@ function Caracteristicas() {
 
   }, [id]);
 
-  const restrictedKeys = ['id', 'ciudad', 'caracteristicas', 'sector', 'descripcion', 'nombre', 'precionM2'];
+  useEffect(() => {
+    if (isGuardarInformacion) {
+      guardarInformacionEnAPI();
+    }
+  }, [isGuardarInformacion]);
+  
+  async function guardarInformacionEnAPI() {
+    try {
+      try {
+        console.log(inmuebleData?.url)
+        const response = await apiService.post('/api/inmueblesPorUsuario/', {
+          inmueble: inmuebleData?.url,
+          usuario: auth.user.username,
+          comentarios: comentarios == '' ? null: comentarios,
+          calificacion: valorCalificacion
+        });
+        console.log(response)
+        return response.data;
+      } catch (error) {
+        throw error;
+      }
+    }   catch (error) {
+      console.error('Error al guardar la información en la API:', error);
+    }
+  }
+
+  const restrictedKeys = ['id','url', 'ciudad', 'caracteristicas', 'sector', 'descripcion', 'nombre', 'precionM2'];
   const keyTranslations: any = {
     estrato: 'Estrato',
     cantidadDeHabitaciones: 'Habitaciones',
@@ -91,6 +123,7 @@ function Caracteristicas() {
     estado: 'Estado',
     direccion: 'Direccion',
   };
+
 
   function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -112,7 +145,7 @@ function Caracteristicas() {
     }
   }
 
-  const handleCalificacion = (value: boolean | ((prevState: boolean) => boolean)) => {
+  const handleVentanaComentarios = (value: boolean | ((prevState: boolean) => boolean)) => {
     setCalificacion(value);
   }
 
@@ -131,18 +164,36 @@ function Caracteristicas() {
     caracteristicasPorTipo[formatText(caracteristica.tipoDeCaracteristica.nombre)].push(formatText(caracteristica.nombre));
   });
 
+ 
+  const handleCerrar = (cerrar: any) => {
+    setCalificacion(!cerrar);
+  }
+
+  const handleInformacion = (comentarios:any, calificacion:any) => {
+    setComentarios(comentarios);
+    setValorCalificacion(calificacion);
+    setGuardarInformacion(true);
+  }
 
   return (
     <div className="caracteristicas__container">
       <div className="caracteristicas__informacion">
-        <h2 className='info__titulo'>{capitalizeFirstLetter(inmuebleData?.sector?.nombre)}</h2>
-        <h3 className='info__subtitulo'>{capitalizeFirstLetter(inmuebleData?.ciudad?.nombre)}, {capitalizeFirstLetter(inmuebleData?.ciudad?.departamento?.nombre)}</h3>
+          <h2 className='info__titulo'>{capitalizeFirstLetter(inmuebleData?.sector?.nombre)}</h2>
+          <h3 className='info__subtitulo'>{capitalizeFirstLetter(inmuebleData?.ciudad?.nombre)}, {capitalizeFirstLetter(inmuebleData?.ciudad?.departamento?.nombre)}</h3>
       </div>
       <div className="container__imagenes">
         <CarouselItems />
       </div>
-      <div className="caracteristicas__infoImagen-titulo">
-        {capitalizeFirstLetter(inmuebleData?.nombre)}
+      <div className="container_titulo_calificacion">
+        <div className="caracteristicas__infoImagen-titulo">
+          {capitalizeFirstLetter(inmuebleData?.nombre)}
+        </div>
+        <div className="container__calificacion">
+          <Rating click={handleVentanaComentarios}/>
+          {isCalificacion && (
+            <CommentBox informacion={handleInformacion} onCerrar={handleCerrar}/>
+          )}
+        </div>
       </div>
       <div className="container" style={divStyle}>
         <div className="container__descripcion">
@@ -180,14 +231,6 @@ function Caracteristicas() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="container__calificacion">
-        <Rating click={handleCalificacion}/>
-        {isCalificacion && (
-          <div className='container__comentarios'>
-            <CommentBox/>
-          </div>
-        )}
       </div>
     </div>
   );

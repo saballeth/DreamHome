@@ -130,8 +130,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 const response = await apiServiceToken.post('/api/inmueblesPorUsuario', {
                     inmueble: url,
                     usuario: user.username,
-                    califcacion: null,
-                    numeroDeClicks: null,
                     favorito: selected
                 });
                 console.log(response)
@@ -140,11 +138,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                     [id]: {
                         inmueble: url,
                         usuario: user.username,
-                        califcacion: null,
-                        numeroDeClicks: null,
                         favorito: selected
                     }
                 };
+                console.log(updatedInmueblePorUsuario);
                 setInmueblePorUsuario(updatedInmueblePorUsuario);
                 localStorage.setItem("inmueblePorUsuario", JSON.stringify(updatedInmueblePorUsuario));
             } else {
@@ -152,8 +149,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 const response = await apiServiceToken.update(`/api/inmueblesPorUsuario/${inmueble.id}`, {
                     inmueble: url,
                     usuario: user.username,
-                    calificacion: null,
-                    numeroDeClicks: null,
                     favorito: selected
                 });
                 const updatedInmueblePorUsuario = {
@@ -170,7 +165,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             console.error(error);
         }
     }
-    
 
     const logoutUser = () => {
         setUser(null);

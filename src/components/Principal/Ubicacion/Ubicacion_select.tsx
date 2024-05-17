@@ -60,7 +60,7 @@ const Ubicacion: React.FC = () => {
         }),
         singleValue: (provided: any) => ({
             ...provided,
-            color: "var(--lightOrange)"
+            color: "var(--darkOrange)"
         }),
         menu: (provided: any) => ({
             ...provided,

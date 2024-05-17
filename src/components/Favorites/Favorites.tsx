@@ -8,14 +8,14 @@ import { useAuth } from "@/Context/AuthContext";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 
 const Favorites = () => {
-  const { selectedFavorites} = useSelect()
+  const { isFavoriteSave,selectedFavorites } = useSelect()
   const [isLoading, setIsLoading] = useState(false);
   const auth = useAuth();
   const apiService = new ApiService(auth.token)
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); // Establecer isLoading a true antes de cargar los datos
+      setIsLoading(true); 
       try {
         await Promise.all(selectedFavorites.map(async (item) => {
           await auth.saveInmueblePorUsuario(item);
@@ -23,11 +23,11 @@ const Favorites = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setIsLoading(false); // Establecer isLoading a false después de cargar los datos
+        setIsLoading(false);
       }
     };
     fetchData();
-  }, [selectedFavorites]);
+  }, [isFavoriteSave]);
 
 
   if (isLoading) {

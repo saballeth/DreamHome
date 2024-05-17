@@ -10,7 +10,7 @@ export default function RatingSize({ click }: any) {
 
     return (
         <Stack spacing={1}>
-            <Rating className='rating' name="size-large" defaultValue={4} onClick={handleClick} />
+            <Rating className='rating' name="size-large" size='large' defaultValue={4} onClick={handleClick} />
         </Stack>
     );
 }

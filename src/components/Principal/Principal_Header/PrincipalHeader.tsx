@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ButtonGroupUser from "./ButtonGroupUser/ButtonGroupUser";
 import { FaCaretRight } from "react-icons/fa";
+import { useSelect } from "@/Context/Context";
 
 type loggedType = {
   colorNameLogo?: boolean;
@@ -19,6 +20,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
   const auth = useAuth()
   const navigate = useNavigate()
   const [showOptions, setShowOptions] = useState(false);
+  const {setFavoriteSave} = useSelect();
   let user;
 
 
@@ -37,11 +39,8 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
   }
 
   const handleFavorite = async () => {
+    setFavoriteSave(true);
     navigate('/favoritos');
-  }
-
-  const handleShowOptions = () => {
-    setShowOptions(prev => !prev);
   }
 
   return (
