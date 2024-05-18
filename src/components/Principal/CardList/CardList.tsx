@@ -9,7 +9,7 @@ import { useSelect } from "@/Context/Context";
 const CardList: React.FC = () => {
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
-  const { selectUbi, filtros, isFiltroSave } = useSelect();
+  const { selectUbi, filtros, isFiltroSave, setInmuebles } = useSelect();
 
   interface Inmueble {
     id: number;
@@ -52,6 +52,7 @@ const CardList: React.FC = () => {
           caracteristicas_zona_comun: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-de-zona-comun'),
         }));
         setListData(inmueblesData);
+        setInmuebles(inmueblesData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

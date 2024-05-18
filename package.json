@@ -46,7 +46,8 @@
     "react-router-dom": "^6.23.1",
     "react-select": "^5.8.0",
     "sort-by": "^1.2.0",
-    "styled-components": "^6.1.9"
+    "styled-components": "^6.1.9",
+    "sweetalert2": "^11.11.0"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.9",

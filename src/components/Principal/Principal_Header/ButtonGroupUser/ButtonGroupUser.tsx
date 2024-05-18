@@ -10,11 +10,13 @@ import Perfil from '@mui/icons-material/AccountCircle';
 import Logout from '@mui/icons-material/Logout';
 import { LuUser } from "react-icons/lu";
 import { useAuth } from '@/Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -22,11 +24,16 @@ export default function AccountMenu() {
 
   const handleClose = () => {
     setAnchorEl(null);
-    auth.logoutUser();
   };
 
+  const handleLogout = () => {
+    auth.logoutUser();
+    setAnchorEl(null);
+  }
+
   const handlePerfil = () => {
-    
+    navigate('/principal');
+    setAnchorEl(null);
   }
 
   return (
@@ -80,12 +87,12 @@ export default function AccountMenu() {
       >
         <Divider />
         <MenuItem onClick={handlePerfil}>
-          <ListItemIcon>
-            <Perfil fontSize="small" />
+          <ListItemIcon >
+            <Perfil fontSize="small"/>
           </ListItemIcon>
           Perfil
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
