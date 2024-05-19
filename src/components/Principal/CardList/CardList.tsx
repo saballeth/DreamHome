@@ -10,6 +10,7 @@ const CardList: React.FC = () => {
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
   const { selectUbi } = useSelect();
+  const { pageSize } = useSelect();
 
   interface Inmueble {
     id: number;
@@ -18,10 +19,9 @@ const CardList: React.FC = () => {
     ciudad: any
   }
 
-  const [listData, setListData] = useState<Inmueble[]>([]);
-  const [pageSize, setPageSize] = useState(10); 
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [isCardCity, setCardCity] = useState(true); 
+  const [filteredData, setFilteredData] = useState<Inmueble[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isCardCity, setCardCity] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +33,7 @@ const CardList: React.FC = () => {
           precio: item.precio,
           ciudad: item.ciudad
         }));
-        setListData(inmueblesData);
+        setFilteredData(inmueblesData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -42,21 +42,24 @@ const CardList: React.FC = () => {
   }, []);
   
   useEffect(() => {
-    const hasCards = listData.some((card) => 
-      card.ciudad.nombre === selectUbi?.value
-    )
-    setCardCity(hasCards);
-  }, [selectUbi]);
-  
+    if (selectUbi) {
+      const hasCards = filteredData.some((card) => 
+        card.ciudad.nombre === selectUbi?.value
+      )
+      setCardCity(hasCards);
+      setFilteredData(filteredData.filter((card) => card.ciudad.nombre === selectUbi?.value));
+    } else {
+      setFilteredData(filteredData);
+    }
+  }, [selectUbi,  filteredData]);
 
-  if (!listData.length) {
+  if (!filteredData.length) {
     return (
       <div className="spinner__container__cardList">
         <Spinner/> 
       </div>
     )
   }
-
 
 
   const handleRefreshCards = async () => {
@@ -67,20 +70,40 @@ const CardList: React.FC = () => {
         nombre: item.nombre,
         precio: item.precio
       }));
-      setListData(inmueblesData);
+      setFilteredData(inmueblesData);
+      setFilteredData(inmueblesData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   
+  const renderPageControls = () => {
+    const totalPages = Math.ceil(filteredData.length / pageSize);
+    const pageButtons = [];
+
+  
+    for (let i = 1; i <= totalPages; i++) {
+      pageButtons.push(
+        <button key={i} onClick={() => handlePageChange(i)}>{i}</button>
+      );
+    }
+  
+    return pageButtons;
+  };
+   const startIndex = (currentPage - 1) * pageSize;
+   const endIndex = startIndex + pageSize;
+   const pageData = filteredData.slice(startIndex, endIndex);
 
   return (
     <div className="card-list wrapper">
-      {selectUbi === null && listData.map((card) => (
-        <Card key={card.id} data={card} favorite={false}/>
-      ))}
-      {selectUbi !== null && listData.map((card) => (
+       {pageData.map((card) => (
+  <Card key={card.id} data={card} favorite={false} />
+))}
+      {selectUbi !== null && filteredData.map((card) => (
         selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false}/>
       ))}
       {!isCardCity && (
@@ -88,6 +111,11 @@ const CardList: React.FC = () => {
           <p>No hay Inmuebles con la ciudad Seleccionada</p>
         </div>
       )}
+       <div className="pagination">
+        {Array.from({ length: Math.ceil(filteredData.length / pageSize) }, (_, i) => i + 1).map((page) => (
+          <button key={page} onClick={() => handlePageChange(page)}>{page}</button>
+        ))}
+      </div>
     </div>
   );
 }

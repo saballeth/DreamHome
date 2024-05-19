@@ -23,6 +23,18 @@ class ApiService {
           throw new Error('Error executing GET request');
     }
   }
+  async update(url: string, data: any) {
+    try {
+      const response: AxiosResponse = await this.axiosInstance.put(url, data);
+      return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+          this.handleError(error as AxiosError); 
+        }
+        return error;
+    }
+  }
+  
 
   async post(url: string, data: any) {
     try {

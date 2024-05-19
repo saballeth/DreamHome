@@ -7,6 +7,12 @@ type SelectedItem = {
     precio: number;
 };
 
+interface LimitedInmuebleContentProps {
+    content: string;
+    limit: number;
+  }
+  
+  
 interface DataProps{
     id: number;
     precio: number;
@@ -19,13 +25,25 @@ interface ContextProps {
     setSelectUbi: any;
     selectedFavorites: SelectedItem[];
     setSelectedFavorites: any;
+    pageSize: number;
+    setPageSize: React.Dispatch<React.SetStateAction<number>>;
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+    handlePageChange: (page: number) => void;
 }
 
 const Context = createContext<ContextProps | undefined >(undefined);
-
+const LimitedInmuebleContent: React.FC<LimitedInmuebleContentProps> = ({ content, limit }) => {
+    const truncatedContent = content.length > limit ? content.substring(0, limit) + "..." : content;
+    return <div>{truncatedContent}</div>;
+    
+  };
+  
 const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [currentPage, setCurrentPage] = useState(1);
     const [selectUbi, setSelectUbi] = useState(null);
     const [selectedFavorites, setSelectedFavorites] = useState<SelectedItem[]>([]);
+    const [pageSize, setPageSize] = useState(6);
 
     useEffect(() => {
         const favoritesString = localStorage.getItem('favorites');
@@ -53,8 +71,12 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         });
     };
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+      };
+
     return (
-        <Context.Provider value={{ selectUbi, toggleFavorite, setSelectUbi, selectedFavorites ,setSelectedFavorites}}>
+        <Context.Provider value={{ selectUbi, toggleFavorite, setSelectUbi, selectedFavorites, setSelectedFavorites, pageSize, currentPage, setCurrentPage, handlePageChange, setPageSize }}>
             {children}
         </Context.Provider>
     );
