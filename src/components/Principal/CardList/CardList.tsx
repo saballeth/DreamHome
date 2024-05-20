@@ -1,69 +1,121 @@
 import "./CardList_index.css";
 import Card from "../Card/Card";
+import ApiService from "@/apiCalls.service/apiCalls.service";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/Context/AuthContext";
+import Spinner from "@/components/Spinner/Spinner";
+import { useSelect } from "@/Context/Context";
 
-function CardList() {
-  const cardData = [
-    {
-      id: 1,
-      imageSrc: 'https://multimedia.metrocuadrado.com/15293-M4346305/15293-M4346305_1_p.jpg',
-      place: 'Barranquilla',
-      cost: '$100',
-    },
-    {
-      id: 2,
-      imageSrc: 'https://media.staticontent.com/media/pictures/9495889e-54f9-40d2-939d-b04bf30b47c7',
-      place: 'Cartagena',
-      cost: '$150',
-    },
-    {
-      id: 3,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Santa Marta',
-      cost: '$200',
-    },
-    {
-      id: 4,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Santa Marta',
-      cost: '$200',
-    },
-    {
-      id: 5,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Santa Marta',
-      cost: '$200',
-    },
-    {
-      id: 6,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Bucaramanga',
-      cost: '$200',
-    },
-    {
-      id: 7,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Tu prima',
-      cost: '$20',
-    },
-    {
-      id: 8,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Tu hermana',
-      cost: '$2',
-    },
-    {
-      id: 9,
-      imageSrc: 'https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg',
-      place: 'Santa Marta',
-      cost: '$200',
-    },
-  ];
+const CardList: React.FC = () => {
+  const auth = useAuth();
+  const apiService = new ApiService(auth.token);
+  const { selectUbi } = useSelect();
+  const { pageSize } = useSelect();
+
+  interface Inmueble {
+    id: number;
+    nombre: string;
+    precio: number;
+    ciudad: any
+  }
+
+  const [filteredData, setFilteredData] = useState<Inmueble[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isCardCity, setCardCity] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiService.get('/api/inmuebles/');
+        const inmueblesData: Inmueble[] = response.map((item: any) => ({
+          id: item.id,
+          nombre: item.nombre,
+          precio: item.precio,
+          ciudad: item.ciudad
+        }));
+        setFilteredData(inmueblesData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    if (selectUbi) {
+      const hasCards = filteredData.some((card) => 
+        card.ciudad.nombre === selectUbi?.value
+      )
+      setCardCity(hasCards);
+      setFilteredData(filteredData.filter((card) => card.ciudad.nombre === selectUbi?.value));
+    } else {
+      setFilteredData(filteredData);
+    }
+  }, [selectUbi,  filteredData]);
+
+  if (!filteredData.length) {
+    return (
+      <div className="spinner__container__cardList">
+        <Spinner/> 
+      </div>
+    )
+  }
+
+
+  const handleRefreshCards = async () => {
+    try {
+      const response = await apiService.get("/api/inmuebles/");
+      const inmueblesData: Inmueble[] = response.map((item: any) => ({
+        id: item.id,
+        nombre: item.nombre,
+        precio: item.precio
+      }));
+      setFilteredData(inmueblesData);
+      setFilteredData(inmueblesData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+  
+  const renderPageControls = () => {
+    const totalPages = Math.ceil(filteredData.length / pageSize);
+    const pageButtons = [];
+
+  
+    for (let i = 1; i <= totalPages; i++) {
+      pageButtons.push(
+        <button key={i} onClick={() => handlePageChange(i)}>{i}</button>
+      );
+    }
+  
+    return pageButtons;
+  };
+   const startIndex = (currentPage - 1) * pageSize;
+   const endIndex = startIndex + pageSize;
+   const pageData = filteredData.slice(startIndex, endIndex);
 
   return (
     <div className="card-list wrapper">
-    {cardData.map((card) => (
-      <Card key={card.id} data={card} />
-    ))}
+       {pageData.map((card) => (
+  <Card key={card.id} data={card} favorite={false} />
+))}
+      {selectUbi !== null && filteredData.map((card) => (
+        selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false}/>
+      ))}
+      {!isCardCity && (
+        <div className="card__not-found">
+          <p>No hay Inmuebles con la ciudad Seleccionada</p>
+        </div>
+      )}
+       <div className="pagination">
+        {Array.from({ length: Math.ceil(filteredData.length / pageSize) }, (_, i) => i + 1).map((page) => (
+          <button key={page} onClick={() => handlePageChange(page)}>{page}</button>
+        ))}
+      </div>
     </div>
   );
 }

@@ -64,9 +64,6 @@
 
 .Service_img-container {
   display: flex;
-  /*justify-content: flex-end;
-  align-items: center;
-  max-width: 80%;*/
 }
 
 .Service_img-container img {
@@ -74,44 +71,3 @@
   width: 92%;
   filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.5));
 }
-
-
-/*
-@media (max-width: 560px) {
-  .Service_container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .Service_img-container {
-    margin-top: 20px;
-    width: 100%;
-    margin-left: 40px;
-
-  }
-
-  .Service_img-container img {
-    width: 120%;
-
-  }
-
-  .Service_main-text {
-    font-size: 2.5em;
-    color: #0C3C6A;
-    text-align: left;
-    font-weight: 100;
-
-
-
-
-  }
-
-  .Service_sub-text {
-    font-size: 20px;
-    width: 150%;
-    margin-top: 0.5em;
-    font-weight: 50;
-  }
-
-
-}*/

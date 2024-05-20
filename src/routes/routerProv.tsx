@@ -1,52 +1,37 @@
-import  ContactUs from "@/pages/ContactUs/ContactUs";
-import  CreateAccount from "@/components/CreateAccount/CreateAccount";
-import { Home } from "@/pages/Home/Index";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AboutUs from '@/pages/About/About';
-import  Login  from '@/pages/Login/Login';
+import { Route, Routes } from 'react-router-dom';
+import PrivateRoute from '@/PrivateRoute/PrivateRoute';
+import { Home } from '@/pages/Home/Index';
+import About from '@/pages/About/About';
+import AboutC from '@/pages/About/AboutC';
+import CreateAccount from '@/components/CreateAccount/CreateAccount';
+import ContactUs from '@/pages/ContactUs/ContactUs';
+import Login from '@/pages/Login/Login';
 import Service from '@/pages/Service/Service';
-import HomePrincipal from "@/pages/Principal/Principal";
-import Intereses from "@/pages/Intereses/Intereses";
+import ServiceC from '@/pages/Service/ServiceC';
+import HomePrincipal from '@/pages/Principal/Principal';
+import Caracteristicas from '@/pages/Caracteristicas/caracteristicasInmuebles';
+import Intereses from '@/pages/Intereses/Intereses';
+import Favorites from '@/pages/Favorites/Favorites';
 
 function RouterProv() {
-  const routes = createBrowserRouter([
-    {
-      path: "/",
-      Component: Home,
-      // errorElement: <ErrorPage/>
-    },
-    {
-      path: "/aboutus",
-      Component: AboutUs,
-      // errorElement: <ErrorPage/>
-    },
-    {
-      path: "/create-account",
-      Component: CreateAccount,
-    },
-    {
-      path: "/contact-us",
-      Component: ContactUs,
-    },
-    {
-      path: "/login",
-      Component: Login
-    },
-    {
-      path: "/service",
-      Component: Service
-    },
-    {
-      path: "/principal",
-      Component: HomePrincipal
-    },
-    {
-      path: "/intereses",
-      Component: Intereses
-    }
-  ]);
-
-  return <RouterProvider router={routes}></RouterProvider>;
+  return <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/aboutus" element={<About/>} />
+            <Route path="/service" element={<Service />} />
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/create-account" element={<CreateAccount/>} />
+            <Route path="/intereses" element={<Intereses/>} />
+            
+            <Route element={<PrivateRoute />}>
+              <Route path="/intereses" element={<Intereses/>} />
+              <Route path="/serviceC" element={<ServiceC />} />
+              <Route path='/favoritos' element={<Favorites/>} />
+              <Route path="/aboutusC" element={<AboutC />} />
+              <Route path="/principal" element={<HomePrincipal />} />
+              <Route path="/caracteristica/:id" element={<Caracteristicas/>} />
+            </Route>
+          </Routes>
 }
 
-export default RouterProv;
+export default RouterProv; 
