@@ -1,0 +1,23 @@
+.contenedor__edit-perfil{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.CreateAccount-container__form-buttom{
+    font-size: 15px;
+    width: 35%;
+}
+
+.button__flex{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.button__cancelar{
+    background: #7d7d7d;
+    color: var(--white);
+    width: 30%;
+}

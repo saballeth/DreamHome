@@ -1,7 +1,7 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
 
 type SelectedItem = {
-    id: number;
+    idInmueble: number;
     url: string;
     selected: boolean;
     nombre: string;
@@ -9,7 +9,7 @@ type SelectedItem = {
 };
 
 interface DataProps{
-    id: number;
+    idInmueble: number;
     precio: number;
     url:string;
     nombre: string;
@@ -49,19 +49,20 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }   
     }, []);
 
-    const toggleFavorite = (data: DataProps) => {
+    const toggleFavorite = (data: DataProps) => { 
         setSelectedFavorites(prevSelectedItems => {
-            const itemIndex = prevSelectedItems.findIndex(item => item.id === data.id);
+            const itemIndex = prevSelectedItems.findIndex(item => item.idInmueble === data.idInmueble);
+
             if (itemIndex !== -1) {
                 // Si el elemento ya está en la lista, se deselecciona
                 const updatedFavorites = [...prevSelectedItems];
                 updatedFavorites[itemIndex] = { ...updatedFavorites[itemIndex], selected: !updatedFavorites[itemIndex].selected };
-                localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+                console.log(updatedFavorites);
                 return updatedFavorites;
             } else {
                 // Si el elemento no está en la lista, se selecciona
-                const updatedFavorites = [...prevSelectedItems, { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }];
-                localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+                const updatedFavorites = [...prevSelectedItems, { idInmueble:data.idInmueble, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }];
+                console.log(updatedFavorites);
                 return updatedFavorites;
             }
         });

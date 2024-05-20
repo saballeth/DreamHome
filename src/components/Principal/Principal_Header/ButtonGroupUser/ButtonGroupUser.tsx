@@ -32,7 +32,7 @@ export default function AccountMenu() {
   }
 
   const handlePerfil = () => {
-    navigate('/principal');
+    navigate('/perfil');
     setAnchorEl(null);
   }
 

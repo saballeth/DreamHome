@@ -9,7 +9,7 @@ import { FaSquareMinus } from "react-icons/fa6";
 
 interface CardProps {
   data: {
-    id: number;
+    idInmueble: number;
     url: string;
     precio: number;
     nombre: string;
@@ -18,22 +18,22 @@ interface CardProps {
 }
 
 function Card({ data, favorite }: CardProps) {
-  const {id, precio, nombre, url } = data;
+  const {idInmueble, precio, nombre, url } = data;
   const navigate = useNavigate();
   const [isFavorite, setFavorite] = useState(false);
   const {toggleFavorite,selectedFavorites} = useSelect();
 
   const handle = () => {
-    navigate(`/caracteristica/${id}`)
+    navigate(`/caracteristica/${idInmueble}`)
   };
 
   useEffect(()=>{
-    const itemIndex = selectedFavorites.findIndex(item => item.id === id);
+    const itemIndex = selectedFavorites.findIndex(item => item.idInmueble === idInmueble);
     setFavorite(selectedFavorites[itemIndex]?.selected)
-  },[id,selectedFavorites])
+  },[idInmueble,selectedFavorites])
 
   const handleSelect = () => {
-    toggleFavorite(data)
+    toggleFavorite(data);
   };
   
   return (

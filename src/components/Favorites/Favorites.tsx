@@ -3,13 +3,13 @@ import Spinner from '../Spinner/Spinner';
 import './Favorites.css'
 import Card from '../Principal/Card/Card';
 import { TbMoodSad } from "react-icons/tb";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/Context/AuthContext";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 
 const Favorites = () => {
   const { isFavoriteSave,selectedFavorites } = useSelect()
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const auth = useAuth();
   const apiService = new ApiService(auth.token)
 
@@ -17,9 +17,60 @@ const Favorites = () => {
     const fetchData = async () => {
       setIsLoading(true); 
       try {
-        await Promise.all(selectedFavorites.map(async (item) => {
-          await auth.saveInmueblePorUsuario(item);
-        }));
+        for (const item of selectedFavorites) {
+          const inmueblesPorUsuario = Array.isArray(auth.inmueblePorUsuario) ? auth.inmueblePorUsuario : [];
+          // const inmueblesPorUsuario = auth.inmueblePorUsuario;
+          const index = inmueblesPorUsuario.findIndex((inmueble: any) => inmueble.idInmueble === item.idInmueble);
+          if (index === -1) {
+            const response = await apiService.post('/api/inmueblesPorUsuario/', {
+              usuario: auth.user.username,
+              inmueble: item.url,
+              favorito: item.selected,
+              calificacion: null,
+              clasificacion: null,
+              comentarios: null,
+              numeroDeClicks: null
+            });
+            console.log(response)
+            if (response) {
+              auth.setInmueblePorUsuario((prev: any[]) => [...prev, {
+                idInmueblePorUsuario: response.id,
+                idInmueble : item.idInmueble,
+                usuario: auth.user.username,
+                inmueble: response.url,
+                favorito: response.favorito,
+                calificacion: response.calificacion,
+                clasificacion: response.clasificacion,
+                comentarios: response.comentarios,
+                numeroDeClicks: response.numeroDeClicks
+              }]);
+            }
+          } 
+          else {
+            const idToUpdate = inmueblesPorUsuario[index].idInmueblePorUsuario;
+            const response = await apiService.update(`/api/inmueblesPorUsuario/${idToUpdate}/`, {
+              usuario: auth.user.username,
+              inmueble: item.url,
+              favorite: item.selected,
+            });
+            if (response) {
+              auth.setInmueblePorUsuario((prev:any[]) => {
+                const updated = [...prev];
+                updated[index] = {
+                  ...updated[index],
+                  idInmueble: item.idInmueble,
+                  inmueble: response.url,
+                  favorito: response.favorito,
+                  calificacion: response.calificacion,
+                  clasificacion: response.clasificacion,
+                  comentarios: response.comentarios,
+                  numeroDeClicks: response.numeroDeClicks
+                };
+                return updated;
+              });
+            }
+          }
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -27,9 +78,12 @@ const Favorites = () => {
       }
     };
     fetchData();
-  }, [isFavoriteSave]);
+  }, [isFavoriteSave, selectedFavorites, auth]);
 
-
+  useEffect(() => {
+    localStorage.setItem("inmueblePorUsuario", JSON.stringify(auth.inmueblePorUsuario));
+  }, [auth.inmueblePorUsuario]);
+  
   if (isLoading) {
     return (
       <div className="spinner__container">
@@ -39,7 +93,6 @@ const Favorites = () => {
   }
 
   const favoriteCards: any = selectedFavorites.filter(card => card.selected === true);
-  console.log(favoriteCards)
   const cantidadCoincidentes = favoriteCards.length;
 
   return (
@@ -48,7 +101,7 @@ const Favorites = () => {
       {cantidadCoincidentes > 0 ? (
         <div className="card-list">
           {selectedFavorites.filter(card => card.selected === true).map((card) => (
-            <Card key={card.id} data={card} favorite={true} />
+            <Card key={card.idInmueble} data={card} favorite={true} />
           ))}
         </div>
       ) : (
