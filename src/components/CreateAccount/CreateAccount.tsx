@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+/* eslint-disable no-case-declarations */
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "@/components/Header/Header";
 import "./CreateAccount.styles.css";
