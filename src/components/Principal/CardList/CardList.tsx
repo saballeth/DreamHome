@@ -5,11 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/Context/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
 import { useSelect } from "@/Context/Context";
+import { usePagination } from "@/Context/PaginacionContext";
 
 const CardList: React.FC = () => {
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
-  const { selectUbi, filtros, isFiltroSave, setInmuebles,selectedFavorites } = useSelect();
+  const { selectUbi, filtros, isFiltroSave, setInmuebles } = useSelect();
+  const { currentPage, updateMaxPage } = usePagination();
 
   interface Inmueble {
     id: number;
@@ -28,8 +30,6 @@ const CardList: React.FC = () => {
   }
 
   const [listData, setListData] = useState<Inmueble[]>([]);
-  const [pageSize, setPageSize] = useState(10); 
-  const [currentPage, setCurrentPage] = useState(1); 
   const [isCardCity, setCardCity] = useState(true);
 
   useEffect(() => {
@@ -60,78 +60,84 @@ const CardList: React.FC = () => {
     fetchData();
   }, []);
 
+  const hasActiveFilters = (
+    filtros.habitaciones !== 'cualquiera' ||
+    filtros.minPrecio > 100000 ||
+    filtros.maxPrecio < 520000000 ||
+    filtros.baños !== 'cualquiera' ||
+    filtros.parqueaderos !== 'cualquiera' ||
+    filtros.exteriores.length !== 0 ||
+    filtros.interiores.length !== 0 ||
+    filtros.sectores.length !== 0 ||
+    filtros.zonas_comunes.length !== 0
+  );
+
   const filteredData = useMemo(() => {
     if (listData.length === 0) {
       return [];
     }
 
-    const hasActiveFilters = (
-      filtros.habitaciones !== 'cualquiera' ||
-      filtros.minPrecio > 100000 ||
-      filtros.maxPrecio < 520000000 ||
-      filtros.baños !== 'cualquiera' ||
-      filtros.parqueaderos !== 'cualquiera' ||
-      filtros.exteriores.length !== 0 ||
-      filtros.interiores.length !== 0 ||
-      filtros.sectores.length !== 0 ||
-      filtros.zonas_comunes.length !== 0
-  );
-
-  if (!hasActiveFilters) {
+    if (!hasActiveFilters) {
       return listData;
-  }
+    }
 
-  let listFiltrado: any[] = listData;
-  if (filtros.habitaciones !== 'cualquiera'){
-    listFiltrado = listData.filter(item => item.habitaciones == filtros.habitaciones);
-  }
-  if (filtros.baños !== 'cualquiera'){
-    listFiltrado = listFiltrado?.filter(item => item.baños == filtros.baños);
-  }
-  if (filtros.parqueaderos !== 'cualquiera'){
-    listFiltrado = listFiltrado?.filter(item => item.parqueaderos == filtros.parqueaderos);
-  }
-  if (filtros.minPrecio > 100000){
-    listFiltrado = listFiltrado?.filter(item => item.precio >= filtros.minPrecio);
-  }
-  if(filtros.maxPrecio < 520000000){
-    listFiltrado = listFiltrado?.filter(item => item.precio <= filtros.maxPrecio);    
-  }
+    let listFiltrado: any[] = listData;
+    if (filtros.habitaciones !== 'cualquiera') {
+      listFiltrado = listData.filter(item => item.habitaciones == filtros.habitaciones);
+    }
+    if (filtros.baños !== 'cualquiera') {
+      listFiltrado = listFiltrado?.filter(item => item.baños == filtros.baños);
+    }
+    if (filtros.parqueaderos !== 'cualquiera') {
+      listFiltrado = listFiltrado?.filter(item => item.parqueaderos == filtros.parqueaderos);
+    }
+    if (filtros.minPrecio > 100000) {
+      listFiltrado = listFiltrado?.filter(item => item.precio >= filtros.minPrecio);
+    }
+    if (filtros.maxPrecio < 520000000) {
+      listFiltrado = listFiltrado?.filter(item => item.precio <= filtros.maxPrecio);
+    }
 
-  if(filtros.exteriores.length !== 0){
-    listFiltrado = listFiltrado?.filter(item => filtros.exteriores.every((exterior: any) => {
-      return item.caracteristicas_exterior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === exterior.nombre);
-    }));
-  }
-  if(filtros.interiores.length !== 0){
-    listFiltrado = listFiltrado?.filter(item => filtros.interiores.every((interior: any) => {
-      return item.caracteristicas_interior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === interior.nombre);
-    }));
-  }
-  if(filtros.sectores.length !== 0){
-    listFiltrado = listFiltrado?.filter(item => filtros.sectores.every((sectorItem: any) => {
-      return item.caracteristicas_sector.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === sectorItem.nombre);
-    }));
-  }
-  if(filtros.zonas_comunes.length !== 0){
-    listFiltrado = listFiltrado?.filter(item => filtros.zonas_comunes.every((zonaItem: any) => {
-      return item.caracteristicas_zona_comun.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === zonaItem.nombre);
-    }));
-  }
+    if (filtros.exteriores.length !== 0) {
+      listFiltrado = listFiltrado?.filter(item => filtros.exteriores.every((exterior: any) => {
+        return item.caracteristicas_exterior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === exterior.nombre);
+      }));
+    }
+    if (filtros.interiores.length !== 0) {
+      listFiltrado = listFiltrado?.filter(item => filtros.interiores.every((interior: any) => {
+        return item.caracteristicas_interior.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === interior.nombre);
+      }));
+    }
+    if (filtros.sectores.length !== 0) {
+      listFiltrado = listFiltrado?.filter(item => filtros.sectores.every((sectorItem: any) => {
+        return item.caracteristicas_sector.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === sectorItem.nombre);
+      }));
+    }
+    if (filtros.zonas_comunes.length !== 0) {
+      listFiltrado = listFiltrado?.filter(item => filtros.zonas_comunes.every((zonaItem: any) => {
+        return item.caracteristicas_zona_comun.some((itemCaracteristica: { nombre: any; }) => itemCaracteristica.nombre === zonaItem.nombre);
+      }));
+    }
 
-  return listFiltrado;
+    return listFiltrado;
   }, [listData, isFiltroSave]);
-
 
   useEffect(() => {
     const hasCards = filteredData?.some((card) =>
       card.ciudad.nombre === selectUbi?.value
     )
-    if (hasCards !== undefined){
+    if (hasCards !== undefined) {
       setCardCity(hasCards);
     }
   }, [selectUbi, filteredData]);
 
+  const start = (currentPage - 1) * 9;
+  let end = start + 9;
+  if (end > filteredData.length) {
+    end = filteredData.length;
+  }
+  const paginatedData = filteredData.slice(start, end);
+  updateMaxPage(filteredData.length,9);
 
   if (!listData.length) {
     return (
@@ -141,52 +147,24 @@ const CardList: React.FC = () => {
     );
   }
 
-
-
-  const handleRefreshCards = async () => {
-    try {
-      const response = await apiService.get("/api/inmuebles/");
-      const inmueblesData: Inmueble[] = response.map((item: any) => ({
-        id: item.id,
-        nombre: item.nombre,
-        precio: item.precio
-      }));
-      setListData(inmueblesData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  
-
   return (
-    <div className="card-list wrapper">
-      {selectUbi === null && filteredData?.map((card) => (
+    <div className={`card-list wrapper ${paginatedData.length<4 ? 'cards__fews':''}`}>
+      {selectUbi === null && paginatedData?.map((card) => (
         <Card key={card.id} data={card} favorite={false} />
       ))}
-      {selectUbi !== null && filteredData?.map((card) => (
+      {selectUbi !== null && paginatedData?.map((card) => (
         selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false} />
       ))}
       {selectUbi !== null && !isCardCity && (
         <div className="card__not-found">
           <p>No hay Inmuebles con la ciudad Seleccionada</p>
         </div>
-      )}  
-      {filteredData.length == 0 && (
+      )}
+      {paginatedData.length == 0 && hasActiveFilters == true && (
         <div className="card__not-found">
           <p>No hay Inmuebles con los filtros seleccionados</p>
         </div>
       )}
-      {/* <div className="pagination">
-        {Array.from(
-          { length: Math.ceil(data?.length / 10) },
-          (_, i) => i + 1
-        ).map((page) => (
-          <button key={page}>
-            {page}
-          </button>
-        ))}
-      </div> */}
     </div>
   );
 };

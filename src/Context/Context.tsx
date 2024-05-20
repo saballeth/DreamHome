@@ -8,12 +8,6 @@ type SelectedItem = {
     nombre: string;
     precio: number;
 };
-
-interface LimitedInmuebleContentProps {
-    content: string;
-    limit: number;
-}
-  
   
 interface DataProps{
     id: number;
@@ -36,25 +30,13 @@ interface ContextProps {
     setFavoriteSave: any;
     inmuebles: any;
     setInmuebles:any;
-    pageSize: number;
-    setPageSize: React.Dispatch<React.SetStateAction<number>>;
-    currentPage: number;
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    handlePageChange: (page: number) => void;
 }
 
 const Context = createContext<ContextProps | undefined >(undefined);
-const LimitedInmuebleContent: React.FC<LimitedInmuebleContentProps> = ({ content, limit }) => {
-    const truncatedContent = content.length > limit ? content.substring(0, limit) + "..." : content;
-    return <div>{truncatedContent}</div>;
-    
-  };
-  
+
 const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [currentPage, setCurrentPage] = useState(1);
     const [selectUbi, setSelectUbi] = useState(null);
     const [selectedFavorites, setSelectedFavorites] = useState<SelectedItem[]>([]);
-    const [pageSize, setPageSize] = useState(6);
     const [filtros, setFiltros] = useState({alojamientoA:false,alojamientoB:false,minPrecio:100000,maxPrecio:520000000, habitaciones:'cualquiera',baños:'cualquiera',parqueaderos:'cualquiera',interiores:[],exteriores: [],sectores: [],zonas_comunes: []});
     const [isFiltroSave, setFiltroSave] = useState(false);
     const [isFavoriteSave, setFavoriteSave] = useState(false);
@@ -87,12 +69,8 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         });
     };
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-      };
-
     return (
-        <Context.Provider value={{inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites, isFavoriteSave, setFavoriteSave, pageSize, currentPage, setCurrentPage, handlePageChange, setPageSize }}>
+        <Context.Provider value={{inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites, isFavoriteSave, setFavoriteSave }}>
             {children}
         </Context.Provider>
     );
