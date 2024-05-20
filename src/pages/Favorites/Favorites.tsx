@@ -8,7 +8,8 @@ const Favorites: React.FC = () =>{
         <>
             <Header colorNameLogo={true} colorUbi={true}/>
             <Favorite/>  
-            <Footer/>  
+            <Footer/>
+              
         </>
     )
 }

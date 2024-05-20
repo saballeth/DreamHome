@@ -64,12 +64,7 @@ const HomePrincipal: React.FC = () => {
             actualPage={actualPage} 
             setActualPage={setActualPage}
         />
-        <CardList 
-            data={
-                filterData?.length > 0 
-                ?  filterData 
-                : initialData} 
-            />
+        <CardList/>
         <Footer />
       </Provider>
     </>
