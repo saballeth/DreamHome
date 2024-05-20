@@ -51,5 +51,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40vh;
+    height: 45vh;
+}
+
+.cards__fews{
+    margin-bottom: 10% !important;
 }
