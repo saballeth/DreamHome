@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-
 class ApiService {
   private axiosInstance: AxiosInstance;
   private baseUrlHost = "https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/"

@@ -138,10 +138,26 @@ const CardList: React.FC = () => {
       <div className="spinner__container__cardList">
         <Spinner />
       </div>
-    )
+    );
   }
 
-  console.log(selectedFavorites);
+
+
+  const handleRefreshCards = async () => {
+    try {
+      const response = await apiService.get("/api/inmuebles/");
+      const inmueblesData: Inmueble[] = response.map((item: any) => ({
+        id: item.id,
+        nombre: item.nombre,
+        precio: item.precio
+      }));
+      setListData(inmueblesData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  
 
   return (
     <div className="card-list wrapper">
@@ -161,8 +177,18 @@ const CardList: React.FC = () => {
           <p>No hay Inmuebles con los filtros seleccionados</p>
         </div>
       )}
+      {/* <div className="pagination">
+        {Array.from(
+          { length: Math.ceil(data?.length / 10) },
+          (_, i) => i + 1
+        ).map((page) => (
+          <button key={page}>
+            {page}
+          </button>
+        ))}
+      </div> */}
     </div>
   );
-}
+};
 
 export default CardList;

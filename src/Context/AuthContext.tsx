@@ -7,8 +7,8 @@ interface AuthContextProps {
     token: string,
     refresh: string,
     user: any,
-    loginUser: (data: any) => void;
-    registerUser: (data: any) => void;
+    loginUser: (data:any) => void;
+    registerUser: (data:any) => void;
     logoutUser: () => void;
     refreshToken: () => void;
     inmueblePorUsuario: any;
@@ -26,11 +26,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     });
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
-    const navigate = useNavigate();
     const [inmueblePorUsuario, setInmueblePorUsuario] = useState<any[]>(() => {
         const storedData = localStorage.getItem("inmueblePorUsuario");
         return storedData ? JSON.parse(storedData) : {};
     });
+    const navigate = useNavigate();
     const apiService = new ApiService();
     let userData: any = {};
 
@@ -69,6 +69,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             setIsAuthenticated(true);
         }
     }, []);
+
+    
 
     const loginUser = async (data: any) => {
         try {
