@@ -1,13 +1,21 @@
 import ServicesPage from "@/components/Service/Service"
 import Header from '@/components/Header/Header';
 import Footer from "@/components/Footer/Footer";
-const Service: React.FC = () =>{
-  
+import { useAuth } from "@/Context/AuthContext";
+import PrincipalHeader from "@/components/Principal/Principal_Header/PrincipalHeader";
+
+const Service: React.FC = () => {
+    const auth = useAuth();
+
     return (
         <>
-            <Header colorNameLogo={true} colorNameNav={true}/>
-            <ServicesPage/>
-            <Footer styleC={true}/>
+            {auth.isAuthenticated ? (
+                <PrincipalHeader colorNameLogo={true} colorUbi={true}/>
+        ) : (
+                <Header colorNameLogo={true} colorNameNav={true} />
+            )}
+            <ServicesPage />
+            <Footer styleC={true} />
         </>
     )
 }

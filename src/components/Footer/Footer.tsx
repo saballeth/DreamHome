@@ -5,7 +5,7 @@ const Footer = ({styleC = false}:any) => {
   const navigate = useNavigate();
 
   const handleContact = async () => {
-    navigate("/c_contactanos");
+    navigate("/contactanos");
   };
 
   return (
@@ -15,9 +15,9 @@ const Footer = ({styleC = false}:any) => {
         <p className='footer__texto-logo'>DreamHome</p>
       </div>
       <div className="footer__container-items">
-        <a className="item" href="/home ">Inicio</a>
-        <a className="item" href="/c_sobre-nosotros">Sobre Nosotros</a>
-        <a className="item" href="/c_servicios">Servicios</a>
+        <a className="item" href="/ ">Inicio</a>
+        <a className="item" href="/sobre-nosotros">Sobre Nosotros</a>
+        <a className="item" href="/servicios">Servicios</a>
       </div>
       <div className="footer__container-button">
         <h3 className='footer__text'>Vamos hacerlo! -</h3>

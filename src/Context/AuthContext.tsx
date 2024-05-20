@@ -18,7 +18,8 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+    const tokenValue = localStorage.getItem("token");
+    const [isAuthenticated, setIsAuthenticated] = useState(tokenValue !== null);    
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem("user");    
         return storedUser ? JSON.parse(storedUser) : null;
@@ -84,7 +85,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 if (response.user?.intereses?.length > 0) {
-                    // console.log(response.user);
                     navigate("/principal");
                 } else {
                     navigate("/intereses");
@@ -131,6 +131,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem("refresh");
         localStorage.removeItem('favorites');
         localStorage.removeItem('inmueblePorUsuario');
+        localStorage.removeItem('favorites');
         navigate("/inicio-sesion");
     };
     return (

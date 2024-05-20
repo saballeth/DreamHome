@@ -9,7 +9,7 @@ import { useSelect } from "@/Context/Context";
 const CardList: React.FC = () => {
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
-  const { selectUbi, filtros, isFiltroSave, setInmuebles } = useSelect();
+  const { selectUbi, filtros, isFiltroSave, setInmuebles,selectedFavorites } = useSelect();
 
   interface Inmueble {
     id: number;
@@ -140,6 +140,8 @@ const CardList: React.FC = () => {
       </div>
     )
   }
+
+  console.log(selectedFavorites);
 
   return (
     <div className="card-list wrapper">

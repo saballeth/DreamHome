@@ -4,6 +4,7 @@ import Header from "@/components/Header/Header";
 import "./CreateAccount.styles.css";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 import { useAuth } from '@/Context/AuthContext';
+import PrincipalHeader from '../Principal/Principal_Header/PrincipalHeader';
 
 const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
@@ -96,7 +97,11 @@ const CreateAccount: React.FC = () => {
   };
   return (
     <div className="CreateAccount">
-      <Header />
+      {auth.isAuthenticated ? (
+        <PrincipalHeader />
+      ) : (
+        <Header />
+      )}
 
       <div className="CreateAccount-container">
         <div className="CreateAccount-container__title">

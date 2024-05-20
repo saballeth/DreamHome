@@ -1,7 +1,8 @@
 import React, {createContext, useState, useContext, useEffect} from "react";
+import { useAuth } from "./AuthContext";
 
 type SelectedItem = {
-    idInmueble: number;
+    id: number;
     url: string;
     selected: boolean;
     nombre: string;
@@ -9,7 +10,7 @@ type SelectedItem = {
 };
 
 interface DataProps{
-    idInmueble: number;
+    id: number;
     precio: number;
     url:string;
     nombre: string;
@@ -40,29 +41,29 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isFiltroSave, setFiltroSave] = useState(false);
     const [isFavoriteSave, setFavoriteSave] = useState(false);
     const [inmuebles, setInmuebles] = useState(null);
+    const auth = useAuth();
 
     useEffect(() => {
         const favoritesString = localStorage.getItem('favorites');
         if (favoritesString) {
           const favorites = JSON.parse(favoritesString);
           setSelectedFavorites(favorites);
-        }   
-    }, []);
+        } 
+    },[]);
 
     const toggleFavorite = (data: DataProps) => { 
         setSelectedFavorites(prevSelectedItems => {
-            const itemIndex = prevSelectedItems.findIndex(item => item.idInmueble === data.idInmueble);
-
+            const itemIndex = prevSelectedItems.findIndex(item => item.id === data.id);
             if (itemIndex !== -1) {
                 // Si el elemento ya está en la lista, se deselecciona
                 const updatedFavorites = [...prevSelectedItems];
                 updatedFavorites[itemIndex] = { ...updatedFavorites[itemIndex], selected: !updatedFavorites[itemIndex].selected };
-                console.log(updatedFavorites);
+                localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
                 return updatedFavorites;
             } else {
                 // Si el elemento no está en la lista, se selecciona
-                const updatedFavorites = [...prevSelectedItems, { idInmueble:data.idInmueble, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }];
-                console.log(updatedFavorites);
+                const updatedFavorites = [...prevSelectedItems, { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }];
+                localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
                 return updatedFavorites;
             }
         });

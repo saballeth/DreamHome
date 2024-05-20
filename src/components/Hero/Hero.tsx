@@ -2,8 +2,11 @@ import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Hero.styles.css";
+import { useAuth } from "@/Context/AuthContext";
 
 const Hero = ({logged=false}:any) => {
+  const auth = useAuth();
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
@@ -14,8 +17,8 @@ const Hero = ({logged=false}:any) => {
         <p className="Hero-container__text">Bienvenido a</p>
         <h1 className="Hero-container__title">DREAMHOME</h1>
         <p className="Hero-container__text">Sitio Web Inmobiliario</p>
-        <a href={logged ? "/principal":"/inicio-sesion"} className="Hero-container__button">
-            {logged ? "Principal":"Ingresar"}
+        <a href={auth.isAuthenticated ? "/principal":"/inicio-sesion"} className="Hero-container__button">
+            {auth.isAuthenticated ? "Principal":"Ingresar"}
           </a>
       </div>
     </div>

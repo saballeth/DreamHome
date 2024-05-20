@@ -1,6 +1,9 @@
 .contenedor__info{
     display: flex;
     flex-direction: column;
+    height: 580px;
+    gap: 25%;
+    padding-top: 20px;
 }
 
 .info{
@@ -11,8 +14,8 @@
 }
 
 .info__animacion{
-    padding-right: 100px;
-    padding-top: 30px;
+    padding-right: 110px;
+    padding-top: 40px;
 }
 
 .info__titulo{
@@ -35,7 +38,6 @@
 }
 
 .actividad{
-    margin-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 10px;

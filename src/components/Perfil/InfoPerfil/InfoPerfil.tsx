@@ -27,7 +27,6 @@ const InfoPerfil = () => {
                 <h4 className="actividad__titulo info__titulo">Actividad Reciente</h4>
                 <div className="actividades__info">
                     {selectedFavorites.map((item, index) => {
-                        console.log(selectedFavorites)
                         return (
                             <p key={index} className={`actividad__info ${!item.selected ? 'selected__info' : ''}`}>{item.selected === true ? 'Añadido a' : 'Borrado de'} Favoritos el Inmueble {item.nombre}</p>
                         );

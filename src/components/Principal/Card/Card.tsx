@@ -5,32 +5,26 @@ import { MdFavorite } from "react-icons/md";
 import { useEffect, useState } from 'react';
 import { useSelect } from '@/Context/Context';
 import { CiSquareMinus } from "react-icons/ci";
-import { FaSquareMinus } from "react-icons/fa6";
 
 interface CardProps {
-  data: {
-    idInmueble: number;
-    url: string;
-    precio: number;
-    nombre: string;
-  };
+  data:  {id: number; url: string; precio: number; nombre: string; };
   favorite:boolean;
 }
 
 function Card({ data, favorite }: CardProps) {
-  const {idInmueble, precio, nombre, url } = data;
+  const {id, precio, nombre, url } = data;
   const navigate = useNavigate();
   const [isFavorite, setFavorite] = useState(false);
   const {toggleFavorite,selectedFavorites} = useSelect();
 
   const handle = () => {
-    navigate(`/caracteristica/${idInmueble}`)
+    navigate(`/caracteristica/${id}`)
   };
 
   useEffect(()=>{
-    const itemIndex = selectedFavorites.findIndex(item => item.idInmueble === idInmueble);
-    setFavorite(selectedFavorites[itemIndex]?.selected)
-  },[idInmueble,selectedFavorites])
+    const itemIndex = selectedFavorites.findIndex(item => item.id === id);
+    setFavorite(selectedFavorites[itemIndex]?.selected);
+  },[id,selectedFavorites])
 
   const handleSelect = () => {
     toggleFavorite(data);
@@ -40,11 +34,7 @@ function Card({ data, favorite }: CardProps) {
     <div className="card">
       { favorite ? (
         <div className="card__delete" onClick={handleSelect}>
-          {isFavorite ? (
-            <CiSquareMinus className='menos__select'/>
-          ):(
-            <FaSquareMinus className='menos__select__false'/>
-          )}
+          <CiSquareMinus className='menos__select'/>
         </div>  
       ):(
         <div className="card__favorite" onClick={handleSelect}>

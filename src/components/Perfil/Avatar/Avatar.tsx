@@ -1,6 +1,5 @@
 import { useAuth } from '@/Context/AuthContext';
 import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -34,8 +33,6 @@ export default function BackgroundLetterAvatars() {
     const auth = useAuth();
 
     return (
-        <Stack direction="row" spacing={2}>
-            <Avatar {...stringAvatar(auth.user.nombre +' '+ auth.user.apellido)} sx={{ width: '80px', height: '80px' }}/>
-        </Stack>
+        <Avatar {...stringAvatar(auth.user.nombre +' '+ auth.user.apellido)} sx={{ width: '42%', height: '52%' }}/>
     );
 }

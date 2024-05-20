@@ -9,6 +9,7 @@ import TabContext from '@mui/lab/TabContext';
 import InfoPerfil from './InfoPerfil/InfoPerfil';
 import InteresesPerfil from './InteresesPerfil/InteresesPerfil';
 import EditPerfil from './EditPerfil/EditPerfil';
+import { useSelect } from '@/Context/Context';
 
 interface StyledTabsProps {
     children?: React.ReactNode;
@@ -73,7 +74,7 @@ const Perfil = () => {
                     <div className="avatar__info-nombres">
                         <h2 className="avatar__nombre">Diego Oñate</h2>
                         <p className="avatar__usuario">@diego3026</p>
-                    </div>
+                    </div> 
                     <Avatar />
                 </div>
                 <div className="avatar__info">
