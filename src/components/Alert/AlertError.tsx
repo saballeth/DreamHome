@@ -1,11 +1,11 @@
 import Swal from 'sweetalert2';
 
-export default function AlertExito({ message }:{message:any}) {
+export default function AlertError({ message }:{message:any}) {
   return (
     Swal.fire({
-      title: 'Exitoso',
+      title: 'Error!',
       text: message,
-      icon: 'success',
+      icon: 'error',
       confirmButtonText: 'ok'
     })
   );

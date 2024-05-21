@@ -1,3 +1,4 @@
+import AlertError from '@/components/Alert/AlertError';
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 class ApiService {
   private axiosInstance: AxiosInstance;
@@ -50,7 +51,13 @@ class ApiService {
 
   private handleError(error: AxiosError) {
     if (error.response) {
-      console.error('Request failed with response:', error.response.data);
+      //console.error('Request failed with response:', error.response.data); 
+      const objectError:any = error.response.data;
+      if(objectError.error === "User not found"){
+        AlertError({message:'Usuario no encontrado'});
+      }else if(objectError.error === "Invalid credentials"){
+        AlertError({message:'Contraseña incorrecta'});
+      }
     } else if (error.request) {
       console.error('No response received:', error.request);
     } else {
