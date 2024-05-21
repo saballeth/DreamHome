@@ -1,4 +1,5 @@
 import ApiService from '@/apiCalls.service/apiCalls.service';
+import AlertExito from '@/components/Alert/AlertExito';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
@@ -86,6 +87,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("user", JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
+                AlertExito({message:'Iniciaste sesion correctamente'})
                 if (response.user?.intereses?.length > 0) {
                     navigate("/principal");
                 } else {

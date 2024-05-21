@@ -10,6 +10,7 @@ const Inicio: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const auth = useAuth();
 
+  
   useEffect(() => {
     setUsername('');
     setPassword('');
