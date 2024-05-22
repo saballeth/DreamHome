@@ -38,7 +38,7 @@ const CardList: React.FC = () => {
       try {
         const response = await apiService.get('/api/inmuebles/');
         const inmueblesData: Inmueble[] = response.map((item: any) => ({
-          id: item.id,
+          idInmueble: item.id,
           url: item.url,
           nombre: item.nombre,
           precio: item.precio,

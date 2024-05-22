@@ -6,6 +6,7 @@ import { useAuth } from "@/Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ButtonGroupUser from "./ButtonGroupUser/ButtonGroupUser";
+import { useSelect } from "@/Context/Context";
 
 type loggedType = {
   colorNameLogo?: boolean;
@@ -16,6 +17,7 @@ type loggedType = {
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
   const auth = useAuth();
   const navigate = useNavigate();
+  const {setFavoriteSave} = useSelect();
   const [showOptions, setShowOptions] = useState(false);
   let user;
 
@@ -35,6 +37,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
   }
 
   const handleFavorite = () => {
+    setFavoriteSave(true);
     navigate('/favoritos');
   }
 

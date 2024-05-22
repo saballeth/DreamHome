@@ -2,7 +2,7 @@ import React, {createContext, useState, useContext, useEffect} from "react";
 import { useAuth } from "./AuthContext";
 
 type SelectedItem = {
-    id: number;
+    idInmueble: number;
     url: string;
     selected: boolean;
     nombre: string;
@@ -17,7 +17,6 @@ interface DataProps{
 };
 
 interface ContextProps {
-    toggleFavorite(data: any): void;
     selectUbi: null | any;
     filtros: null | any;
     setSelectUbi: any;
@@ -27,9 +26,10 @@ interface ContextProps {
     isFiltroSave: any;
     setFiltroSave: any;
     inmuebles: any;
-    reload: any;
-    setReload(data:any): void;
     setInmuebles:any;
+    isFavoriteSave: any;
+    setFavoriteSave(data:any):void;
+    favoritosDB: any;
 }
 
 const Context = createContext<ContextProps | undefined >(undefined);
@@ -39,38 +39,20 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedFavorites, setSelectedFavorites] = useState<SelectedItem[]>([]);
     const [filtros, setFiltros] = useState({alojamientoA:false,alojamientoB:false,minPrecio:100000,maxPrecio:520000000, habitaciones:'cualquiera',baños:'cualquiera',parqueaderos:'cualquiera',interiores:[],exteriores: [],sectores: [],zonas_comunes: []});
     const [isFiltroSave, setFiltroSave] = useState(false);
+    const [isFavoriteSave, setFavoriteSave] = useState(false);
     const [inmuebles, setInmuebles] = useState([]);
-    const [reload, setReload] = useState(1);
-    const auth = useAuth();
+    const [favoritosDB,setFavoritosDB] = useState([]); 
 
     useEffect(() => {
-        const favoritesString = localStorage.getItem('favorites');
+        const favoritesString = localStorage.getItem('favoritos');
         if (favoritesString) {
           const favorites = JSON.parse(favoritesString);
-          setSelectedFavorites(favorites);
+          setFavoritosDB(favorites);
         } 
     },[]);
 
-    const toggleFavorite = (data: DataProps) => { 
-        setSelectedFavorites(prevSelectedItems => {
-            const itemIndex = prevSelectedItems.findIndex(item => item.id === data.id);
-            if (itemIndex !== -1) {
-                // Si el elemento ya está en la lista, se deselecciona
-                const updatedFavorites = [...prevSelectedItems];
-                updatedFavorites[itemIndex] = { ...updatedFavorites[itemIndex], selected: !updatedFavorites[itemIndex].selected };
-                localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-                return updatedFavorites;
-            } else {
-                // Si el elemento no está en la lista, se selecciona
-                const updatedFavorites = [...prevSelectedItems, { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }];
-                localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-                return updatedFavorites;
-            }
-        });
-    };
-
     return (
-        <Context.Provider value={{reload,setReload,inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites }}>
+        <Context.Provider value={{favoritosDB,isFavoriteSave,setFavoriteSave,inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites }}>
             {children}
         </Context.Provider>
     );

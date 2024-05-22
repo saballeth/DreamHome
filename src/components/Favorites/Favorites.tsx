@@ -8,19 +8,17 @@ import { useAuth } from "@/Context/AuthContext";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 
 const Favorites = () => {
-  const { selectedFavorites } = useSelect();
+  const { isFavoriteSave,selectedFavorites,favoritosDB } = useSelect();
   const [isLoading, setIsLoading] = useState(true);
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
-
+  
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true); 
       try {
         for (const item of selectedFavorites) {
-          const inmueblesPorUsuario = Array.isArray(auth.inmueblePorUsuario) ? auth.inmueblePorUsuario : [];
-          const index = inmueblesPorUsuario.findIndex((inmueble: any) => inmueble.id === item.id);
-          if (index === -1) {
+          if (!favoritosDB.some((value:any) => value.inmueble.idInmueble === item.idInmueble)) {
             const response = await apiService.post('/api/inmueblesPorUsuario/', {
               usuario: auth.user.username,
               inmueble: item.url,
@@ -30,43 +28,20 @@ const Favorites = () => {
               comentarios: null,
               numeroDeClicks: null
             });
-            console.log(response)
             if (response) {
-              auth.setInmueblePorUsuario((prev: any[]) => [...prev, {
-                idInmueblePorUsuario: response.id,
-                idInmueble : item.id,
-                usuario: auth.user.username,
-                inmueble: response.url,
-                favorito: response.favorito,
-                calificacion: response.calificacion,
-                clasificacion: response.clasificacion,
-                comentarios: response.comentarios,
-                numeroDeClicks: response.numeroDeClicks
-              }]);
+              console.log(response)
             }
           } 
           else {
-            const idToUpdate = inmueblesPorUsuario[index].idInmueblePorUsuario;
-            const response = await apiService.update(`/api/inmueblesPorUsuario/${idToUpdate}/`, {
+            const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble === item.idInmueble);
+            const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
+            const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}/`, {
               usuario: auth.user.username,
               inmueble: item.url,
               favorite: item.selected,
             });
             if (response) {
-              auth.setInmueblePorUsuario((prev:any[]) => {
-                const updated = [...prev];
-                updated[index] = {
-                  ...updated[index],
-                  idInmueble: item.id,
-                  inmueble: response.url,
-                  favorito: response.favorito,
-                  calificacion: response.calificacion,
-                  clasificacion: response.clasificacion,
-                  comentarios: response.comentarios,
-                  numeroDeClicks: response.numeroDeClicks
-                };
-                return updated;
-              });
+              console.log(response)
             }
           }
         }
@@ -77,7 +52,7 @@ const Favorites = () => {
       }
     };
     fetchData();
-  }, [selectedFavorites]);
+  }, [isFavoriteSave]);
 
   useEffect(() => {
     localStorage.setItem("inmueblePorUsuario", JSON.stringify(auth.inmueblePorUsuario));
@@ -100,7 +75,7 @@ const Favorites = () => {
       {cantidadCoincidentes > 0 ? (
         <div className="card-list">
           {selectedFavorites.filter(card => card.selected === true).map((card) => (
-            <Card key={card.id} data={card} favorite={true} />
+            <Card key={card.idInmueble} data={card} favorite={true} />
           ))}
         </div>
       ) : (

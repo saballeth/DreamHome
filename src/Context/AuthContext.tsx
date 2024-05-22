@@ -71,7 +71,18 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }
     }, []);
 
-    
+    const getFavoritos = async () => {
+        // { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }
+        const responseFavoritos:any[] = await apiService.get(`/api/inmueblesPorUsuario/${user.id}/ob`);
+        const favoritos = responseFavoritos.map(item => ({
+            idInmueblePorUsuario: item.idInmueblePorUsuario,
+            idInmueble: item.inmueble.id,
+            nombre: item.inmueble.id,
+            selected: item.favorito,
+            precio: item.inmueble.id
+        }));
+        localStorage.setItem('favoritos',JSON.stringify(favoritos));
+    }
 
     const loginUser = async (data: any) => {
         try {
@@ -88,8 +99,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 AlertExito({message:'Iniciaste sesion correctamente'})
-                //const responseFavoritos:any[] = await apiService.get('/api/inmueblesPorUsuario/');
-                //const responseFavoritosPorUsuario = responseFavoritos.filter(item => item.idInmueble === response.user.id);
+                getFavoritos();
                 if (response.user?.intereses?.length > 0) {
                     navigate("/principal");
                 } else {
