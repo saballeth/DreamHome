@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faKey, faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import './LoginStyle.css';
 import { useAuth } from '@/Context/AuthContext';
+import Swal from 'sweetalert2';
 
 const Inicio: React.FC = () => {
   const [username, setUsername] = useState<string>('');
@@ -21,7 +22,12 @@ const Inicio: React.FC = () => {
       const data = { username, password };
       auth.loginUser(data);
     } else {
-      alert("Ingrese un usuario y/o contraseña");
+      Swal.fire({
+        title: 'Error!',
+        text: 'Ingrese un usuario y contraseña',
+        icon: 'error',
+        confirmButtonText: 'ok'
+      })
     }
   };
 

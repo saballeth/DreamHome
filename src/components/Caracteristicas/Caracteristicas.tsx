@@ -7,6 +7,7 @@ import Spinner from '../Spinner/Spinner';
 import './Caracteristicas.css';
 import Rating from './Rating/Rating';
 import CommentBox from './CommentBox/CommentBox';
+import { useSelect } from '@/Context/Context';
 
 
 function Caracteristicas() {
@@ -19,6 +20,7 @@ function Caracteristicas() {
   const apiService = new ApiService(auth.token);
   const caracteristicasPorTipo: { [tipo: string]: any[] } = {};
   const [isCalificacion, setCalificacion] = useState(false);
+  const [inmueblesPorUsuarioDB, setInmueblesPorUsuarioDB] = useState<any>([]);
 
   const divStyle = {
     padding: 0,
@@ -78,11 +80,25 @@ function Caracteristicas() {
       }
     };
     fetchData();
-
   }, [id]);
 
+  useEffect(()=>{
+    const fetchInmuebles = async () => {
+      try{
+        const inmueblesPorUsuario = await apiService.get(`/api/inmueblesPorUsuario/${auth.user.id}/obtenerPorUsuario/`);
+        console.log(inmueblesPorUsuario);
+        console.log(id);
+        console.log(inmueblesPorUsuario.filter((item:any) => item.inmueble.id === id));
+        setInmueblesPorUsuarioDB(inmueblesPorUsuario.filter((item:any) => item.idInmueble === id));
+      }catch(error){
+        console.error('Error fetching inmuebles por usuario:', error);
+      }
+    }
+    fetchInmuebles();
+  },[])
+
   useEffect(() => {
-    if (isGuardarInformacion) {
+    if (isGuardarInformacion) {setValorCalificacion
       guardarInformacionEnAPI();
     }
   }, [isGuardarInformacion]);
@@ -90,15 +106,29 @@ function Caracteristicas() {
   async function guardarInformacionEnAPI() {
     try {
       try {
-        console.log(inmuebleData?.url)
-        const response = await apiService.post('/api/inmueblesPorUsuario/', {
-          inmueble: inmuebleData?.url,
-          usuario: auth.user.username,
-          comentarios: comentarios == '' ? null: comentarios,
-          calificacion: valorCalificacion
-        });
-        console.log(response)
-        return response.data;
+        if(!inmueblesPorUsuarioDB.some((item:any) => item.idInmueble === id)){
+          const response = await apiService.post('/api/inmueblesPorUsuario/', {
+            inmueble: inmuebleData?.url,
+            usuario: auth.user.username,
+            comentarios: comentarios === '' ? null: comentarios,
+            calificacion: valorCalificacion
+          });
+          if(response){
+            console.log(response)
+          }              
+        }else{
+          const indexFavoritosDB = inmueblesPorUsuarioDB.findIndex((item:any) => item.idInmueble === id);
+          const idInmueblePorUsuarioDB = inmueblesPorUsuarioDB[indexFavoritosDB].idInmueblePorUsuario;
+          const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuarioDB}/`, {
+            inmueble: inmuebleData?.url,
+            usuario: auth.user.username,
+            comentarios: comentarios === '' ? null: comentarios,
+            calificacion: valorCalificacion
+          });
+          if(response){
+            console.log(response)
+          }    
+        }
       } catch (error) {
         throw error;
       }
@@ -106,6 +136,8 @@ function Caracteristicas() {
       console.error('Error al guardar la información en la API:', error);
     }
   }
+
+  console.log(inmueblesPorUsuarioDB);
 
   const restrictedKeys = ['id','url', 'ciudad', 'caracteristicas', 'sector', 'descripcion', 'nombre', 'precionM2'];
   const keyTranslations: any = {
@@ -145,8 +177,9 @@ function Caracteristicas() {
     }
   }
 
-  const handleVentanaComentarios = (value: boolean | ((prevState: boolean) => boolean)) => {
+  const handleVentanaComentarios = (value: boolean | ((prevState: boolean) => boolean),rating:any) => {
     setCalificacion(value);
+    setValorCalificacion(rating);
   }
 
   if (!inmuebleData) {
@@ -191,7 +224,7 @@ function Caracteristicas() {
         <div className="container__calificacion">
           <Rating click={handleVentanaComentarios}/>
           {isCalificacion && (
-            <CommentBox informacion={handleInformacion} onCerrar={handleCerrar}/>
+            <CommentBox value={valorCalificacion} informacion={handleInformacion} onCerrar={handleCerrar}/>
           )}
         </div>
       </div>

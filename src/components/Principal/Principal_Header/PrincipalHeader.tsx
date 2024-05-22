@@ -1,13 +1,11 @@
 import "./PrincipalHeaderStyles.css"
 import Ubicacion from '@/components/Principal/Ubicacion/Ubicacion_select'
 import { MdFavoriteBorder } from "react-icons/md";
-import { LuUser } from "react-icons/lu";
 import { PiMapPinLight } from "react-icons/pi";
 import { useAuth } from "@/Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ButtonGroupUser from "./ButtonGroupUser/ButtonGroupUser";
-import { FaCaretRight } from "react-icons/fa";
 import { useSelect } from "@/Context/Context";
 
 type loggedType = {
@@ -17,10 +15,10 @@ type loggedType = {
 
 
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
-  const auth = useAuth()
-  const navigate = useNavigate()
-  const [showOptions, setShowOptions] = useState(false);
+  const auth = useAuth();
+  const navigate = useNavigate();
   const {setFavoriteSave} = useSelect();
+  const [showOptions, setShowOptions] = useState(false);
   let user;
 
 
@@ -38,7 +36,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
     navigate('/principal');
   }
 
-  const handleFavorite = async () => {
+  const handleFavorite = () => {
     setFavoriteSave(true);
     navigate('/favoritos');
   }

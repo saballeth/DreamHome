@@ -1,8 +1,13 @@
 import { useState } from "react";
 import './EditPerfil.css'
+import ApiService from "@/apiCalls.service/apiCalls.service";
+import { useAuth } from "@/Context/AuthContext";
+import AlertExito from "@/components/Alert/AlertExito";
 
 const EditarPerfil = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const auth = useAuth();
+    const apiService = new ApiService(auth.token);
     const [errors, setErrors] = useState({
         email: "",
         name: "",
@@ -84,9 +89,28 @@ const EditarPerfil = () => {
         e.preventDefault();
         setFormSubmitted(true);
 
-
         if (Object.values(errors).some(error => error !== "")) {
             return;
+        }
+        const response = await apiService.update(`/api/usuarios/${auth.user.id}/`,{
+            username: formData.username,
+            password: formData.password,
+            email: formData.email,
+            nombre: formData.name,
+            apellido: formData.lastName,
+            edad: formData.age
+        });
+        if(response){
+            AlertExito({message:'Informacion actualizada'});
+            setFormData({
+                email: "",
+                name: "",
+                lastName: "",
+                age: "",
+                username: "",
+                password: "",
+                repeatPassword: ""
+            });
         }
     };
 
@@ -172,7 +196,7 @@ const EditarPerfil = () => {
                     <button className="CreateAccount-container__form-buttom button__cancelar" onClick={handleCancel}>
                         Cancelar
                     </button>
-                    <button type="submit" className="CreateAccount-container__form-buttom">
+                    <button type="submit" className="CreateAccount-container__form-buttom button__guardar">
                         Guardar Cambios
                     </button>
                 </div>

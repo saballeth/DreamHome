@@ -7,38 +7,45 @@ import { useSelect } from '@/Context/Context';
 import { CiSquareMinus } from "react-icons/ci";
 
 interface CardProps {
-  data:  {id: number; url: string; precio: number; nombre: string; };
+  data:  {idInmueble: number; url: string; precio: number; nombre: string; };
   favorite:boolean;
 }
 
-function Card({ data, favorite }: CardProps) {
-  const {id, precio, nombre, url } = data;
+function Card({ data, favorite }: any) {
+  const {idInmueble, precio, nombre, url } = data;
   const navigate = useNavigate();
-  const [isFavorite, setFavorite] = useState(false);
-  const {toggleFavorite,selectedFavorites} = useSelect();
+  const [marcadoFavorite, setMarcadoFavorite] = useState(false);
+  const {setSelectedFavorites,selectedFavorites} = useSelect();
+  const favoritoComponente = favorite;
 
   const handle = () => {
-    navigate(`/caracteristica/${id}`)
+    navigate(`/caracteristica/${idInmueble}`)
   };
-
-  useEffect(()=>{
-    const itemIndex = selectedFavorites.findIndex(item => item.id === id);
-    setFavorite(selectedFavorites[itemIndex]?.selected);
-  },[id,selectedFavorites])
 
   const handleSelect = () => {
-    toggleFavorite(data);
-  };
-  
+    const itemIndex = selectedFavorites.findIndex(item => item.idInmueble === idInmueble);
+    if (itemIndex !== -1) {
+      // Si la tarjeta ya está en favoritos, la deselecciona
+      const updatedFavorites = selectedFavorites.filter(item => item.idInmueble !== idInmueble);
+      setSelectedFavorites(updatedFavorites);
+      setMarcadoFavorite(false);
+    } else {
+      // Si la tarjeta no está en favoritos, la selecciona
+      const updatedFavorites = [...selectedFavorites, { idInmueble:idInmueble,nombre:nombre,precio:precio, selected: true }];
+      setSelectedFavorites(updatedFavorites);
+      setMarcadoFavorite(true);
+    }
+  }
+
   return (
     <div className="card">
-      { favorite ? (
+      { favoritoComponente ? (
         <div className="card__delete" onClick={handleSelect}>
           <CiSquareMinus className='menos__select'/>
         </div>  
       ):(
         <div className="card__favorite" onClick={handleSelect}>
-          {isFavorite ? (
+          {marcadoFavorite ? (
             <MdFavorite className='favorite__select'/>
           ):(
             <MdFavoriteBorder className="favorite"/>

@@ -10,7 +10,6 @@ import PrincipalHeader from '../Principal/Principal_Header/PrincipalHeader';
 const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
   const auth = useAuth();
-  const [usernameExists, setUsernameExists] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [errors, setErrors] = useState({
     email: "",
@@ -45,15 +44,7 @@ const CreateAccount: React.FC = () => {
     switch (name) {
       case "username":
         error = value.includes(" ") ? "El nombre de usuario no puede contener espacios" : "";
-        if (value.trim() !== "") {
-          apiService.get(`/api/usuarios/${value}`).then((response) => {
-            setUsernameExists(response.data.exists);
-            error = response.data.exists ? "Este nombre de usuario ya está en uso" : "";
-            setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-          });
-        }
         break;
-
       case "name":
         error = value.includes(" ") ? "El nombre no puede contener espacios" : "";
         break;
@@ -163,7 +154,6 @@ const CreateAccount: React.FC = () => {
             required
           />
           {errors.username && <p className="error-message">{errors.username}</p>}
-          {usernameExists && !errors.username && (<p className="error-message">Este nombre de usuario ya está en uso</p>)}
           <div className="CreateAccount-container__form-columns">
             <input
               type="password"
@@ -189,7 +179,7 @@ const CreateAccount: React.FC = () => {
           <button  type="submit" className="CreateAccount-container__form-buttom">
             Registrarse
           </button>
-          {formSubmitted && usernameExists && Object.values(errors).some(error => error !== "") && (
+          {formSubmitted && Object.values(errors).some(error => error !== "") && (
             <p className="warning-message">Por favor, complete todos los campos correctamente antes de enviar el formulario.</p>
           )}
         </form>

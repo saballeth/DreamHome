@@ -9,11 +9,12 @@ import Rating from '@mui/material/Rating';
 interface CommentBoxProps {
     onCerrar: (cerrar: boolean) => void;
     informacion: (informacion: string, calificacion: number) => void; 
+    value: any;
 }
 
 export default function CommentBox(props: CommentBoxProps) {
     const [comment, setComment] = useState('');
-    const [rating, setRating] = useState<number | null>(2); 
+    const [rating, setRating] = useState<number | null>(props.value); 
 
     const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setComment(e.target.value);

@@ -7,7 +7,7 @@ function CarouselItems() {
     return (
         <CCarousel controls indicators> 
             <CCarouselItem> 
-                <CImage className="d-block w-100 height" src='/src/assets/HousesTest/casa1.jpg' alt="slide 1" />
+                <CImage className="d-block w-100 height" src='https://colombiarents.com/wp-content/uploads/2020/11/casa-santa-marta-1.jpg' alt="slide 1" />
                 <CCarouselCaption className="d-none d-md-block">
                 </CCarouselCaption>
             </CCarouselItem>

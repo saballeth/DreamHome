@@ -12,6 +12,7 @@ const CardList: React.FC = () => {
   const apiService = new ApiService(auth.token);
   const { selectUbi, filtros, isFiltroSave, setInmuebles } = useSelect();
   const { currentPage, updateMaxPage } = usePagination();
+  const [filtrosActivos, setFiltrosActivos] = useState(false);
 
   interface Inmueble {
     id: number;
@@ -37,7 +38,7 @@ const CardList: React.FC = () => {
       try {
         const response = await apiService.get('/api/inmuebles/');
         const inmueblesData: Inmueble[] = response.map((item: any) => ({
-          id: item.id,
+          idInmueble: item.id,
           url: item.url,
           nombre: item.nombre,
           precio: item.precio,
@@ -60,27 +61,28 @@ const CardList: React.FC = () => {
     fetchData();
   }, []);
 
-  const hasActiveFilters = (
-    filtros.habitaciones !== 'cualquiera' ||
-    filtros.minPrecio > 100000 ||
-    filtros.maxPrecio < 520000000 ||
-    filtros.baños !== 'cualquiera' ||
-    filtros.parqueaderos !== 'cualquiera' ||
-    filtros.exteriores.length !== 0 ||
-    filtros.interiores.length !== 0 ||
-    filtros.sectores.length !== 0 ||
-    filtros.zonas_comunes.length !== 0
-  );
-
   const filteredData = useMemo(() => {
     if (listData.length === 0) {
       return [];
     }
 
+    const hasActiveFilters = (
+      filtros.habitaciones !== 'cualquiera' ||
+      filtros.minPrecio > 100000 ||
+      filtros.maxPrecio < 520000000 ||
+      filtros.baños !== 'cualquiera' ||
+      filtros.parqueaderos !== 'cualquiera' ||
+      filtros.exteriores.length !== 0 ||
+      filtros.interiores.length !== 0 ||
+      filtros.sectores.length !== 0 ||
+      filtros.zonas_comunes.length !== 0
+    );
+
     if (!hasActiveFilters) {
       return listData;
     }
 
+    setFiltrosActivos(true);
     let listFiltrado: any[] = listData;
     if (filtros.habitaciones !== 'cualquiera') {
       listFiltrado = listData.filter(item => item.habitaciones == filtros.habitaciones);
@@ -131,13 +133,21 @@ const CardList: React.FC = () => {
     }
   }, [selectUbi, filteredData]);
 
+
+  let paginatedData = filteredData;
+  
+  if (isCardCity) {
+    paginatedData = filteredData.filter((card) => card.ciudad.nombre === selectUbi?.value);
+  }
+
   const start = (currentPage - 1) * 9;
   let end = start + 9;
-  if (end > filteredData.length) {
-    end = filteredData.length;
+  if (end > paginatedData.length) {
+    end = paginatedData.length;
   }
-  const paginatedData = filteredData.slice(start, end);
-  updateMaxPage(filteredData.length,9);
+
+  const paginated = paginatedData.slice(start, end);
+  updateMaxPage(paginatedData.length, 9);
 
   if (!listData.length) {
     return (
@@ -148,19 +158,19 @@ const CardList: React.FC = () => {
   }
 
   return (
-    <div className={`card-list wrapper ${paginatedData.length<4 ? 'cards__fews':''}`}>
-      {selectUbi === null && paginatedData?.map((card) => (
+    <div className={`card-list wrapper ${paginated.length < 4 ? 'cards__fews' : ''}`}>
+      {selectUbi === null && paginated?.map((card) => (
         <Card key={card.id} data={card} favorite={false} />
       ))}
-      {selectUbi !== null && paginatedData?.map((card) => (
-        selectUbi.value === card.ciudad.nombre && <Card key={card.id} data={card} favorite={false} />
+      {selectUbi !== null && isCardCity && paginated?.map((card) => (
+        <Card key={card.id} data={card} favorite={false} />
       ))}
       {selectUbi !== null && !isCardCity && (
         <div className="card__not-found">
           <p>No hay Inmuebles con la ciudad Seleccionada</p>
         </div>
       )}
-      {paginatedData.length == 0 && hasActiveFilters == true && (
+      {paginated.length == 0 && filtrosActivos == true && (
         <div className="card__not-found">
           <p>No hay Inmuebles con los filtros seleccionados</p>
         </div>
