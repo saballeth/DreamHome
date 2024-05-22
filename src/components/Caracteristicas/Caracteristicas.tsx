@@ -175,6 +175,7 @@ function Caracteristicas() {
     setGuardarInformacion(true);
   }
 
+  console.log(valorCalificacion);
   return (
     <div className="caracteristicas__container">
       <div className="caracteristicas__informacion">
@@ -191,7 +192,7 @@ function Caracteristicas() {
         <div className="container__calificacion">
           <Rating click={handleVentanaComentarios}/>
           {isCalificacion && (
-            <CommentBox informacion={handleInformacion} onCerrar={handleCerrar}/>
+            <CommentBox value={valorCalificacion} informacion={handleInformacion} onCerrar={handleCerrar}/>
           )}
         </div>
       </div>

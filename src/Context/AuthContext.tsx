@@ -88,6 +88,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 AlertExito({message:'Iniciaste sesion correctamente'})
+                //const responseFavoritos:any[] = await apiService.get('/api/inmueblesPorUsuario/');
+                //const responseFavoritosPorUsuario = responseFavoritos.filter(item => item.idInmueble === response.user.id);
                 if (response.user?.intereses?.length > 0) {
                     navigate("/principal");
                 } else {
@@ -117,7 +119,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("user", JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
-                alert('Registro Exitoso :) ');
+                AlertExito({message:'Registro Exitoso'});
                 navigate("/intereses");
             }
         } catch (err) {

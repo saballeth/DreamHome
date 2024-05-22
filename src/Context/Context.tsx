@@ -26,9 +26,9 @@ interface ContextProps {
     setFiltros: any;
     isFiltroSave: any;
     setFiltroSave: any;
-    isFavoriteSave: any; 
-    setFavoriteSave: any;
     inmuebles: any;
+    reload: any;
+    setReload(data:any): void;
     setInmuebles:any;
 }
 
@@ -39,8 +39,8 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedFavorites, setSelectedFavorites] = useState<SelectedItem[]>([]);
     const [filtros, setFiltros] = useState({alojamientoA:false,alojamientoB:false,minPrecio:100000,maxPrecio:520000000, habitaciones:'cualquiera',baños:'cualquiera',parqueaderos:'cualquiera',interiores:[],exteriores: [],sectores: [],zonas_comunes: []});
     const [isFiltroSave, setFiltroSave] = useState(false);
-    const [isFavoriteSave, setFavoriteSave] = useState(false);
-    const [inmuebles, setInmuebles] = useState(null);
+    const [inmuebles, setInmuebles] = useState([]);
+    const [reload, setReload] = useState(1);
     const auth = useAuth();
 
     useEffect(() => {
@@ -70,7 +70,7 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     };
 
     return (
-        <Context.Provider value={{inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites, isFavoriteSave, setFavoriteSave }}>
+        <Context.Provider value={{reload,setReload,inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, toggleFavorite, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites }}>
             {children}
         </Context.Provider>
     );

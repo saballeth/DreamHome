@@ -8,10 +8,10 @@ import { useAuth } from "@/Context/AuthContext";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 
 const Favorites = () => {
-  const { isFavoriteSave,selectedFavorites } = useSelect();
+  const { selectedFavorites } = useSelect();
   const [isLoading, setIsLoading] = useState(true);
   const auth = useAuth();
-  const apiService = new ApiService(auth.token)
+  const apiService = new ApiService(auth.token);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,7 +77,7 @@ const Favorites = () => {
       }
     };
     fetchData();
-  }, [selectedFavorites,isFavoriteSave]);
+  }, [selectedFavorites]);
 
   useEffect(() => {
     localStorage.setItem("inmueblePorUsuario", JSON.stringify(auth.inmueblePorUsuario));

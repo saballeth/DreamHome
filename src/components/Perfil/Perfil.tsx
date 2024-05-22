@@ -9,7 +9,7 @@ import TabContext from '@mui/lab/TabContext';
 import InfoPerfil from './InfoPerfil/InfoPerfil';
 import InteresesPerfil from './InteresesPerfil/InteresesPerfil';
 import EditPerfil from './EditPerfil/EditPerfil';
-import { useSelect } from '@/Context/Context';
+import { useAuth } from '@/Context/AuthContext';
 
 interface StyledTabsProps {
     children?: React.ReactNode;
@@ -62,6 +62,7 @@ const StyledTab = styled((props: StyledTabProps) => (
 
 const Perfil = () => {
     const [value, setValue] = useState("1");
+    const auth = useAuth();
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -72,18 +73,14 @@ const Perfil = () => {
             <div className="avatar__perfil">
                 <div className="avatar">
                     <div className="avatar__info-nombres">
-                        <h2 className="avatar__nombre">Diego Oñate</h2>
-                        <p className="avatar__usuario">@diego3026</p>
+                        <h2 className="avatar__nombre">{auth.user.nombre} {auth.user.apellido}</h2>
+                        <p className="avatar__usuario">@{auth.user.username}</p>
                     </div> 
                     <Avatar />
                 </div>
                 <div className="avatar__info">
                     <div className="avatar__info-caja">
-                        <h4 className="info-caja telefono">+573242137992</h4>
-                        <p className="titulo telefono__titulo">Celular</p>
-                    </div>
-                    <div className="avatar__info-caja info-bottom">
-                        <h4 className="info-caja email">diegoonate3026@gmail.com</h4>
+                        <h4 className="info-caja email">{auth.user.email}</h4>
                         <p className="titulo email__titulo">Correo Electronico</p>
                     </div>
                 </div>
