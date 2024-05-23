@@ -6,20 +6,21 @@ import Footer from "@/components/Footer/Footer";
 import Provider from "@/Context/Context";
 import React from "react";
 import PaginationProvider from "@/Context/PaginacionContext";
-
+import { QueryClientProvider } from '@tanstack/react-query';
+import queryClient from './queryClient';
 const HomePrincipal: React.FC = () => {
 
   return (
     <>
-      <Provider>
         <PaginationProvider>
           <PrincipalHeader />
           <Hero />
           <Filtrado />
+
+        
           <CardList />
           <Footer />
         </PaginationProvider>
-      </Provider>
     </>
   );
 };
