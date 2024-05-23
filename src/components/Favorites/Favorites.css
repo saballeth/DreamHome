@@ -14,7 +14,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(100vh - 20vh - 80px);
 }
 
 .card-list {

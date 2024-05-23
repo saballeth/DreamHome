@@ -19,10 +19,7 @@ const Favorites = () => {
       setIsLoading(true); 
       try {
         for (const item of selectedFavorites) {
-          console.log(favoritosDB)
-          console.log(favoritosDB.some((value:any) => value.idInmueble == item.idInmueble));
           if (!favoritosDB.some((value:any) => value.idInmueble == item.idInmueble)) {
-            console.log("intento post");
             const response = await apiService.post('/api/inmueblesPorUsuario/', {
               usuario: auth.user.username,
               inmueble: item.url,
@@ -33,7 +30,8 @@ const Favorites = () => {
               numeroDeClicks: null
             });
             if (response) {
-              console.log(response)
+              console.log("Request POST exitoso");
+              console.log(response);  
             }
           } 
           else {
@@ -45,7 +43,8 @@ const Favorites = () => {
               favorite: item.selected ? 1 : 0,
             });
             if (response) {
-              console.log(response)
+              console.log("Request UPDATE exitoso");
+              console.log(response);
             }
           }
         }
