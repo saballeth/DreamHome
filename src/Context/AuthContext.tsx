@@ -73,7 +73,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
     const getFavoritos = async () => {
         // { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }
-        const responseFavoritos:any[] = await apiService.get(`/api/inmueblesPorUsuario/${user.id}/ob`);
+        const responseFavoritos:any[] = await apiService.get(`/api/inmueblesPorUsuario/${user.id}/obtenerPorUsuario/`);
         const favoritos = responseFavoritos.map(item => ({
             idInmueblePorUsuario: item.idInmueblePorUsuario,
             idInmueble: item.inmueble.id,

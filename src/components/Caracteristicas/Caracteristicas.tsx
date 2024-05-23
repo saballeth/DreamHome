@@ -8,6 +8,7 @@ import './Caracteristicas.css';
 import Rating from './Rating/Rating';
 import CommentBox from './CommentBox/CommentBox';
 import { useSelect } from '@/Context/Context';
+import AlertExito from '../Alert/AlertExito';
 
 
 function Caracteristicas() {
@@ -86,10 +87,7 @@ function Caracteristicas() {
     const fetchInmuebles = async () => {
       try{
         const inmueblesPorUsuario = await apiService.get(`/api/inmueblesPorUsuario/${auth.user.id}/obtenerPorUsuario/`);
-        console.log(inmueblesPorUsuario);
-        console.log(id);
-        console.log(inmueblesPorUsuario.filter((item:any) => item.inmueble.id === id));
-        setInmueblesPorUsuarioDB(inmueblesPorUsuario.filter((item:any) => item.idInmueble === id));
+        setInmueblesPorUsuarioDB(inmueblesPorUsuario.filter((item:any) => item.inmueble.id == id));        
       }catch(error){
         console.error('Error fetching inmuebles por usuario:', error);
       }
@@ -102,11 +100,11 @@ function Caracteristicas() {
       guardarInformacionEnAPI();
     }
   }, [isGuardarInformacion]);
-  
+
   async function guardarInformacionEnAPI() {
     try {
       try {
-        if(!inmueblesPorUsuarioDB.some((item:any) => item.idInmueble === id)){
+        if(!inmueblesPorUsuarioDB.some((item:any) => item.inmueble.id == id)){
           const response = await apiService.post('/api/inmueblesPorUsuario/', {
             inmueble: inmuebleData?.url,
             usuario: auth.user.username,
@@ -117,16 +115,16 @@ function Caracteristicas() {
             console.log(response)
           }              
         }else{
-          const indexFavoritosDB = inmueblesPorUsuarioDB.findIndex((item:any) => item.idInmueble === id);
+          const indexFavoritosDB = inmueblesPorUsuarioDB.findIndex((item:any) => item.inmueble.id == id);
           const idInmueblePorUsuarioDB = inmueblesPorUsuarioDB[indexFavoritosDB].idInmueblePorUsuario;
           const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuarioDB}/`, {
             inmueble: inmuebleData?.url,
             usuario: auth.user.username,
-            comentarios: comentarios === '' ? null: comentarios,
+            comentarios: comentarios == '' ? null: comentarios,
             calificacion: valorCalificacion
           });
           if(response){
-            console.log(response)
+            AlertExito({message:'Gracias por sus comentarios!'});
           }    
         }
       } catch (error) {
@@ -136,8 +134,6 @@ function Caracteristicas() {
       console.error('Error al guardar la información en la API:', error);
     }
   }
-
-  console.log(inmueblesPorUsuarioDB);
 
   const restrictedKeys = ['id','url', 'ciudad', 'caracteristicas', 'sector', 'descripcion', 'nombre', 'precionM2'];
   const keyTranslations: any = {
