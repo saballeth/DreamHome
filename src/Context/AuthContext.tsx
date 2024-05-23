@@ -14,6 +14,7 @@ interface AuthContextProps {
     refreshToken: () => void;
     inmueblePorUsuario: any;
     setInmueblePorUsuario: any;
+    favoritosDB:any
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -29,6 +30,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
     const [inmueblePorUsuario, setInmueblePorUsuario] = useState<any[]>(() => {
         const storedData = localStorage.getItem("inmueblePorUsuario");
+        return storedData ? JSON.parse(storedData) : {};
+    });
+    const [favoritosDB, setFavoritosDB] = useState<any>(() => {
+        const storedData = localStorage.getItem("favoritosDB");
         return storedData ? JSON.parse(storedData) : {};
     });
     const navigate = useNavigate();
@@ -68,19 +73,23 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         if (storedToken) {
             setToken(storedToken);
             setIsAuthenticated(true);
-        }
+        } 
     }, []);
 
-    const getFavoritos = async () => {
+    const getFavoritos = async (id:number,token:any) => {
         // { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }
-        const responseFavoritos:any[] = await apiService.get(`/api/inmueblesPorUsuario/${user.id}/obtenerPorUsuario/`);
+        const apiServiceToken = new ApiService(token);
+        const responseFavoritos:any[] = await apiServiceToken.get(`/api/inmueblesPorUsuario/${id}/obtenerPorUsuario/`);
         const favoritos = responseFavoritos.map(item => ({
             idInmueblePorUsuario: item.idInmueblePorUsuario,
             idInmueble: item.inmueble.id,
             nombre: item.inmueble.id,
             selected: item.favorito,
-            precio: item.inmueble.id
+            precio: item.inmueble.id,
+            url: item.inmueble.url
         }));
+        setFavoritosDB(favoritos);
+        localStorage.setItem('favoritosDB',JSON.stringify(favoritos));
         localStorage.setItem('favoritos',JSON.stringify(favoritos));
     }
 
@@ -99,7 +108,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 AlertExito({message:'Iniciaste sesion correctamente'})
-                getFavoritos();
+                getFavoritos(response.user.id,response.access);
                 if (response.user?.intereses?.length > 0) {
                     navigate("/principal");
                 } else {
@@ -147,11 +156,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem("refresh");
         localStorage.removeItem('favorites');
         localStorage.removeItem('inmueblePorUsuario');
-        localStorage.removeItem('favorites');
+        localStorage.removeItem('favoritos');
+        localStorage.removeItem('favoritosNuevos');
         navigate("/inicio-sesion");
     };
     return (
-        <AuthContext.Provider value={{inmueblePorUsuario,setInmueblePorUsuario,isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
+        <AuthContext.Provider value={{favoritosDB,inmueblePorUsuario,setInmueblePorUsuario,isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
             {children}
         </AuthContext.Provider>
     );

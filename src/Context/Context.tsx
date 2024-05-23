@@ -29,7 +29,6 @@ interface ContextProps {
     setInmuebles:any;
     isFavoriteSave: any;
     setFavoriteSave(data:any):void;
-    favoritosDB: any;
 }
 
 const Context = createContext<ContextProps | undefined >(undefined);
@@ -41,18 +40,18 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isFiltroSave, setFiltroSave] = useState(false);
     const [isFavoriteSave, setFavoriteSave] = useState(false);
     const [inmuebles, setInmuebles] = useState([]);
-    const [favoritosDB,setFavoritosDB] = useState([]); 
 
     useEffect(() => {
-        const favoritesString = localStorage.getItem('favoritos');
+        const favoritesString = localStorage.getItem('favoritosNuevos');
         if (favoritesString) {
-          const favorites = JSON.parse(favoritesString);
-          setFavoritosDB(favorites);
+            const favorites = JSON.parse(favoritesString);
+            console.log(favorites)
+            setSelectedFavorites(favorites); 
         } 
-    },[]);
+    },[]); 
 
     return (
-        <Context.Provider value={{favoritosDB,isFavoriteSave,setFavoriteSave,inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites }}>
+        <Context.Provider value={{isFavoriteSave,setFavoriteSave,inmuebles,setInmuebles,selectUbi, filtros,isFiltroSave, setFiltroSave, setFiltros, setSelectUbi, selectedFavorites, setSelectedFavorites }}>
             {children}
         </Context.Provider>
     );

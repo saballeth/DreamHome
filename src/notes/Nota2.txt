@@ -1,0 +1,16 @@
+
+  interface Inmueble {
+    id: number;
+    url: string;
+    nombre: string;
+    precio: number;
+    ciudad: any;
+    habitaciones: number,
+    baños: number,
+    parqueaderos: number,
+    tipoDeInmueble: string,
+    caracteristicas_interior: any,
+    caracteristicas_exterior: any,
+    caracteristicas_sector: any,
+    caracteristicas_zona_comun: any,
+  }

@@ -8,21 +8,25 @@ import { useAuth } from "@/Context/AuthContext";
 import ApiService from "@/apiCalls.service/apiCalls.service";
 
 const Favorites = () => {
-  const { isFavoriteSave,selectedFavorites,favoritosDB } = useSelect();
+  const { isFavoriteSave,selectedFavorites } = useSelect();
   const [isLoading, setIsLoading] = useState(true);
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
-  
+  const favoritosDB = auth.favoritosDB;
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true); 
       try {
         for (const item of selectedFavorites) {
-          if (!favoritosDB.some((value:any) => value.inmueble.idInmueble === item.idInmueble)) {
+          console.log(favoritosDB)
+          console.log(favoritosDB.some((value:any) => value.idInmueble == item.idInmueble));
+          if (!favoritosDB.some((value:any) => value.idInmueble == item.idInmueble)) {
+            console.log("intento post");
             const response = await apiService.post('/api/inmueblesPorUsuario/', {
               usuario: auth.user.username,
               inmueble: item.url,
-              favorito: item.selected,
+              favorito: item.selected ? 1 : 0,
               calificacion: null,
               clasificacion: null,
               comentarios: null,
@@ -33,12 +37,12 @@ const Favorites = () => {
             }
           } 
           else {
-            const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble === item.idInmueble);
+            const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble == item.idInmueble);
             const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
             const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}/`, {
               usuario: auth.user.username,
               inmueble: item.url,
-              favorite: item.selected,
+              favorite: item.selected ? 1 : 0,
             });
             if (response) {
               console.log(response)

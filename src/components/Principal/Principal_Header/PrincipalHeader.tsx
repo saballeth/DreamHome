@@ -17,7 +17,7 @@ type loggedType = {
 const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUbi = false}: loggedType) =>{
   const auth = useAuth();
   const navigate = useNavigate();
-  const {setFavoriteSave} = useSelect();
+  const {setFavoriteSave,selectedFavorites} = useSelect();
   const [showOptions, setShowOptions] = useState(false);
   let user;
 
@@ -37,6 +37,7 @@ const PrincipalHeader:  React.FC<loggedType> = ({ colorNameLogo = false, colorUb
   }
 
   const handleFavorite = () => {
+    localStorage.setItem('favoritosNuevos',JSON.stringify(selectedFavorites));
     setFavoriteSave(true);
     navigate('/favoritos');
   }

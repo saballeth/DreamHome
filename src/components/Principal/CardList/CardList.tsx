@@ -6,63 +6,88 @@ import { useAuth } from "@/Context/AuthContext";
 import Spinner from "@/components/Spinner/Spinner";
 import { useSelect } from "@/Context/Context";
 import { usePagination } from "@/Context/PaginacionContext";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchInmuebles = async (token: string) => {
+  const apiService = new ApiService(token);
+  const response = await apiService.get('/api/inmuebles/');
+  return response.map((item: any) => ({
+    idInmueble: item.id,
+    url: item.url,
+    nombre: item.nombre,
+    precio: item.precio,
+    ciudad: item.ciudad,
+    habitaciones: item.cantidadDeHabitaciones,
+    baños: item.cantidadDeBaños,
+    parqueaderos: item.cantidadDeParqueaderos,
+    tipoDeInmueble: item.tipoDeInmueble.nombre,
+    caracteristicas_interior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-interior'),
+    caracteristicas_exterior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-exterior'),
+    caracteristicas_sector: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-sector'),
+    caracteristicas_zona_comun: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-de-zona-comun'),
+  }));
+};
 
 const CardList: React.FC = () => {
   const auth = useAuth();
-  const apiService = new ApiService(auth.token);
+  // const apiService = new ApiService(auth.token);
   const { selectUbi, filtros, isFiltroSave, setInmuebles } = useSelect();
   const { currentPage, updateMaxPage } = usePagination();
   const [filtrosActivos, setFiltrosActivos] = useState(false);
-
-  interface Inmueble {
-    id: number;
-    url: string;
-    nombre: string;
-    precio: number;
-    ciudad: any;
-    habitaciones: number,
-    baños: number,
-    parqueaderos: number,
-    tipoDeInmueble: string,
-    caracteristicas_interior: any,
-    caracteristicas_exterior: any,
-    caracteristicas_sector: any,
-    caracteristicas_zona_comun: any,
-  }
-
-  const [listData, setListData] = useState<Inmueble[]>([]);
   const [isCardCity, setCardCity] = useState(true);
+  const { data: inmuebles, isLoading } = useQuery({
+    queryKey: ['inmuebles'],
+    queryFn: () => fetchInmuebles(auth.token),
+    staleTime: 2000 * 60 * 60, // 1 hora
+  });
+  // interface Inmueble {
+  //   id: number;
+  //   url: string;
+  //   nombre: string;
+  //   precio: number;
+  //   ciudad: any;
+  //   habitaciones: number,
+  //   baños: number,
+  //   parqueaderos: number,
+  //   tipoDeInmueble: string,
+  //   caracteristicas_interior: any,
+  //   caracteristicas_exterior: any,
+  //   caracteristicas_sector: any,
+  //   caracteristicas_zona_comun: any,
+  // }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await apiService.get('/api/inmuebles/');
-        const inmueblesData: Inmueble[] = response.map((item: any) => ({
-          idInmueble: item.id,
-          url: item.url,
-          nombre: item.nombre,
-          precio: item.precio,
-          ciudad: item.ciudad,
-          habitaciones: item.cantidadDeHabitaciones,
-          baños: item.cantidadDeBaños,
-          parqueaderos: item.cantidadDeParqueaderos,
-          tipoDeInmueble: item.tipoDeInmueble.nombre,
-          caracteristicas_interior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-interior'),
-          caracteristicas_exterior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-exterior'),
-          caracteristicas_sector: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-sector'),
-          caracteristicas_zona_comun: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-de-zona-comun'),
-        }));
-        setListData(inmueblesData);
-        setInmuebles(inmueblesData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();
-  }, []);
+  // const [listData, setListData] = useState<Inmueble[]>([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await apiService.get('/api/inmuebles/');
+  //       const inmueblesData: Inmueble[] = response.map((item: any) => ({
+  //         idInmueble: item.id,
+  //         url: item.url,
+  //         nombre: item.nombre,
+  //         precio: item.precio,
+  //         ciudad: item.ciudad,
+  //         habitaciones: item.cantidadDeHabitaciones,
+  //         baños: item.cantidadDeBaños,
+  //         parqueaderos: item.cantidadDeParqueaderos,
+  //         tipoDeInmueble: item.tipoDeInmueble.nombre,
+  //         caracteristicas_interior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-interior'),
+  //         caracteristicas_exterior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-exterior'),
+  //         caracteristicas_sector: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-sector'),
+  //         caracteristicas_zona_comun: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-de-zona-comun'),
+  //       }));
+  //       setListData(inmueblesData);
+  //       setInmuebles(inmueblesData);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   const filteredData = useMemo(() => {
-    if (listData.length === 0) {
+    if (!inmuebles || inmuebles.length === 0) {
       return [];
     }
 
@@ -79,13 +104,13 @@ const CardList: React.FC = () => {
     );
 
     if (!hasActiveFilters) {
-      return listData;
+      return inmuebles;
     }
 
     setFiltrosActivos(true);
-    let listFiltrado: any[] = listData;
+    let listFiltrado: any[] = inmuebles;
     if (filtros.habitaciones !== 'cualquiera') {
-      listFiltrado = listData.filter(item => item.habitaciones == filtros.habitaciones);
+      listFiltrado = inmuebles.filter((item:any) => item.habitaciones == filtros.habitaciones);
     }
     if (filtros.baños !== 'cualquiera') {
       listFiltrado = listFiltrado?.filter(item => item.baños == filtros.baños);
@@ -122,10 +147,10 @@ const CardList: React.FC = () => {
     }
 
     return listFiltrado;
-  }, [listData, isFiltroSave]);
+  }, [inmuebles, isFiltroSave]);
 
   useEffect(() => {
-    const hasCards = filteredData?.some((card) =>
+    const hasCards = filteredData?.some((card:any) =>
       card.ciudad.nombre === selectUbi?.value
     )
     if (hasCards !== undefined) {
@@ -137,7 +162,7 @@ const CardList: React.FC = () => {
   let paginatedData = filteredData;
   
   if (isCardCity) {
-    paginatedData = filteredData.filter((card) => card.ciudad.nombre === selectUbi?.value);
+    paginatedData = filteredData.filter((card:any) => card.ciudad.nombre === selectUbi?.value);
   }
 
   const start = (currentPage - 1) * 9;
@@ -147,9 +172,11 @@ const CardList: React.FC = () => {
   }
 
   const paginated = paginatedData.slice(start, end);
-  updateMaxPage(paginatedData.length, 9);
+  useEffect(() => {
+    updateMaxPage(paginatedData.length, 9);
+  }, [paginatedData.length, updateMaxPage]);
 
-  if (!listData.length) {
+  if (isLoading) {
     return (
       <div className="spinner__container__cardList">
         <Spinner />
@@ -159,10 +186,10 @@ const CardList: React.FC = () => {
 
   return (
     <div className={`card-list wrapper ${paginated.length < 4 ? 'cards__fews' : ''}`}>
-      {selectUbi === null && paginated?.map((card) => (
+      {selectUbi === null && paginated?.map((card:any) => (
         <Card key={card.id} data={card} favorite={false} />
       ))}
-      {selectUbi !== null && isCardCity && paginated?.map((card) => (
+      {selectUbi !== null && isCardCity && paginated?.map((card:any) => (
         <Card key={card.id} data={card} favorite={false} />
       ))}
       {selectUbi !== null && !isCardCity && (

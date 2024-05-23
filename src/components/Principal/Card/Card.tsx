@@ -26,16 +26,33 @@ function Card({ data, favorite }: any) {
     const itemIndex = selectedFavorites.findIndex(item => item.idInmueble === idInmueble);
     if (itemIndex !== -1) {
       // Si la tarjeta ya está en favoritos, la deselecciona
-      const updatedFavorites = selectedFavorites.filter(item => item.idInmueble !== idInmueble);
+      // const updatedFavorites = selectedFavorites.filter(item => item.idInmueble !== idInmueble);
+      const updatedFavorites = selectedFavorites.map(item => {
+        if (item.idInmueble === idInmueble) {
+          return { ...item, selected: false };
+        }
+        return item;
+      });
       setSelectedFavorites(updatedFavorites);
-      setMarcadoFavorite(false);
+      setMarcadoFavorite(false); 
     } else {
       // Si la tarjeta no está en favoritos, la selecciona
-      const updatedFavorites = [...selectedFavorites, { idInmueble:idInmueble,nombre:nombre,precio:precio, selected: true }];
+      const updatedFavorites = [...selectedFavorites, { idInmueble:idInmueble,url:url,nombre:nombre,precio:precio, selected: true }];
       setSelectedFavorites(updatedFavorites);
       setMarcadoFavorite(true);
     }
   }
+
+  // console.log(selectedFavorites);
+  useEffect(() => {
+    const index = selectedFavorites.findIndex(item => item.idInmueble === idInmueble);
+    if (index !== -1 && selectedFavorites[index].selected) {
+        setMarcadoFavorite(true);
+    } else {
+        setMarcadoFavorite(false);
+    }
+  }, [selectedFavorites, idInmueble]);
+
 
   return (
     <div className="card">
