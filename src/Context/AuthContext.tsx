@@ -158,6 +158,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem('inmueblePorUsuario');
         localStorage.removeItem('favoritos');
         localStorage.removeItem('favoritosNuevos');
+        localStorage.removeItem('favoritosDB');
         navigate("/inicio-sesion");
     };
     return (

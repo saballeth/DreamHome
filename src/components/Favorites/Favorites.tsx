@@ -19,34 +19,38 @@ const Favorites = () => {
       setIsLoading(true); 
       try {
         for (const item of selectedFavorites) {
-          if (!favoritosDB.some((value:any) => value.idInmueble == item.idInmueble)) {
-            const response = await apiService.post('/api/inmueblesPorUsuario/', {
-              usuario: auth.user.username,
-              inmueble: item.url,
-              favorito: item.selected ? 1 : 0,
-              calificacion: null,
-              clasificacion: null,
-              comentarios: null,
-              numeroDeClicks: null
-            });
-            if (response) {
-              console.log("Request POST exitoso");
-              console.log(response);  
+          try{
+            if (!favoritosDB.some((value:any) => value.idInmueble == item.idInmueble)) {
+              const response = await apiService.post('/api/inmueblesPorUsuario/', {
+                usuario: auth.user.username,    
+                inmueble: item.url,
+                favorito: item.selected ? 1 : 0,
+                calificacion: null,
+                clasificacion: null,
+                comentarios: null,
+                numeroDeClicks: null
+              });
+              if (response) { 
+                console.log("Request POST exitoso");
+                console.log(response);  
+              }
+            } 
+            else {
+              const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble == item.idInmueble);
+              const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
+              const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
+                usuario: auth.user.username,
+                inmueble: item.url,
+                favorite: item.selected ? 1 : 0,
+              });
+              if (response) {
+                console.log("Request UPDATE exitoso");
+                console.log(response);
+              }
             }
-          } 
-          else {
-            const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble == item.idInmueble);
-            const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
-            const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}/`, {
-              usuario: auth.user.username,
-              inmueble: item.url,
-              favorite: item.selected ? 1 : 0,
-            });
-            if (response) {
-              console.log("Request UPDATE exitoso");
-              console.log(response);
-            }
-          }
+          }catch{
+
+          }          
         }
       } catch (error) {
         console.error('Error fetching data:', error);

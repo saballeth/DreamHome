@@ -40,51 +40,6 @@ const CardList: React.FC = () => {
     queryFn: () => fetchInmuebles(auth.token),
     staleTime: 2000 * 60 * 60, // 1 hora
   });
-  // interface Inmueble {
-  //   id: number;
-  //   url: string;
-  //   nombre: string;
-  //   precio: number;
-  //   ciudad: any;
-  //   habitaciones: number,
-  //   baños: number,
-  //   parqueaderos: number,
-  //   tipoDeInmueble: string,
-  //   caracteristicas_interior: any,
-  //   caracteristicas_exterior: any,
-  //   caracteristicas_sector: any,
-  //   caracteristicas_zona_comun: any,
-  // }
-
-  // const [listData, setListData] = useState<Inmueble[]>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await apiService.get('/api/inmuebles/');
-  //       const inmueblesData: Inmueble[] = response.map((item: any) => ({
-  //         idInmueble: item.id,
-  //         url: item.url,
-  //         nombre: item.nombre,
-  //         precio: item.precio,
-  //         ciudad: item.ciudad,
-  //         habitaciones: item.cantidadDeHabitaciones,
-  //         baños: item.cantidadDeBaños,
-  //         parqueaderos: item.cantidadDeParqueaderos,
-  //         tipoDeInmueble: item.tipoDeInmueble.nombre,
-  //         caracteristicas_interior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-interior'),
-  //         caracteristicas_exterior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-exterior'),
-  //         caracteristicas_sector: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-sector'),
-  //         caracteristicas_zona_comun: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-de-zona-comun'),
-  //       }));
-  //       setListData(inmueblesData);
-  //       setInmuebles(inmueblesData);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
 
   const filteredData = useMemo(() => {
     if (!inmuebles || inmuebles.length === 0) {

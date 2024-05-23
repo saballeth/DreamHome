@@ -45,7 +45,6 @@ const Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         const favoritesString = localStorage.getItem('favoritosNuevos');
         if (favoritesString) {
             const favorites = JSON.parse(favoritesString);
-            console.log(favorites)
             setSelectedFavorites(favorites); 
         } 
     },[]); 
