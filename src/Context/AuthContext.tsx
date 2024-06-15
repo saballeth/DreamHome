@@ -20,6 +20,7 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    
     const tokenValue = localStorage.getItem("token");
     const [isAuthenticated, setIsAuthenticated] = useState(tokenValue !== null);    
     const [user, setUser] = useState(() => {
@@ -29,7 +30,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const [refresh, setRefresh] = useState(localStorage.getItem("refresh") || "");
     const [inmueblePorUsuario, setInmueblePorUsuario] = useState<any[]>(() => {
-        const storedData = localStorage.getItem("inmueblePorUsuario");
+        const storedData = localStorage.getItem("inmuebleporusuario");
         return storedData ? JSON.parse(storedData) : {};
     });
     const [favoritosDB, setFavoritosDB] = useState<any>(() => {
@@ -39,6 +40,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const navigate = useNavigate();
     const apiService = new ApiService();
     let userData: any = {};
+    
+    const saveFavoritos = async (favoritos: any[]) => {
+        try {
+          const response = await apiService.post('/api/inmueblesporusuario', { favoritos});
+          console.log('Favoritos guardados correctamente:', response);
+        } catch (error) {
+          console.error('Error al guardar favoritos:', error);
+        }
+      };
 
     const refreshToken = async () => {
         try {
@@ -76,8 +86,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         } 
     }, []);
 
+    
     const getFavoritos = async (id:number,token:any) => {
-        // { id:data.id, url:data.url, selected: true, nombre:data.nombre, precio:data.precio }
         const apiServiceToken = new ApiService(token);
         const responseFavoritos:any[] = await apiServiceToken.get(`/api/inmueblesPorUsuario/${id}/obtenerPorUsuario/`);
         const favoritos = responseFavoritos.map(item => ({
@@ -91,7 +101,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         setFavoritosDB(favoritos);
         localStorage.setItem('favoritosDB',JSON.stringify(favoritos));
         localStorage.setItem('favoritos',JSON.stringify(favoritos));
+        await saveFavoritos(favoritos);
     }
+    
 
     const loginUser = async (data: any) => {
         try {

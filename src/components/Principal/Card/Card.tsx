@@ -5,13 +5,17 @@ import { MdFavorite } from "react-icons/md";
 import { useEffect, useState } from 'react';
 import { useSelect } from '@/Context/Context';
 import { CiSquareMinus } from "react-icons/ci";
+import ApiService from '@/apiCalls.service/apiCalls.service';
+import axios from 'axios';
 
 interface CardProps {
   data:  {idInmueble: number; url: string; precio: number; nombre: string; };
   favorite:boolean;
+  token: string;
+  idUsuario: number;
 }
 
-function Card({ data, favorite }: any) {
+function Card({ data, favorite, token, idUsuario}: any) {
   const {idInmueble, precio, nombre, url } = data;
   const navigate = useNavigate();
   const [marcadoFavorite, setMarcadoFavorite] = useState(false);
@@ -21,12 +25,9 @@ function Card({ data, favorite }: any) {
   const handle = () => {
     navigate(`/caracteristica/${idInmueble}`)
   };
-
   const handleSelect = () => {
     const itemIndex = selectedFavorites.findIndex(item => item.idInmueble == idInmueble); 
     if (itemIndex !== -1) {
-      // Si la tarjeta ya está en favoritos, la deselecciona
-      // const updatedFavorites = selectedFavorites.filter(item => item.idInmueble !== idInmueble);
       const updatedFavorites = selectedFavorites.map(item => {
         if (item.idInmueble === idInmueble) {
           return { ...item, selected: !item.selected };
@@ -36,23 +37,42 @@ function Card({ data, favorite }: any) {
       setSelectedFavorites(updatedFavorites);
       setMarcadoFavorite(updatedFavorites[itemIndex].selected); 
     } else {
-      // Si la tarjeta no está en favoritos, la selecciona
       const updatedFavorites = [...selectedFavorites, { idInmueble:idInmueble,url:url,nombre:nombre,precio:precio, selected: true }];
       setSelectedFavorites(updatedFavorites);
       setMarcadoFavorite(true);
+  
+      const apiService = new ApiService(token);
+      apiService.postFavorito(idInmueble, idUsuario, token)
+        .then((response) => {
+          console.log(response); 
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }
+  const handleFavoriteSelection = async () => {
+    try {
+        const response = await axios.post('/api/favorites', {
+            userId: idUsuario,
+            propertyId: data.idInmueble
+        });
+    } catch (error) {
+        console.error('Error al guardar el inmueble como favorito:', error);
+    }
+};
 
-  // console.log(selectedFavorites);
-  /*useEffect(() => {
+  
+  useEffect(() => {
     const index = selectedFavorites.findIndex(item => item.idInmueble === idInmueble);
     if (index !== -1 && selectedFavorites[index].selected) {
         setMarcadoFavorite(true);
     } else {
         setMarcadoFavorite(false);
     }
-  }, [marcadoFavorite]);*/
+  }, [marcadoFavorite]);
 
+  
   return (
     <div className="card">
       { favoritoComponente ? (

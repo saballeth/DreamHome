@@ -6,63 +6,83 @@ import { TbMoodSad } from "react-icons/tb";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/Context/AuthContext";
 import ApiService from "@/apiCalls.service/apiCalls.service";
+import axios from "axios";
 
 const Favorites = () => {
-  const { isFavoriteSave,selectedFavorites } = useSelect();
+  const { isFavoriteSave,selectedFavorites, setSelectedFavorites } = useSelect();
   const [isLoading, setIsLoading] = useState(true);
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
   const favoritosDB = auth.favoritosDB;
+  
+  const fetchUserFavorites = async () => {
+    try {
+        const response = await axios.get(`/api/inmueblesporusuario/${auth.user.id}/`);
+        setSelectedFavorites(response.data);
+    } catch (error) {
+        console.error('Error al recuperar los favoritos del usuario:', error);
+    }
+};
+
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); 
+      setIsLoading(true);
       try {
         for (const item of selectedFavorites) {
-          try{
-            if (!favoritosDB.some((value:any) => value.idInmueble == item.idInmueble)) {
-              const response = await apiService.post('/api/inmueblesPorUsuario/', {
-                usuario: auth.user.username,    
+          try {
+            if (!favoritosDB.some((value: any) => value.idInmueble == item.idInmueble)) {
+              const response = await apiService.post('/api/inmueblesporusuario/', {
+                usuario: auth.user.username,
                 inmueble: item.url,
-                favorito: item.selected ? 1 : 0,
+                favorito: item.selected? 1 : 0,
                 calificacion: null,
                 clasificacion: null,
                 comentarios: null,
                 numeroDeClicks: null
               });
-              if (response) { 
+              if (response) {
                 console.log("Request POST exitoso");
-                console.log(response);  
+                console.log(response);
+                auth.favoritosDB.push({
+                  idInmueble: item.idInmueble,
+                  usuario: auth.user.username,
+                  inmueble: item.url,
+                  favorito: item.selected? 1 : 0,
+                  calificacion: null,
+                  clasificacion: null,
+                  comentarios: null,
+                  numeroDeClicks: null
+                });
               }
-            } 
-            else {
-              const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble == item.idInmueble);
+            } else {
+              const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item: any) => item.idInmueble == item.idInmueble);
               const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
-              const response = await apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
+              const response = await apiService.update(`/api/inmueblesporusuario/${idInmueblePorUsuario}`, {
                 usuario: auth.user.username,
                 inmueble: item.url,
-                favorite: item.selected ? 1 : 0,
+                favorite: item.selected? 1 : 0,
               });
               if (response) {
                 console.log("Request UPDATE exitoso");
                 console.log(response);
+                auth.favoritosDB[indiceInmueblePorUsuarioDB].favorito = item.selected? 1 : 0;
               }
             }
-          }catch{
-
-          }          
+          } catch {
+          }
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setIsLoading(false);
+        localStorage.setItem("inmuebleporusuario", JSON.stringify(auth.favoritosDB));
       }
     };
     fetchData();
   }, [isFavoriteSave]);
-
   useEffect(() => {
-    localStorage.setItem("inmueblePorUsuario", JSON.stringify(auth.inmueblePorUsuario));
+    localStorage.setItem("inmuebleporusuario", JSON.stringify(auth.inmueblePorUsuario));
   }, [auth.inmueblePorUsuario]);
   
   if (isLoading) {
@@ -72,6 +92,7 @@ const Favorites = () => {
       </div>
     );
   }
+  
 
   const favoriteCards: any = selectedFavorites.filter(card => card.selected === true);
   const cantidadCoincidentes = favoriteCards.length;

@@ -1,15 +1,13 @@
 import CarouselItems from '../Carousel/Carousel'
 import ApiService from '@/apiCalls.service/apiCalls.service';
 import { useAuth } from '@/Context/AuthContext';
-import { SetStateAction, useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import './Caracteristicas.css';
 import Rating from './Rating/Rating';
 import CommentBox from './CommentBox/CommentBox';
-import { useSelect } from '@/Context/Context';
 import AlertExito from '../Alert/AlertExito';
-
 
 function Caracteristicas() {
   const { id } = useParams();
@@ -22,11 +20,31 @@ function Caracteristicas() {
   const caracteristicasPorTipo: { [tipo: string]: any[] } = {};
   const [isCalificacion, setCalificacion] = useState(false);
   const [inmueblesPorUsuarioDB, setInmueblesPorUsuarioDB] = useState<any>([]);
-
+  const [clicks, setClicks] = useState(0);
   const divStyle = {
     padding: 0,
     margin: 0
   };
+  const updateClicks = async () => {
+    try {
+      await apiService.update(`/api/clicks/${id}`, { clicks });
+    } catch (error) {
+      console.error("Error al actualizar los clics:", error);
+    }
+  };
+  
+  useEffect(() => {
+    const handleClick = () => {
+      setClicks(clicks + 1);
+      updateClicks(); 
+    };
+  
+    document.body.addEventListener("click", handleClick);
+  
+    return () => {
+      document.body.removeEventListener("click", handleClick);
+    };
+  }, [clicks, updateClicks]);
 
   interface Inmueble {
     id: number | null;
@@ -49,6 +67,9 @@ function Caracteristicas() {
     estado: any | null;
     direccion: any | null;
   }
+
+  
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,7 +142,7 @@ function Caracteristicas() {
             inmueble: inmuebleData?.url,
             usuario: auth.user.username,
             comentarios: comentarios == '' ? null: comentarios,
-            calificacion: valorCalificacion
+            calificacion: valorCalificacion          
           });
           if(response){
             AlertExito({message:'Gracias por sus comentarios!'});
@@ -209,6 +230,7 @@ function Caracteristicas() {
       <div className="caracteristicas__informacion">
           <h2 className='info__titulo'>{capitalizeFirstLetter(inmuebleData?.sector?.nombre)}</h2>
           <h3 className='info__subtitulo'>{capitalizeFirstLetter(inmuebleData?.ciudad?.nombre)}, {capitalizeFirstLetter(inmuebleData?.ciudad?.departamento?.nombre)}</h3>
+          <p>Clicks: {clicks}</p>
       </div>
       <div className="container__imagenes">
         <CarouselItems />
