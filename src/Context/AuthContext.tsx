@@ -89,7 +89,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     
     const getFavoritos = async (id:number,token:any) => {
         const apiServiceToken = new ApiService(token);
-        const responseFavoritos:any[] = await apiServiceToken.get(`/api/inmueblesPorUsuario/${id}/obtenerPorUsuario/`);
+        const responseFavoritos:any[] = await apiServiceToken.get(`/api/inmueblesPorUsuario/${id}/`);
         const favoritos = responseFavoritos.map(item => ({
             idInmueblePorUsuario: item.idInmueblePorUsuario,
             idInmueble: item.inmueble.id,

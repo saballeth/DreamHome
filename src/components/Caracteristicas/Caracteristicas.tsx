@@ -9,6 +9,7 @@ import Rating from './Rating/Rating';
 import CommentBox from './CommentBox/CommentBox';
 import AlertExito from '../Alert/AlertExito';
 
+
 function Caracteristicas() {
   const { id } = useParams();
   const [inmuebleData, setData] = useState<Inmueble | null>(null);
@@ -25,26 +26,23 @@ function Caracteristicas() {
     padding: 0,
     margin: 0
   };
-  const updateClicks = async () => {
-    try {
-      await apiService.update(`/api/clicks/${id}`, { clicks });
-    } catch (error) {
-      console.error("Error al actualizar los clics:", error);
-    }
-  };
   
   useEffect(() => {
-    const handleClick = () => {
+    const handleClick = async () => {
       setClicks(clicks + 1);
-      updateClicks(); 
+      try {
+        await ApiService.post(`/api/inmuebles/${inmuebleData}/clicks`, { clicks: clicks + 1 });
+      } catch (error) {
+        console.error(`Error al registrar los clicks para el inmueble ${inmuebleData}:`, error);
+      }
     };
-  
-    document.body.addEventListener("click", handleClick);
-  
+
+    document.body.addEventListener('click', handleClick);
+
     return () => {
-      document.body.removeEventListener("click", handleClick);
+      document.body.removeEventListener('click', handleClick);
     };
-  }, [clicks, updateClicks]);
+  }, [clicks, inmuebleData]);
 
   interface Inmueble {
     id: number | null;
@@ -67,9 +65,6 @@ function Caracteristicas() {
     estado: any | null;
     direccion: any | null;
   }
-
-  
-  
 
   useEffect(() => {
     const fetchData = async () => {

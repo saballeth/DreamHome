@@ -12,7 +12,7 @@ const fetchInmuebles = async (token: string) => {
   const apiService = new ApiService(token);
   const response = await apiService.get('/api/inmuebles/');
   return response.map((item: any) => ({
-    idinmueble: item.id,
+    idInmueble: item.id,
     url: item.url,
     nombre: item.nombre,
     precio: item.precio,
@@ -30,7 +30,7 @@ const fetchInmuebles = async (token: string) => {
 
 const CardList: React.FC = () => {
   const auth = useAuth();
-  const { selectUbi, filtros, isFiltroSave, setInmuebles } = useSelect();
+  const { selectUbi, filtros, isFiltroSave} = useSelect();
   const { currentPage, updateMaxPage } = usePagination();
   const [filtrosActivos, setFiltrosActivos] = useState(false);
   const [isCardCity, setCardCity] = useState(true);
@@ -39,6 +39,7 @@ const CardList: React.FC = () => {
     queryFn: () => fetchInmuebles(auth.token),
     staleTime: 2000 * 60 * 60, // 1 hora
   });
+  
 
   const filteredData = useMemo(() => {
     if (!inmuebles || inmuebles.length === 0) {
