@@ -22,7 +22,8 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     
     const tokenValue = localStorage.getItem("token");
-    const [isAuthenticated, setIsAuthenticated] = useState(tokenValue !== null);    
+    const [favoritosDB, setFavoritosDB] = useState([]);
+    const [isAuthenticated, setIsAuthenticated] = useState(tokenValue !== null);
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem("user");    
         return storedUser ? JSON.parse(storedUser) : null;
@@ -33,23 +34,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         const storedData = localStorage.getItem("inmuebleporusuario");
         return storedData ? JSON.parse(storedData) : {};
     });
-    const [favoritosDB, setFavoritosDB] = useState<any>(() => {
+    /*const [favoritosDB, setFavoritosDB] = useState<any>(() => {
         const storedData = localStorage.getItem("favoritosDB");
         return storedData ? JSON.parse(storedData) : {};
     });
+    */
     const navigate = useNavigate();
     const apiService = new ApiService();
     let userData: any = {};
     
-    const saveFavoritos = async (favoritos: any[]) => {
-        try {
-          const response = await apiService.post('/api/inmueblesporusuario', { favoritos});
-          console.log('Favoritos guardados correctamente:', response);
-        } catch (error) {
-          console.error('Error al guardar favoritos:', error);
-        }
-      };
-
     const refreshToken = async () => {
         try {
             if (typeof user === 'string') {
@@ -85,25 +78,45 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             setIsAuthenticated(true);
         } 
     }, []);
+    
+    /// ZONA DE CONSTRUCCION
+    
+   /* const getFavoritos = async (data: any) => {
+        try {
+          const response = await apiService.get(`/api/inmueblesPorUsuario/by_user?username=${data.username}/`);
+          setFavoritosDB(response.data);  
+        } catch (error) {
+          console.error('Error al obtener favoritos:', error);
+        }
+      };
+      
+      useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+          setToken(storedToken);
+          setIsAuthenticated(true);
+          getFavoritos({ username: user.username }); 
+        }
+      }, [user]);
+     */ 
+      const getFavoritos = async (username: string) => {
+        try {
+          const response = await apiService.get(`/api/inmueblesPorUsuario/username=${username}/`);
+          setFavoritosDB(response.data);
+        } catch (error) {
+          console.error('Error al obtener favoritos:', error);
+        }
+      };
+    
+      useEffect(() => {
+        if (user) {
+          getFavoritos(user.username);
+        }
+      }, [user]);
 
-    
-    const getFavoritos = async (id:number,token:any) => {
-        const apiServiceToken = new ApiService(token);
-        const responseFavoritos:any[] = await apiServiceToken.get(`/api/inmueblesPorUsuario/${id}/`);
-        const favoritos = responseFavoritos.map(item => ({
-            idInmueblePorUsuario: item.idInmueblePorUsuario,
-            idInmueble: item.inmueble.id,
-            nombre: item.inmueble.id,
-            selected: item.favorito,
-            precio: item.inmueble.id,
-            url: item.inmueble.url
-        }));
-        setFavoritosDB(favoritos);
-        localStorage.setItem('favoritosDB',JSON.stringify(favoritos));
-        localStorage.setItem('favoritos',JSON.stringify(favoritos));
-        await saveFavoritos(favoritos);
-    }
-    
+
+
+    /// FIN ZONA DE CONSTRUCCION
 
     const loginUser = async (data: any) => {
         try {
@@ -120,7 +133,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
                 AlertExito({message:'Iniciaste sesion correctamente'})
-                getFavoritos(response.user.id,response.access);
                 if (response.user?.intereses?.length > 0) {
                     navigate("/principal");
                 } else {

@@ -26,23 +26,22 @@ function Caracteristicas() {
     padding: 0,
     margin: 0
   };
-  
   useEffect(() => {
     const handleClick = async () => {
-      setClicks(clicks + 1);
       try {
-        await ApiService.post(`/api/inmuebles/${inmuebleData}/clicks`, { clicks: clicks + 1 });
+        const response = await ApiService.post(`/api/inmuebles/${inmuebleData}/clicks`, { increment: 1 });
+        setClicks(response.data.clicks); // asumiendo que el API devuelve la cuenta de clics actualizada
       } catch (error) {
         console.error(`Error al registrar los clicks para el inmueble ${inmuebleData}:`, error);
       }
     };
-
+  
     document.body.addEventListener('click', handleClick);
-
+  
     return () => {
       document.body.removeEventListener('click', handleClick);
     };
-  }, [clicks, inmuebleData]);
+  }, [inmuebleData]);
 
   interface Inmueble {
     id: number | null;
@@ -69,7 +68,7 @@ function Caracteristicas() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiService.get(`/api/inmuebles/${id}`);
+        const response = await apiService.get("/api/inmuebles/");
         const data: Inmueble = {
           id: response.id,
           url: response.url,

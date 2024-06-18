@@ -40,15 +40,6 @@ function Card({ data, favorite, token, idUsuario}: any) {
       const updatedFavorites = [...selectedFavorites, { idInmueble:idInmueble,url:url,nombre:nombre,precio:precio, selected: true }];
       setSelectedFavorites(updatedFavorites);
       setMarcadoFavorite(true);
-  
-      const apiService = new ApiService(token);
-      apiService.postFavorito(idInmueble, idUsuario, token)
-        .then((response) => {
-          console.log(response); 
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     }
   }
   const handleFavoriteSelection = async () => {

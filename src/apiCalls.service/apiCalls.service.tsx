@@ -1,8 +1,6 @@
 import AlertError from '@/components/Alert/AlertError';
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
-
-
 class ApiService {
   private axiosInstance: AxiosInstance;
   private baseUrlHost = "https://arqui-sistema-recomendacion-85b7038cdf33.herokuapp.com/"
@@ -17,55 +15,21 @@ class ApiService {
     });
   }
 
-  async postFavorito(idinmueble: number, idusuario: number, token: any) {
-    const apiServiceToken = new ApiService(token);
-    const data = { idinmueble, idusuario };
-    try {
-      const response: AxiosResponse = await apiServiceToken.post(`/api/inmueblesPorUsuario/`, data);
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        this.handleError(error as AxiosError);
-      }
-      throw new Error('Error al agregar favorito');
-    }
-  }
-  
-
   async get(url: string) {
     try {
       const response: AxiosResponse = await this.axiosInstance.get(url);
       return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
-            this.handleError(error as AxiosError);
-          }
-          throw new Error('Error al ejecutar la respuesta');
+      if (axios.isAxiosError(error)) {
+        const errorMessage = `Error al acceder a la URL ${url}: ${error.message}`;
+        this.handleError(error as AxiosError);
+        throw new Error(errorMessage);
+      } else {
+        throw new Error('Error desconocido');
+      }
     }
   }
-  async getFavoritos(id:number,token:any) {
-    try{
-    const apiServiceToken = new ApiService(token);
-    const responseFavoritos:any[] = await apiServiceToken.get(`/api/inmueblesPorUsuario/${id}/obtenerPorUsuario/`);
-    const favoritos = responseFavoritos.map(item => ({
-        idInmueblePorUsuario: item.idInmueblePorUsuario,
-        idInmueble: item.inmueble.id,
-        nombre: item.inmueble.id,
-        selected: item.favorito,
-        precio: item.inmueble.id,
-        url: item.inmueble.url
-    }));
-    localStorage.setItem('favoritosDB',JSON.stringify(favoritos));
-    localStorage.setItem('favoritos',JSON.stringify(favoritos));
-    return favoritos;
-  } catch (error) {
-    if(axios.isAxiosError(error)){
-      this.handleError(error as AxiosError);
-    }
-   throw new Error("erro al obtener favoritos"); 
-  }
-}
-
+  
   async post(url: string, data: any) {
     try {
       const response: AxiosResponse = await this.axiosInstance.post(url, data);

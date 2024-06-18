@@ -10,11 +10,61 @@ import ApiService from "@/apiCalls.service/apiCalls.service";
 const Favorites = () => {
   const { isFavoriteSave,selectedFavorites } = useSelect();
   const [isLoading, setIsLoading] = useState(true);
+  const [noFavorites, setNoFavorites] = useState(false)
   const auth = useAuth();
   const apiService = new ApiService(auth.token);
   const favoritosDB = auth.favoritosDB;
+/// ZONA DE CONSTRUCCION
+
+useEffect(() => {
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      if (Array.isArray(favoritosDB)){
+      const promises = selectedFavorites.map((item) => {
+        if (!favoritosDB.some((value:any) => value.idInmueble == item.idInmueble)) {
+          return apiService.post('/api/inmueblesPorUsuario/', {
+            usuario: auth.user.username,
+            inmueble: item.url,
+            favorito: item.selected ? 1 : 0,
+            calificacion: null,
+            clasificacion: null,
+            comentarios: null
+          });
+        } else {
+          const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item:any) => item.idInmueble == item.idInmueble);
+          const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
+          return apiService.update(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
+            usuario: auth.user.username,
+            inmueble: item.url,
+            favorite: item.selected ? 1 : 0,
+          });
+        }
+      });
+      await Promise.all(promises);
+      console.log("Request exitoso");
+    } else{
+      console.log("FavoritosDB no es un array");
+    }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  fetchData();
+}, [isFavoriteSave]);
 
   useEffect(() => {
+    if (selectedFavorites.filter((card) => card.selected == true).length == 0){
+      setNoFavorites(true);
+    }else{
+      setNoFavorites(false);
+    }
+  }, [selectedFavorites]);
+
+
+ /* useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true); 
       try {
@@ -27,8 +77,7 @@ const Favorites = () => {
                 favorito: item.selected ? 1 : 0,
                 calificacion: null,
                 clasificacion: null,
-                comentarios: null,
-                numeroDeClicks: null
+                comentarios: null
               });
               if (response) { 
                 console.log("Request POST exitoso");
@@ -59,11 +108,13 @@ const Favorites = () => {
     };
     fetchData();
   }, [isFavoriteSave]);
+*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     localStorage.setItem("inmueblePorUsuario", JSON.stringify(auth.inmueblePorUsuario));
   }, [auth.inmueblePorUsuario]);
-  
+*/
+/// FIN ZONA DE CONSTRUCCION  
   if (isLoading) {
     return (
       <div className="spinner__container">
@@ -72,7 +123,8 @@ const Favorites = () => {
     );
   }
 
-  const favoriteCards: any = selectedFavorites.filter(card => card.selected === true);
+          
+  /* const favoriteCards: any = selectedFavorites.filter(card => card.selected === true);
   const cantidadCoincidentes = favoriteCards.length;
 
   return (
@@ -88,6 +140,24 @@ const Favorites = () => {
         <div className="favorite__zero">
           <TbMoodSad />
           <p className="zero-titulo">No hay Favoritos</p>
+        </div>
+      )}
+    </div>
+  );
+  */
+  return (
+    <div className="favorite__container">
+      <h2 className='favorite__titulo'>Mis Favoritos</h2>
+      {noFavorites ? (
+        <div className="favorite__zero">
+          <TbMoodSad />
+          <p className="zero-titulo">No hay Favoritos</p>
+        </div>
+      ) : (
+        <div className="card-list">
+          {selectedFavorites.filter((card) => card.selected === true).map((card) => (
+            <Card key={card.idInmueble} data={card} favorite={true} />
+          ))}
         </div>
       )}
     </div>
