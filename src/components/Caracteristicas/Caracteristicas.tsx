@@ -1,12 +1,13 @@
 import CarouselItems from '../Carousel/Carousel'
 import ApiService from '@/apiCalls.service/apiCalls.service';
 import { useAuth } from '@/Context/AuthContext';
-import {useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Spinner from '../Spinner/Spinner';
 import './Caracteristicas.css';
 import Rating from './Rating/Rating';
 import CommentBox from './CommentBox/CommentBox';
+import { useSelect } from '@/Context/Context';
 import AlertExito from '../Alert/AlertExito';
 
 
@@ -21,27 +22,11 @@ function Caracteristicas() {
   const caracteristicasPorTipo: { [tipo: string]: any[] } = {};
   const [isCalificacion, setCalificacion] = useState(false);
   const [inmueblesPorUsuarioDB, setInmueblesPorUsuarioDB] = useState<any>([]);
-  const [clicks, setClicks] = useState(0);
+
   const divStyle = {
     padding: 0,
     margin: 0
   };
-  useEffect(() => {
-    const handleClick = async () => {
-      try {
-        const response = await ApiService.post(`/api/inmuebles/${inmuebleData}/clicks`, { increment: 1 });
-        setClicks(response.data.clicks); // asumiendo que el API devuelve la cuenta de clics actualizada
-      } catch (error) {
-        console.error(`Error al registrar los clicks para el inmueble ${inmuebleData}:`, error);
-      }
-    };
-  
-    document.body.addEventListener('click', handleClick);
-  
-    return () => {
-      document.body.removeEventListener('click', handleClick);
-    };
-  }, [inmuebleData]);
 
   interface Inmueble {
     id: number | null;
@@ -68,7 +53,7 @@ function Caracteristicas() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiService.get("/api/inmuebles/");
+        const response = await apiService.get(`/api/inmuebles/${id}`);
         const data: Inmueble = {
           id: response.id,
           url: response.url,
@@ -111,7 +96,7 @@ function Caracteristicas() {
   },[])
 
   useEffect(() => {
-    if (isGuardarInformacion) {setValorCalificacion
+    if (isGuardarInformacion) {
       guardarInformacionEnAPI();
     }
   }, [isGuardarInformacion]);
@@ -136,7 +121,7 @@ function Caracteristicas() {
             inmueble: inmuebleData?.url,
             usuario: auth.user.username,
             comentarios: comentarios == '' ? null: comentarios,
-            calificacion: valorCalificacion          
+            calificacion: valorCalificacion
           });
           if(response){
             AlertExito({message:'Gracias por sus comentarios!'});
@@ -224,7 +209,6 @@ function Caracteristicas() {
       <div className="caracteristicas__informacion">
           <h2 className='info__titulo'>{capitalizeFirstLetter(inmuebleData?.sector?.nombre)}</h2>
           <h3 className='info__subtitulo'>{capitalizeFirstLetter(inmuebleData?.ciudad?.nombre)}, {capitalizeFirstLetter(inmuebleData?.ciudad?.departamento?.nombre)}</h3>
-          <p>Clicks: {clicks}</p>
       </div>
       <div className="container__imagenes">
         <CarouselItems />

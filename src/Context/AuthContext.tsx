@@ -2,30 +2,36 @@ import ApiService from '@/apiCalls.service/apiCalls.service';
 import AlertExito from '@/components/Alert/AlertExito';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useSelect } from './Context';
 
 interface AuthContextProps {
     isAuthenticated: boolean;
     token: string,
     refresh: string,
     user: any,
-    loginUser: (data:any) => void;
-    registerUser: (data:any) => void;
+    loginUser: (data: any) => void;
+    registerUser: (data: any) => void;
     logoutUser: () => void;
     refreshToken: () => void;
     inmueblePorUsuario: any;
     setInmueblePorUsuario: any;
-    favoritosDB:any
+    favoritosDB: any
+    setFavoritosDB: any;
+    getFavoritos: any;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    
+
     const tokenValue = localStorage.getItem("token");
-    const [favoritosDB, setFavoritosDB] = useState([]);
+    const [favoritosDB, setFavoritosDB] = useState(() => {
+        const storedData = localStorage.getItem("favoritosDB");
+        return storedData ? JSON.parse(storedData) : [];
+    });
     const [isAuthenticated, setIsAuthenticated] = useState(tokenValue !== null);
     const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("user");    
+        const storedUser = localStorage.getItem("user");
         return storedUser ? JSON.parse(storedUser) : null;
     });
     const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -34,15 +40,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         const storedData = localStorage.getItem("inmuebleporusuario");
         return storedData ? JSON.parse(storedData) : {};
     });
-    /*const [favoritosDB, setFavoritosDB] = useState<any>(() => {
-        const storedData = localStorage.getItem("favoritosDB");
-        return storedData ? JSON.parse(storedData) : {};
-    });
-    */
     const navigate = useNavigate();
     const apiService = new ApiService();
+    const {setSelectedFavorites,selectedFavorites} = useSelect();
     let userData: any = {};
-    
+
     const refreshToken = async () => {
         try {
             if (typeof user === 'string') {
@@ -76,45 +78,39 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         if (storedToken) {
             setToken(storedToken);
             setIsAuthenticated(true);
-        } 
+        }
     }, []);
-    
-    /// ZONA DE CONSTRUCCION
-    
-   /* const getFavoritos = async (data: any) => {
-        try {
-          const response = await apiService.get(`/api/inmueblesPorUsuario/by_user?username=${data.username}/`);
-          setFavoritosDB(response.data);  
-        } catch (error) {
-          console.error('Error al obtener favoritos:', error);
-        }
+
+    /// ZONA DE CONSTRUCCIO
+
+    const transformArray = (array: any[]): any[] => {
+        return array.map(item => ({
+          idInmueble: item.inmueble.id,
+          nombre: item.inmueble.nombre, 
+          precio: item.inmueble.precio,           
+          selected: item.favorito,
+          idInmueblePorUsuario: item.idInmueblePorUsuario
+        }));
       };
-      
-      useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-        if (storedToken) {
-          setToken(storedToken);
-          setIsAuthenticated(true);
-          getFavoritos({ username: user.username }); 
-        }
-      }, [user]);
-     */ 
-      const getFavoritos = async (username: string) => {
+
+    const getFavoritos = async (id: any) => {
         try {
-          const response = await apiService.get(`/api/inmueblesPorUsuario/username=${username}/`);
-          setFavoritosDB(response.data);
+            const response = await apiService.get(`/api/inmueblesPorUsuario/${id}/obtenerPorUsuario`);
+            localStorage.setItem("favoritosDB", JSON.stringify(response))
+            const favoritos = transformArray(response);
+            setFavoritosDB(favoritos);
+            setSelectedFavorites(favoritos);
         } catch (error) {
-          console.error('Error al obtener favoritos:', error);
+            console.error('Error al obtener favoritos:', error);
         }
-      };
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         if (user) {
-          getFavoritos(user.username);
+            apiService.setToken(token);
+            getFavoritos(user.id);
         }
-      }, [user]);
-
-
+    }, [user]);
 
     /// FIN ZONA DE CONSTRUCCION
 
@@ -132,7 +128,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("user", JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
-                AlertExito({message:'Iniciaste sesion correctamente'})
+                AlertExito({ message: 'Iniciaste sesion correctamente' })
                 if (response.user?.intereses?.length > 0) {
                     navigate("/principal");
                 } else {
@@ -162,7 +158,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("user", JSON.stringify(response.user))
                 localStorage.setItem("token", response.access);
                 localStorage.setItem("refresh", response.refresh);
-                AlertExito({message:'Registro Exitoso'});
+                AlertExito({ message: 'Registro Exitoso' });
                 navigate("/intereses");
             }
         } catch (err) {
@@ -170,7 +166,50 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }
     };
 
+    const guardardandoFavoritos = () => {
+        apiService.setToken(token);
+        try {
+            if (Array.isArray(favoritosDB)) {
+                const promise = selectedFavorites.map(async (item) => {
+                    if (!favoritosDB.some((value: any) => value.idInmueble == item.idInmueble)) {
+                      const response = await apiService.post('/api/inmueblesPorUsuario/', {
+                        usuario: user.username,
+                        inmueble: item.url,
+                        favorito: item.selected ? 1 : 0,
+                        calificacion: null,
+                        clasificacion: null,
+                        comentarios: null,
+                        numeroDeClicks: null,
+                      });
+                    //   console.log(response);
+                      if (response){
+                        console.log("Guardado exitoso POST");
+                      }
+                    } else {
+                      const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item: any) => item.idInmueble == item.idInmueble);
+                      const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
+                      const response = await apiService.patch(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
+                        favorite: item.selected ? 1 : 0,
+                      });
+                    //   console.log(response);
+                      if (response){
+                        console.log("Guardado exitoso PATCH")
+                      }
+                    }
+                });
+                if (promise){
+                    console.log("Guardado completo exitoso");
+                }
+            } else {
+                console.log("FavoritosDB no es un array");
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const logoutUser = () => {
+        guardardandoFavoritos();
         setUser(null);
         setToken("");
         setRefresh("");
@@ -179,25 +218,25 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem("user");
         localStorage.removeItem("refresh");
         localStorage.removeItem('favorites');
-        localStorage.removeItem('inmueblePorUsuario');
+        localStorage.removeItem('inmuebleporusuario');
         localStorage.removeItem('favoritos');
         localStorage.removeItem('favoritosNuevos');
         localStorage.removeItem('favoritosDB');
         navigate("/inicio-sesion");
     };
     return (
-        <AuthContext.Provider value={{favoritosDB,inmueblePorUsuario,setInmueblePorUsuario,isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
+        <AuthContext.Provider value={{ getFavoritos, setFavoritosDB, favoritosDB, inmueblePorUsuario, setInmueblePorUsuario, isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
-    export default AuthProvider;
+export default AuthProvider;
 
-    export const useAuth = (): AuthContextProps => {
-        const context = useContext(AuthContext);
-        if (!context) {
-            throw new Error('useAuth must be used within an AuthProvider');
-        }
-        return context;
-    };
+export const useAuth = (): AuthContextProps => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+};

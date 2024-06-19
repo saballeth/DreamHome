@@ -39,7 +39,7 @@ const CardList: React.FC = () => {
     queryFn: () => fetchInmuebles(auth.token),
     staleTime: 2000 * 60 * 60, // 1 hora
   });
-  
+
 
   const filteredData = useMemo(() => {
     if (!inmuebles || inmuebles.length === 0) {

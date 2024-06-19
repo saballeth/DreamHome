@@ -6,14 +6,13 @@ import Provider from '../src/Context/Context'
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <Provider>
+      <Provider>
+        <AuthProvider>
           <RouterProv />
-        </Provider>
-      </AuthProvider>
+        </AuthProvider>
+      </Provider>
     </Router>
   )
 }
 
 export default App
- 
