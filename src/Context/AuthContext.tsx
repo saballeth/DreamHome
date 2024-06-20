@@ -42,7 +42,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     });
     const navigate = useNavigate();
     const apiService = new ApiService();
-    const {setSelectedFavorites,selectedFavorites} = useSelect();
+    const { setSelectedFavorites, selectedFavorites, itemsClics } = useSelect();
     let userData: any = {};
 
     const refreshToken = async () => {
@@ -85,13 +85,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
     const transformArray = (array: any[]): any[] => {
         return array.map(item => ({
-          idInmueble: item.inmueble.id,
-          nombre: item.inmueble.nombre, 
-          precio: item.inmueble.precio,           
-          selected: item.favorito,
-          idInmueblePorUsuario: item.idInmueblePorUsuario
+            idInmueble: item.inmueble.id,
+            nombre: item.inmueble.nombre,
+            precio: item.inmueble.precio,
+            selected: item.favorito,
+            idInmueblePorUsuario: item.idInmueblePorUsuario
         }));
-      };
+    };
 
     const getFavoritos = async (id: any) => {
         try {
@@ -172,32 +172,32 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             if (Array.isArray(favoritosDB)) {
                 const promise = selectedFavorites.map(async (item) => {
                     if (!favoritosDB.some((value: any) => value.idInmueble == item.idInmueble)) {
-                      const response = await apiService.post('/api/inmueblesPorUsuario/', {
-                        usuario: user.username,
-                        inmueble: item.url,
-                        favorito: item.selected ? 1 : 0,
-                        calificacion: null,
-                        clasificacion: null,
-                        comentarios: null,
-                        numeroDeClicks: null,
-                      });
-                    //   console.log(response);
-                      if (response){
-                        console.log("Guardado exitoso POST");
-                      }
+                        const response = await apiService.post('/api/inmueblesPorUsuario/', {
+                            usuario: user.username,
+                            inmueble: item.url,
+                            favorito: item.selected ? 1 : 0,
+                            calificacion: null,
+                            clasificacion: null,
+                            comentarios: null,
+                            numeroDeClicks: null,
+                        });
+                        //   console.log(response);
+                        if (response) {
+                            console.log("Guardado exitoso POST");
+                        }
                     } else {
-                      const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item: any) => item.idInmueble == item.idInmueble);
-                      const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
-                      const response = await apiService.patch(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
-                        favorite: item.selected ? 1 : 0,
-                      });
-                    //   console.log(response);
-                      if (response){
-                        console.log("Guardado exitoso PATCH")
-                      }
+                        const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item: any) => item.idInmueble == item.idInmueble);
+                        const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
+                        const response = await apiService.patch(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
+                            favorite: item.selected ? 1 : 0,
+                        });
+                        //   console.log(response);
+                        if (response) {
+                            console.log("Guardado exitoso PATCH")
+                        }
                     }
                 });
-                if (promise){
+                if (promise) {
                     console.log("Guardado completo exitoso");
                 }
             } else {
@@ -208,12 +208,47 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }
     };
 
-    const logoutUser = () => {
-        guardardandoFavoritos();
-        setUser(null);
-        setToken("");
-        setRefresh("");
-        setIsAuthenticated(false)
+    const guardandoClics = () => {
+        apiService.setToken(token);
+        try {
+            if (Array.isArray(favoritosDB)) {
+                const promise = itemsClics.map(async (item) => {
+                    if (!favoritosDB.some((value: any) => value.idInmueble == item.idInmueble)) {
+                        const response = await apiService.post('/api/inmueblesPorUsuario/', {
+                            usuario: user.username,
+                            inmueble: item.url,
+                            favorito: null,
+                            calificacion: null,
+                            clasificacion: null,
+                            comentarios: null,
+                            numeroDeClicks: item.clics,
+                        });
+                        if (response) {
+                            console.log("Clics guardado exitoso POST");
+                        }
+                    } else {
+                        const indiceInmueblePorUsuarioDB = favoritosDB.findIndex((item: any) => item.idInmueble == item.idInmueble);
+                        const idInmueblePorUsuario = favoritosDB[indiceInmueblePorUsuarioDB].idInmueblePorUsuario;
+                        const response = await apiService.patch(`/api/inmueblesPorUsuario/${idInmueblePorUsuario}`, {
+                            numeroDeClicks: item.clics,
+                        });
+                        if (response) {
+                            console.log("Clics guardado exitoso PATCH")
+                        }
+                    }
+                });
+                if (promise) {
+                    console.log("Guardado completo exitoso");
+                }
+            } else {
+                console.log("FavoritosDB no es un array");
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const removerLocalStorage = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("refresh");
@@ -222,8 +257,20 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem('favoritos');
         localStorage.removeItem('favoritosNuevos');
         localStorage.removeItem('favoritosDB');
+        localStorage.removeItem('itemsCountClics');
+    }
+
+    const logoutUser = () => {
+        guardardandoFavoritos();
+        guardandoClics();
+        setUser(null);
+        setToken("");
+        setRefresh("");
+        setIsAuthenticated(false)
+        removerLocalStorage();
         navigate("/inicio-sesion");
     };
+
     return (
         <AuthContext.Provider value={{ getFavoritos, setFavoritosDB, favoritosDB, inmueblePorUsuario, setInmueblePorUsuario, isAuthenticated, token, refresh, user, loginUser, registerUser, logoutUser, refreshToken }}>
             {children}

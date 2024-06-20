@@ -142,10 +142,10 @@ const CardList: React.FC = () => {
   return (
     <div className={`card-list wrapper ${paginated.length < 4 ? 'cards__fews' : ''}`}>
       {selectUbi === null && paginated?.map((card:any) => (
-        <Card key={card.id} data={card} favorite={false} />
+        <Card key={currentPage+"-"+card.idInmueble} data={card} favorite={false} />
       ))}
       {selectUbi !== null && isCardCity && paginated?.map((card:any) => (
-        <Card key={card.id} data={card} favorite={false} />
+        <Card key={currentPage+"-"+card.idInmueble} data={card} favorite={false} />
       ))}
       {selectUbi !== null && !isCardCity && (
         <div className="card__not-found">

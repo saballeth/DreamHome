@@ -20,12 +20,30 @@ function Card({ data, favorite, token, idUsuario }: any) {
   const { idInmueble, precio, nombre, url } = data;
   const navigate = useNavigate();
   const [marcadoFavorite, setMarcadoFavorite] = useState(false);
-  const { setSelectedFavorites, selectedFavorites, setFavoritoBorrado } = useSelect();
+  const { setSelectedFavorites, selectedFavorites, setFavoritoBorrado, setItemsClics,itemsClics } = useSelect();
   const favoritoComponente = favorite;
 
   const handle = () => {
     navigate(`/caracteristica/${idInmueble}`)
   };
+
+  const handleClics = () => {
+    const itemIndex = itemsClics?.findIndex((item:any) => item.idInmueble == idInmueble);
+    if (itemIndex !== -1) {
+      const updateItemClic = itemsClics.map((item:any) =>{
+        if(item.idInmueble == idInmueble){
+          return {...item, clics: item.clics + 1};
+        }
+        return item;
+      });
+      setItemsClics(updateItemClic);
+      localStorage.setItem('itemsCountClics', JSON.stringify(updateItemClic));
+    }else{
+      const updateItemClic = [...itemsClics, {idInmueble: idInmueble,url: url, clics: 1}];
+      setItemsClics(updateItemClic);
+      localStorage.setItem('itemsCountClics', JSON.stringify(updateItemClic));
+    }
+  }
 
   const handleSelect = () => {
     const itemIndex = selectedFavorites.findIndex(item => item.idInmueble == idInmueble);
@@ -75,7 +93,7 @@ function Card({ data, favorite, token, idUsuario }: any) {
 
 
   return (
-    <div className="card">
+    <div className="card" onClick={handleClics}>
       {favoritoComponente ? (
         <div className="card__delete" onClick={handleSelectDelete}>
           <CiSquareMinus className='menos__select' />
