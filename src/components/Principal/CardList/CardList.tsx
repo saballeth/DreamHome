@@ -28,6 +28,32 @@ const fetchInmuebles = async (token: string) => {
   }));
 };
 
+const fetchRecomendaciones = async (token: string,username:string) => {
+  const apiService = new ApiService(token);
+  const response = await apiService.get(`/api/inmueblesPorUsuario/${username}/recomendaciones`);
+  return response.map((item: any) => ({
+    idInmueble: item.id,
+    url: item.url,
+    nombre: item.nombre,
+    precio: item.precio,
+    ciudad: item.ciudad,
+    habitaciones: item.cantidadDeHabitaciones,
+    baños: item.cantidadDeBaños,
+    parqueaderos: item.cantidadDeParqueaderos,
+    tipoDeInmueble: item.tipoDeInmueble.nombre,
+    caracteristicas_interior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-interior'),
+    caracteristicas_exterior: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-exterior'),
+    caracteristicas_sector: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-del-sector'),
+    caracteristicas_zona_comun: item.caracteristicas.filter((item: { tipoDeCaracteristica: { nombre: string; }; }) => item.tipoDeCaracteristica.nombre === 'caracteristicas-de-zona-comun'),
+  }));
+};
+
+const fetchAllInmuebles = async (token: string, username: string) => {
+  const recomendaciones = await fetchRecomendaciones(token, username);
+  const inmuebles = await fetchInmuebles(token);
+  return [...recomendaciones, ...inmuebles];
+};
+
 const CardList: React.FC = () => {
   const auth = useAuth();
   const { selectUbi, filtros, isFiltroSave} = useSelect();
@@ -36,7 +62,7 @@ const CardList: React.FC = () => {
   const [isCardCity, setCardCity] = useState(true);
   const { data: inmuebles, isLoading } = useQuery({
     queryKey: ['inmuebles'],
-    queryFn: () => fetchInmuebles(auth.token),
+    queryFn: () => fetchAllInmuebles(auth.token, auth.user.username),
     staleTime: 2000 * 60 * 60, // 1 hora
   });
 
